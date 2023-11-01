@@ -1,4 +1,4 @@
-export const ATEST = (a:string,b:number) => {};
+import { generateMarkdown } from '../../../src/index';
+const abc = generateMarkdown();
 
-
-console.log(ATEST)
+console.log(abc)
