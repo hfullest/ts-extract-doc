@@ -1,5 +1,11 @@
-import { Project, ts } from 'ts-morph';
-import { ComponentDoc, ParserOptions } from './interface';
+import { Project, SourceFile, ts } from 'ts-morph';
+import { Document, ParserOptions } from './interface';
+import { isClassComponentKind, isClassKind, isFunctionKind, isJSXComponentKind, isTypesKind } from './utils/utils';
+import { collectDocFromType } from './source/types';
+import { collectDocFromFunction } from './source/function';
+import { collectDocFromClass } from './source/class';
+import { collectDocFromJSXComponent } from './source/jsx-component';
+import { collectDocFromClassComponent } from './source/class-component';
 
 export const defaultOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
@@ -13,10 +19,33 @@ export const parse = (
   filePathOrPaths: string | string[],
   compilerOptions: ts.CompilerOptions = defaultOptions,
   parserOpts: ParserOptions = defaultParserOpts
-): ComponentDoc[] => {
+): Document[][] => {
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
 
   const project = new Project();
-  project.
 
+  project.addSourceFilesAtPaths(filePaths);
+
+  const sourceFiles = project.getSourceFiles();
+
+  const filesDocs = sourceFiles.map(genDocuments);
+
+  return filesDocs;
+};
+
+export const genDocuments = (file: SourceFile): Document[] => {
+  const exportSymbols = file.getExportSymbols();
+  const docs = (
+    exportSymbols.map((it) => {
+      if (isJSXComponentKind(it)) return collectDocFromJSXComponent(it);
+      if (isClassComponentKind(it)) return collectDocFromClassComponent(it);
+      if (isTypesKind(it)) return collectDocFromType(it);
+      if (isFunctionKind(it)) return collectDocFromFunction(it);
+      if (isClassKind(it)) return collectDocFromClass(it);
+      return null;
+    }) as Document[]
+  ).filter(Boolean);
+  // console.log(ts.SymbolFlags)
+
+  return docs;
 };

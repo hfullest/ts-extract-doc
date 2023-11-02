@@ -23,7 +23,8 @@
     "importHelpers": true,
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/example.tsx"
   ],
   "exclude": [
     "node_modules",

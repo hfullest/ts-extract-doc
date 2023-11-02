@@ -5,7 +5,7 @@ export interface StringIndexedObject<T> {
   [key: string]: T;
 }
 
-export interface ComponentDoc {
+export interface Document {
   expression?: ts.Symbol;
   rootExpression?: ts.Symbol;
   displayName: string;
@@ -89,6 +89,6 @@ export interface StaticPropFilter {
 }
 
 export interface FileParser {
-  parse(filePathOrPaths: string | string[]): ComponentDoc[];
-  parseWithProgramProvider(filePathOrPaths: string | string[], programProvider?: () => ts.Program): ComponentDoc[];
+  parse(filePathOrPaths: string | string[]): Document[];
+  parseWithProgramProvider(filePathOrPaths: string | string[], programProvider?: () => ts.Program): Document[];
 }

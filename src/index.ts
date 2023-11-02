@@ -1,4 +1,5 @@
 import { Project } from 'ts-morph';
+import { parse } from './parse';
 
 // const project = new Project();
 
@@ -11,6 +12,6 @@ import { Project } from 'ts-morph';
 
 // console.log(sourceFiles);
 
-export const generateMarkdown = () => {
-  return 'generateMarkdown';
+export const generateMarkdown = (filePathOrPaths: string | string[]) => {
+  return parse(filePathOrPaths);
 };
