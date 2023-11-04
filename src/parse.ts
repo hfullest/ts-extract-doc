@@ -1,10 +1,10 @@
 import { Project, SourceFile, ts, Symbol } from 'ts-morph';
 import { Document, ParserOptions } from './interface';
-import { isClassComponentKind, isClassKind, isFunctionKind, isJSXComponentKind, isTypesKind } from './utils/utils';
+import { isClassComponentKind, isClassKind, isFunctionKind, isFCComponentKind, isTypesKind } from './utils/utils';
 import { collectDocFromType } from './source/types';
 import { collectDocFromFunction } from './source/function';
 import { collectDocFromClass } from './source/class';
-import { collectDocFromJSXComponent } from './source/jsx-component';
+import { collectDocFromFCComponent } from './source/fc-component';
 import { collectDocFromClassComponent } from './source/class-component';
 
 export const defaultOptions: ts.CompilerOptions = {
@@ -42,7 +42,7 @@ export const genDocuments = (file: SourceFile): Document[] => {
   debugger;
   const docs = (
     exportSymbols.map((it) => {
-      if (isJSXComponentKind(it)) return collectDocFromJSXComponent(it);
+      if (isFCComponentKind(it)) return collectDocFromFCComponent(it);
       if (isClassComponentKind(it)) return collectDocFromClassComponent(it);
       if (isTypesKind(it)) return collectDocFromType(it);
       if (isFunctionKind(it)) return collectDocFromFunction(it);

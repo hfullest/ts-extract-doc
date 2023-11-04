@@ -1,4 +1,16 @@
-import { ts, Symbol, Node } from 'ts-morph';
+import {
+  ts,
+  Symbol,
+  Node,
+  FunctionDeclaration,
+  FunctionExpression,
+  ArrowFunction,
+  ClassDeclaration,
+  ClassExpression,
+  MethodDeclaration,
+} from 'ts-morph';
+
+export type FunctionNodeDeclaration = FunctionDeclaration | FunctionExpression | ArrowFunction | MethodDeclaration;
 
 /** 是否为ts类型，type、interface、namespace */
 export const isTypesKind = (symbol: Symbol) => {
@@ -22,10 +34,47 @@ export const isClassKind = (symbol: Symbol) => {
   return Node.isClassExpression(initializer);
 };
 
-export const isJSXComponentKind = (symbol: Symbol) => {
-  return false; // TODO: 增加react 函数组件判断
+export const isJSXFunction = (functionNode: FunctionNodeDeclaration): functionNode is FunctionNodeDeclaration => {
+  const returnStatement = functionNode?.getStatementByKind(ts.SyntaxKind.ReturnStatement);
+  const jsxStatement =
+    returnStatement?.getFirstChildByKind(ts.SyntaxKind.JsxElement) ??
+    returnStatement?.getFirstChildByKind(ts.SyntaxKind.JsxFragment) ??
+    returnStatement?.getFirstChildByKind(ts.SyntaxKind.JsxSelfClosingElement);
+  return (
+    Node.isJsxElement(jsxStatement) || Node.isJsxSelfClosingElement(jsxStatement) || Node.isJsxFragment(jsxStatement)
+  );
+};
+
+export const isFCComponentKind = (
+  symbol: Symbol,
+  targetDeclaration: ts.SyntaxKind.VariableDeclaration | ts.SyntaxKind.PropertyDeclaration = ts.SyntaxKind
+    .VariableDeclaration
+) => {
+  if (!symbol) return false;
+  const node = symbol.getValueDeclaration();
+  let functionNode: FunctionNodeDeclaration = node as FunctionDeclaration;
+  if (!Node.isFunctionDeclaration(node)) {
+    const variableDeclaration = node?.asKind(targetDeclaration);
+    const functionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.FunctionExpression);
+    const arrowFunctionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ArrowFunction);
+    functionNode = functionInitializer ?? arrowFunctionInitializer;
+  }
+  return isJSXFunction(functionNode);
 };
 
 export const isClassComponentKind = (symbol: Symbol) => {
-  return false; // TODO: 增加react 类组件判断
+  const node = symbol?.getValueDeclaration();
+  let classNode: ClassDeclaration | ClassExpression = node as ClassDeclaration;
+  if (!Node.isClassDeclaration(node)) {
+    const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
+    const classInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ClassExpression);
+    classNode = classInitializer;
+  }
+  const renderMemberDeclaration = classNode?.getMember('render');
+  if (renderMemberDeclaration?.asKind(ts.SyntaxKind.PropertyDeclaration)) {
+    return isFCComponentKind(renderMemberDeclaration?.getSymbol(), ts.SyntaxKind.PropertyDeclaration);
+  } else if (renderMemberDeclaration?.asKind(ts.SyntaxKind.MethodDeclaration)) {
+    return isJSXFunction(renderMemberDeclaration as MethodDeclaration);
+  }
+  return false;
 };
