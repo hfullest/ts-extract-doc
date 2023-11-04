@@ -14,8 +14,20 @@ const plugins = [
     root: './',
     babelrc: false,
     babelHelpers: 'bundled',
-    presets: [['env']],
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          targets: {
+            node: 'current',
+          },
+        },
+      ],
+      '@babel/preset-typescript',
+      '@babel/preset-react',
+    ],
     exclude: ['node_modules/**'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss'],
   }),
   resolve({
     preferBuiltins: true,

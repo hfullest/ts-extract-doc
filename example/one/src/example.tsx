@@ -1,7 +1,13 @@
+import React from 'react';
+
 export class ExampleClass {
   exFun() { }
 }
 
+
+export const ExampleClassVar = class {
+  exFun() { }
+}
 export function ExampleFunc(a: number, b: string) {
   return a + b;
 }
@@ -33,3 +39,15 @@ export enum ExampleEnum {
 }
 
 export const ExampleVar = 123;
+
+export const App = () => {
+  return <div>App</div>
+};
+
+export const App2 = React.forwardRef(() => {
+  return <div>App2</div>
+})
+
+export const App3 = React.memo(() => {
+  return <div>App3</div>
+})

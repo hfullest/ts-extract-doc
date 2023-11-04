@@ -1,4 +1,4 @@
-import { ts, Symbol } from 'ts-morph';
+import { ts, Symbol, Node } from 'ts-morph';
 
 /** 是否为ts类型，type、interface、namespace */
 export const isTypesKind = (symbol: Symbol) => {
@@ -6,17 +6,20 @@ export const isTypesKind = (symbol: Symbol) => {
 };
 
 export const isFunctionKind = (symbol: Symbol) => {
-  const isArrowFunction = (symbol: Symbol) => {
-    const flag = symbol.getFlags();
-    if (flag !== ts.SymbolFlags.BlockScopedVariable) return false;
-    const arrowFunction = symbol.getValueDeclaration()?.getFirstChildByKind(ts.SyntaxKind.ArrowFunction);
-    return !!arrowFunction;
-  };
-  return symbol.getFlags() === ts.SymbolFlags.Function || isArrowFunction(symbol);
+  const node = symbol.getValueDeclaration();
+  if (Node.isFunctionDeclaration(node)) return true;
+  const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
+  const functionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.FunctionExpression);
+  const arrowFunctionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ArrowFunction);
+  return Node.isFunctionExpression(functionInitializer) || Node.isArrowFunction(arrowFunctionInitializer);
 };
 
 export const isClassKind = (symbol: Symbol) => {
-  return symbol.getFlags() === ts.SymbolFlags.Class;
+  const node = symbol.getValueDeclaration();
+  if (Node.isClassDeclaration(node)) return true;
+  const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
+  const initializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ClassExpression);
+  return Node.isClassExpression(initializer);
 };
 
 export const isJSXComponentKind = (symbol: Symbol) => {

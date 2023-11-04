@@ -8,13 +8,15 @@
     "build": "rollup -c",
     "dev": "rollup -c --watch",
     "try": "rollup -c && node ./dist/index.umd.js",
-    "try:example" :"rollup --config ./example/one/rollup.config.mjs && node ./example/one/dist/index.cjs",
+    "try:example": "rollup --config ./example/one/rollup.config.mjs && node ./example/one/dist/index.cjs",
     "try:watch": " nodemon --watch ./example  ./example/one/dist/index.cjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
+    "@babel/preset-react": "^7.22.15",
+    "@babel/preset-typescript": "^7.23.2",
     "@rollup/plugin-alias": "^5.0.1",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
@@ -37,5 +39,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0"
+  }
 }

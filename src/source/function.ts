@@ -7,6 +7,6 @@ export const collectDocFromFunction = (symbol: Symbol): Document | null => {
   const FunctionNode =
     valueDeclaration?.getFirstChildByKind(ts.SyntaxKind.FunctionDeclaration) ?? //TODO: 这里有问题
     valueDeclaration?.getFirstChildByKind(ts.SyntaxKind.ArrowFunction);
-  console.log('collectDocFromFunction:', symbol.getName(),FunctionNode);
+  console.log('collectDocFromFunction:', symbol.getName());
   return null;
 };

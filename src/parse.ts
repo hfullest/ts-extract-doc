@@ -1,4 +1,4 @@
-import { Project, SourceFile, ts } from 'ts-morph';
+import { Project, SourceFile, ts, Symbol } from 'ts-morph';
 import { Document, ParserOptions } from './interface';
 import { isClassComponentKind, isClassKind, isFunctionKind, isJSXComponentKind, isTypesKind } from './utils/utils';
 import { collectDocFromType } from './source/types';
@@ -14,6 +14,10 @@ export const defaultOptions: ts.CompilerOptions = {
 };
 
 export const defaultParserOpts: ParserOptions = {};
+
+export const getFullJsDocComment = (symbol: Symbol) => {
+  console.log(symbol);
+};
 
 export const parse = (
   filePathOrPaths: string | string[],
@@ -35,6 +39,7 @@ export const parse = (
 
 export const genDocuments = (file: SourceFile): Document[] => {
   const exportSymbols = file.getExportSymbols();
+  debugger;
   const docs = (
     exportSymbols.map((it) => {
       if (isJSXComponentKind(it)) return collectDocFromJSXComponent(it);
@@ -45,7 +50,6 @@ export const genDocuments = (file: SourceFile): Document[] => {
       return null;
     }) as Document[]
   ).filter(Boolean);
-  // console.log(ts.SymbolFlags)
 
   return docs;
 };
