@@ -1,11 +1,19 @@
 import { Project, SourceFile, ts, Symbol } from 'ts-morph';
 import { Document, ParserOptions } from './interface';
-import { isClassComponentKind, isClassKind, isFunctionKind, isFCComponentKind, isTypesKind } from './utils/utils';
-import { collectDocFromType } from './source/types';
+import {
+  isClassComponentKind,
+  isClassKind,
+  isFunctionKind,
+  isFCComponentKind,
+  isDeclarationKind,
+  isEnumOrLiteralOrRecordKind,
+} from './utils/utils';
+import { collectDocFromDeclaration } from './source/declaration';
 import { collectDocFromFunction } from './source/function';
 import { collectDocFromClass } from './source/class';
 import { collectDocFromFCComponent } from './source/fc-component';
 import { collectDocFromClassComponent } from './source/class-component';
+import { collectDocFromEnumOrLiteral } from './source/enum-literal-object';
 
 export const defaultOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
@@ -44,9 +52,10 @@ export const genDocuments = (file: SourceFile): Document[] => {
     exportSymbols.map((it) => {
       if (isFCComponentKind(it)) return collectDocFromFCComponent(it);
       if (isClassComponentKind(it)) return collectDocFromClassComponent(it);
-      if (isTypesKind(it)) return collectDocFromType(it);
+      if (isDeclarationKind(it)) return collectDocFromDeclaration(it);
       if (isFunctionKind(it)) return collectDocFromFunction(it);
       if (isClassKind(it)) return collectDocFromClass(it);
+      if (isEnumOrLiteralOrRecordKind(it)) return collectDocFromEnumOrLiteral(it);
       return null;
     }) as Document[]
   ).filter(Boolean);

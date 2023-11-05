@@ -12,9 +12,19 @@ import {
 
 export type FunctionNodeDeclaration = FunctionDeclaration | FunctionExpression | ArrowFunction | MethodDeclaration;
 
+/** 是否为枚举、字面量变量、字面量对象 */
+export const isEnumOrLiteralOrRecordKind = (symbol: Symbol) => {
+  const node = symbol?.getValueDeclaration();
+  if (node?.asKind(ts.SyntaxKind.EnumDeclaration)) return Node.isEnumDeclaration(node);
+  const recordVarDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
+  const expression = recordVarDeclaration?.getInitializer();
+  return Node.isObjectLiteralExpression(expression) || Node.isLiteralExpression(expression);
+};
+
 /** 是否为ts类型，type、interface、namespace */
-export const isTypesKind = (symbol: Symbol) => {
-  return [ts.SymbolFlags.Interface, ts.SymbolFlags.Type, ts.SymbolFlags.Namespace].some((f) => f === symbol.getFlags());
+export const isDeclarationKind = (symbol: Symbol) => {
+  const node = symbol?.getDeclarations()[0];
+  return Node.isTypeAliasDeclaration(node) || Node.isInterfaceDeclaration(node) || Node.isModuleDeclaration(node);
 };
 
 export const isFunctionKind = (symbol: Symbol) => {
