@@ -1,47 +1,60 @@
-import { ts } from 'ts-morph';
+import { InterfaceDeclaration, ModuleDeclaration, TypeAliasDeclaration, ts, Symbol, Node, JSDocTag } from 'ts-morph';
 
-export type InterfaceOrTypeAliasDeclaration = ts.TypeAliasDeclaration | ts.InterfaceDeclaration;
+export type InterfaceOrTypeAliasOrModuleDeclaration = TypeAliasDeclaration | InterfaceDeclaration | ModuleDeclaration;
 export interface StringIndexedObject<T> {
   [key: string]: T;
 }
 
+export interface DocumentTag {
+  name: string;
+  comment: string;
+  self: JSDocTag;
+  parent: Node;
+}
+
 export interface Document {
-  expression?: ts.Symbol;
-  rootExpression?: ts.Symbol;
+  symbol?: Symbol;
+  rootSymbol?: Symbol;
   displayName: string;
   filePath: string;
   description: string;
-  props: Props;
-  methods: Method[];
-  tags?: StringIndexedObject<string>;
+  fullText: string;
+  props: Record<string, DocumentProp>;
+  tags?: DocumentTag[];
 }
 
-export interface Props extends StringIndexedObject<PropItem> {}
-
-export interface PropItem {
+export interface DocumentProp {
   name: string;
   required: boolean;
   type: PropItemType;
   description: string;
   defaultValue: any;
-  parent?: ParentType;
-  declarations?: ParentType[];
-  tags?: {};
+  parent: Node;
+  tags: DocumentTag[];
+  /** 是否为方法，可用来区分属性和方法 */
+  isMethod: boolean;
+  /** 属性或方法修饰符，用于类，比如`private` */
+  modifiers: ts.ModifierFlags;
+  parameters: DocumentMethodParameter[];
+  returns: {
+    type: PropItemType;
+    description: string | null;
+  };
 }
 
-export interface Method {
-  name: string;
-  docblock: string;
-  modifiers: string[];
-  params: MethodParameter[];
-  returns?: {
-    description?: string | null;
-    type?: string;
-  } | null;
-  description: string;
-}
+// export interface DocumentMethod {
+//   name: string;
+//   docblock: string;
+//   modifiers: ts.ModifierFlags;
+//   params: DocumentMethodParameter[];
+//   returns?: {
+//     description?: string | null;
+//     type?: string;
+//   } | null;
+//   description: string;
+// }
 
-export interface MethodParameter {
+export interface DocumentMethodParameter {
   name: string;
   description?: string | null;
   type: MethodParameterType;
@@ -66,7 +79,7 @@ export interface ParentType {
   fileName: string;
 }
 
-export type PropFilter = (props: PropItem, component: Component) => boolean;
+export type PropFilter = (props: DocumentProp, component: Component) => boolean;
 
 export type ComponentNameResolver = (exp: ts.Symbol, source: ts.SourceFile) => string | undefined | null | false;
 
