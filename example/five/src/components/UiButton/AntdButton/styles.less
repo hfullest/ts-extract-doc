@@ -1,0 +1,226 @@
+@ui-prefix: ui; // 自定义组件使用类名前缀
+@ant-prefix: ant; // ant 类名前缀，方便统一修改前缀
+
+@ui-btn-prefix-cls: ~"@{ui-prefix}-btn";
+@ant-btn-prefix-cls: ~"@{ant-prefix}-btn";
+
+// 提供类名为uiButton的全局按钮组件样式，使用时可以直接使用className来添加样式，使用时需要提前引入该样式文件
+.uiButton,
+.@{ui-btn-prefix-cls} {
+  display: inline-flex; // 保持和antd一样的内联块样式
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 14px;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s;
+
+  // 禁用且有tooltip时的样式
+  &.@{ant-prefix}-tooltip-disabled-compatible-wrapper button[disabled],
+  //按钮禁用样式
+  &[disabled] {
+    text-shadow: none;
+    box-shadow: none;
+    cursor: no-drop;
+  }
+
+  // 按钮 icon 图标
+  & &-icon {
+    margin-right: 4px;
+    display: inline-flex;
+  }
+
+  // antd 按钮样式调整
+  &.@{ant-btn-prefix-cls} {
+    font-size: 14px;
+    padding: 6px 16px; // 默认 middle 的 padding
+    line-height: 20px;
+
+    &.twoCharNotSpace.@{ant-btn-prefix-cls}-two-chinese-chars
+      > *:not(.anticon) {
+      margin: 0; // 覆盖ant两字符特殊样式
+      letter-spacing: 0;
+    }
+
+    &:not(.@{ant-btn-prefix-cls}-loading):not(.@{ui-btn-prefix-cls}-loading) {
+      //修复 antd 由于快速更新 loading 状态导致图标不隐藏bug
+      > .@{ant-btn-prefix-cls}-loading-icon {
+        visibility: hidden;
+      }
+    }
+  }
+
+  //**************** 自定义类型 ******************
+
+  //type 类型
+  &.@{ant-prefix}-tooltip-disabled-compatible-wrapper .@{ant-btn-prefix-cls},
+  &&-type {
+    //type = 'primary' 主按钮
+    &-primary {
+      .no-border();
+      .type-variant-theme(#215ae5; #153fbf; #0b2a99; #BDD6FA; @font-color: #ffffff; );
+    }
+
+    //type = 'minority'
+    &-minority {
+      .no-border();
+      .type-variant-theme(#F2F3F5; #E5E6EB; #C9CDD4; #F2F3F5;
+        @font-color: #1d2129; @disabled-font-color: #C9CDD4; );
+    }
+
+    //type = 'textlink'
+    &-textlink {
+      .no-border();
+      .type-variant-theme(none; #F2F3F5; #E5E6EB; none;
+        @font-color: #215ae5; @hover-font-color: #467aea; @active-font-color: #153fbf; @disabled-font-color: #C9CDD4; );
+    }
+
+    //type = 'warn'
+    &-warn {
+      .no-border();
+      .type-variant-theme(#FB9926; #CF7318; #A4530C; #FEEAC1;
+        @font-color: #4d1f00; @disabled-font-color: #4d3200; );
+    }
+
+    //type ='danger'
+    &-danger {
+      .no-border();
+      .type-variant-theme(#E8353E; #C1212E; #9a1222; #FAC6C2; @font-color: #ffffff; );
+    }
+
+    // type = 'ghost'
+    &-ghost {
+      .no-border();
+      .type-variant-theme(@theme-color: #f4f5f6; @hover-color: #e5e6eb; @font-color: #545968; );
+
+      &[disabled],
+      & > [disabled],
+      &.@{ui-btn-prefix-cls}-disabled {
+        opacity: 0.5;
+      }
+    }
+
+    // type = 'ghostLight'
+    &-ghostLight {
+      .no-border();
+      .type-variant-theme(@theme-color: none; @hover-color: #f4f5f6; @font-color: #545968; );
+
+      &[disabled],
+      & > [disabled],
+      &.@{ui-btn-prefix-cls}-disabled {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  // size 属性样式
+  &&-size {
+    &-small {
+      font-size: 12px;
+      line-height: 18px;
+      padding: 3px 8px;
+    }
+
+    &-middle {
+      font-size: 14px;
+      line-height: 20px;
+      padding: 6 16px;
+    }
+
+    &-large {
+      font-size: 16px;
+      line-height: 22px;
+      padding: 9px 24px;
+    }
+  }
+
+  // align 属性样式
+  &&-align {
+    &-start {
+      justify-content: flex-start;
+    }
+
+    &-center {
+      justify-content: center;
+    }
+
+    &-end {
+      justify-content: flex-end;
+    }
+  }
+
+  // loading 属性样式
+  &&-loading {
+    &:not([disabled]) {
+      pointer-events: none;
+    }
+
+    &:before {
+      display: block;
+    }
+
+    //'cover'
+    &-cover {
+      &:not(.@{ant-btn-prefix-cls}-loading)
+        > *:not(.@{ui-btn-prefix-cls}-loading-icon) {
+        display: none !important;
+      }
+    }
+
+    //'contain'
+    &-contain {
+      .@{ui-btn-prefix-cls}-loading-icon:not(.@{ant-btn-prefix-cls}-loading-icon) {
+        transform: translateX(-8px);
+      }
+
+      .@{ant-btn-prefix-cls}-loading-icon,
+      .@{ui-btn-prefix-cls}-loading-icon {
+        position: relative !important;
+        left: unset;
+        cursor: default;
+      }
+
+      &
+        > *:not(.@{ant-btn-prefix-cls}-loading-icon):not(.@{ui-btn-prefix-cls}-loading-icon) {
+        visibility: unset;
+      }
+    }
+  }
+
+  //**************************************************
+}
+
+.no-border() {
+  border: none;
+  outline: none;
+}
+
+.type-variant-theme(@theme-color; @hover-color; @active-color: @hover-color; @disabled-color: @theme-color;
+
+  @font-color: inherit; @hover-font-color: @font-color; @active-font-color: @font-color; @disabled-font-color: @font-color; ) {
+  background: @theme-color;
+  border-color: @theme-color;
+  color: @font-color;
+
+  &:hover {
+    background: @hover-color;
+    border-color: @hover-color;
+    color: @hover-font-color;
+  }
+
+  &:focus,
+  &:active {
+    background: @active-color;
+    border-color: @active-color;
+    color: @active-font-color;
+  }
+
+  &[disabled],
+  & > [disabled],
+  &.@{ui-btn-prefix-cls}-disabled {
+    background: @disabled-color;
+    border-color: @disabled-color;
+    color: @disabled-font-color;
+  }
+}

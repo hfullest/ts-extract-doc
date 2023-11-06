@@ -1,0 +1,42 @@
+.treeNodeItem {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+
+
+    :global {
+        .ant-checkbox-wrapper {
+            height: 24px;
+        }
+
+        .ant-list-item {
+            padding: 0;
+        }
+    }
+
+    .itemMetaWrapper {
+        display: flex;
+        flex: 1;
+        align-items: flex-start;
+        max-width: 100%;
+
+        :global {
+            .ant-list-item-meta {
+                &-content {
+                    width: unset;
+                }
+
+                &-title {
+                    line-height: 22px;
+                    margin: 0;
+                    padding: 3px;
+                }
+
+                &-avatar {
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+}
