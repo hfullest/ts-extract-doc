@@ -5,7 +5,7 @@ import {
   renderers,
 } from "react-docgen-typescript-markdown-render";
 import { MarkdownImportOptions } from "./vuepress-plugin-markdown-import";
-import { generateMarkdown } from "../../../../../../SelfWorkSpace/react-ts-extract-doc/src/index";
+import { generateMarkdown } from "../../../../../../src/index";
 
 export default {
   "ts-gendoc": {
