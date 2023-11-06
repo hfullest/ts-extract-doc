@@ -26,7 +26,7 @@ export interface Document {
 export interface DocumentProp {
   name: string;
   required: boolean;
-  type: PropItemType;
+  type: Type;
   description: string;
   defaultValue: any;
   parent: Node;
@@ -37,7 +37,7 @@ export interface DocumentProp {
   modifiers: ts.ModifierFlags;
   parameters: DocumentMethodParameter[];
   returns: {
-    type: PropItemType;
+    type: Type;
     description: string | null;
   };
 }
@@ -56,19 +56,17 @@ export interface DocumentProp {
 
 export interface DocumentMethodParameter {
   name: string;
+  required: boolean;
+  defaultValue:any;
   description?: string | null;
-  type: MethodParameterType;
-}
-
-export interface MethodParameterType {
-  name: string;
+  type: Type;
 }
 
 export interface Component {
   name: string;
 }
 
-export interface PropItemType {
+export interface Type {
   name: string;
   value?: any;
   raw?: string;

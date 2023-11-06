@@ -1,4 +1,4 @@
-import { InterfaceDeclaration, Symbol, ts } from 'ts-morph';
+import { InterfaceDeclaration, Node, Symbol, ts } from 'ts-morph';
 import { Document, DocumentProp, InterfaceOrTypeAliasOrModuleDeclaration } from '../interface';
 
 /** 从ts类型中提取文档 */
@@ -55,12 +55,38 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           parameters: [],
           returns: undefined,
         };
-        const isFunctionType = !!(
+        const functionTypeNode =
           prop?.getFirstDescendantByKind(ts.SyntaxKind.FunctionType) ??
           prop?.getFirstDescendantByKind(ts.SyntaxKind.JSDocFunctionType) ??
-          prop?.getFirstDescendantByKind(ts.SyntaxKind.MethodSignature)
-        );
-        if (isFunctionType) {
+          prop?.getFirstDescendantByKind(ts.SyntaxKind.MethodSignature);
+        if (!!functionTypeNode) {
+          docProp.isMethod = true;
+          const parametersNode = functionTypeNode?.getParameters();
+          docProp.parameters = parametersNode?.map((parameter) => {
+            const paramType = parameter?.getType();
+            const paramCommentNode = jsDocTags?.find((t) => Node.isJSDocParameterTag(t));
+            return {
+              name: parameter?.getName(),
+              type: {
+                name: paramType?.getText(),
+                value: paramType?.getLiteralValue(),
+                raw: parameter?.getText(),
+              },
+              defaultValue: parameter?.getInitializer(),
+              required: !parameter?.hasQuestionToken(),
+              description: paramCommentNode?.getCommentText(),
+            };
+          });
+          const returnType = functionTypeNode.getReturnType();
+          const returnCommentNode = jsDocTags?.find((t) => Node.isJSDocReturnTag(t));
+          docProp.returns = {
+            type: {
+              name: returnType?.getText(),
+              value: returnType?.getLiteralValue(),
+              raw: functionTypeNode?.getText(),
+            },
+            description: returnCommentNode?.getDescendantAtPos(1)?.getText(),
+          };
           console.log('函数', prop.getName()); // TODO: 处理函数需要的属性
         }
 
