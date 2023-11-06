@@ -10,7 +10,8 @@
     "try": "rollup -c && node ./dist/index.umd.js",
     "try:example": "cd ./example/five && pnpm docs:dev",
     "try:watch": " nodemon --watch ./example  ./example/one/dist/index.cjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "pnpm i && cd ./example/five && pnpm i"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
