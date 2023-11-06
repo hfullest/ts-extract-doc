@@ -27,7 +27,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
       });
       const properties = (node as InterfaceDeclaration)?.getProperties();
       document.props = properties.reduce<typeof document.props>((result, prop) => {
-        const propName = `${document.displayName}#${prop?.getName()}`;
+        const propName = `${prop?.getName()}`;
         const jsDoc = prop?.getJsDocs()[0];
         const jsDocTags = jsDoc?.getTags();
         const type = prop?.getType();
