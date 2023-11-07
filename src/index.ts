@@ -15,3 +15,5 @@ import { parse } from './parse';
 export const parseSourceFile = (filePathOrPaths: string | string[]) => {
   return parse(filePathOrPaths);
 };
+
+export { generateMarkdown } from './mardown';

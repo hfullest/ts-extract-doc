@@ -15,7 +15,11 @@ interface CompatButtonProps<N> {
   native?: N;
   children?: React.ReactNode;
   /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
-   *  @deprecated */
+   *  @deprecated
+   * 
+   * 哈哈哈这里可以是markdown
+   * 
+   *  */
   ant?: never;
 }
 
@@ -64,12 +68,25 @@ export type ExampleType = string | number | UiButtonProps;
  * 
  * @see {@link https://abc123.com}
  * 
+ * @description 
+ *  这里是内容
+ * 
+ * 其他的内容区内容
+ * 
  */
 export interface ExampleInterface {
   /** a属性
    * @default 'hahah'
+   * 
+   * 这里是markdown区域
    */
   a: string;
+  /**
+   * button 描述
+   * 
+   * button的内容区
+   * 
+   */
   button?: UiButtonProps;
 
   /** 接口函数定义
