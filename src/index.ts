@@ -12,6 +12,6 @@ import { parse } from './parse';
 
 // console.log(sourceFiles);
 
-export const generateMarkdown = (filePathOrPaths: string | string[]) => {
+export const parseSourceFile = (filePathOrPaths: string | string[]) => {
   return parse(filePathOrPaths);
 };
