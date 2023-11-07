@@ -16,7 +16,6 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
       document.description = jsDoc?.getDescription();
       document.filePath = jsDoc?.getSourceFile().getFilePath();
       const jsDocTags = jsDoc?.getTags();
-      const comments = jsDoc.getComment();
       document.tags = jsDocTags.map((tag) => {
         return {
           name: tag.getTagName(),
@@ -31,6 +30,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
         const jsDoc = prop?.getJsDocs()[0];
         const jsDocTags = jsDoc?.getTags();
         const type = prop?.getType();
+        // const literalType = type?.get();
         const defaultTagNode = jsDocTags?.find((t) => /^default(Value)?/.test(t.getTagName()));
         const docProp: DocumentProp = {
           name: prop?.getName(),
@@ -96,7 +96,6 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
       console.log({
         document: document.props[`${document.displayName}#bb`],
         jsDocTags: jsDocTags.map((it) => it.print()),
-        comments,
         fulltext: jsDoc.getFullText(),
       });
       break;

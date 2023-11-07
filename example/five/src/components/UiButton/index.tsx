@@ -67,13 +67,15 @@ export type ExampleType = string | number | UiButtonProps;
  */
 export interface ExampleInterface {
   /** a属性
-   * @required
    * @default 'hahah'
    */
   a: string;
   button?: UiButtonProps;
 
-  /** 接口函数定义 */
+  /** 接口函数定义
+   * @param {string} p1 参数一字符串
+   * @param {number} p2 参数二数值
+   */
   bb: ((p1: string, p2?: number) => string);
 }
 

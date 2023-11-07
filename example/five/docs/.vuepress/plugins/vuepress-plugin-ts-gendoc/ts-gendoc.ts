@@ -14,7 +14,6 @@ export default {
     handler(md, tokens, idx) {
       const token = tokens[idx];
       const { path, params } = token.meta;
-      debugger;
       /*************************************** */
 
       const result = generateMarkdown(path);
