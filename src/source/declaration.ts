@@ -29,16 +29,15 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
         const propName = `${prop?.getName()}`;
         const jsDoc = prop?.getJsDocs()[0];
         const jsDocTags = jsDoc?.getTags();
-        const type = prop?.getType();
-        // const literalType = type?.get();
+        const typeNode = prop?.getTypeNode();
         const defaultTagNode = jsDocTags?.find((t) => /^default(Value)?/.test(t.getTagName()));
         const docProp: DocumentProp = {
           name: prop?.getName(),
           description: jsDoc?.getDescription(),
           defaultValue: defaultTagNode?.getCommentText(),
           type: {
-            name: type.getText(),
-            value: type.getLiteralValue(),
+            name: typeNode?.getText(),
+            value: prop?.getType()?.getLiteralValue(),
             raw: prop?.getText(),
           },
           required: !prop?.hasQuestionToken(),
@@ -63,13 +62,13 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           docProp.isMethod = true;
           const parametersNode = functionTypeNode?.getParameters();
           docProp.parameters = parametersNode?.map((parameter) => {
-            const paramType = parameter?.getType();
+            const paramTypeNode = parameter?.getTypeNode();
             const paramCommentNode = jsDocTags?.find((t) => Node.isJSDocParameterTag(t));
             return {
               name: parameter?.getName(),
               type: {
-                name: paramType?.getText(),
-                value: paramType?.getLiteralValue(),
+                name: paramTypeNode?.getText(),
+                value: parameter?.getType()?.getLiteralValue(),
                 raw: parameter?.getText(),
               },
               defaultValue: parameter?.getInitializer(),
@@ -77,17 +76,16 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
               description: paramCommentNode?.getCommentText(),
             };
           });
-          const returnType = functionTypeNode.getReturnType();
+          const returnTypeNode = functionTypeNode.getReturnTypeNode();
           const returnCommentNode = jsDocTags?.find((t) => Node.isJSDocReturnTag(t));
           docProp.returns = {
             type: {
-              name: returnType?.getText(),
-              value: returnType?.getLiteralValue(),
+              name: returnTypeNode?.getText() ?? returnCommentNode?.getType()?.getText(),
+              value: functionTypeNode?.getType()?.getLiteralValue(),
               raw: functionTypeNode?.getText(),
             },
-            description: returnCommentNode?.getDescendantAtPos(1)?.getText(),
+            description: returnCommentNode?.getCommentText(),
           };
-          console.log('函数', prop.getName()); // TODO: 处理函数需要的属性
         }
 
         result[propName] = docProp;

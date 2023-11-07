@@ -75,6 +75,7 @@ export interface ExampleInterface {
   /** 接口函数定义
    * @param {string} p1 参数一字符串
    * @param {number} p2 参数二数值
+   * @returns {boolean} 返回值测试
    */
   bb: ((p1: string, p2?: number) => string);
 }
