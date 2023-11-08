@@ -67,7 +67,7 @@ const fillPropsTableByDoc = (
             return doc.version ?? defaultSpace;
         }
       });
-      return `|${fields.join('|').replace(/\n/g, '\t')}|`;
+      return `|${fields.join('|').replace(/\n/g, '<br/>')}|`;
     })
     .join('\n');
   const tableTitle = `|${titleStr}|`;
