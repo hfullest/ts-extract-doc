@@ -25,4 +25,4 @@ export interface Button{
 - `@description`
 - `@param`
 - `@returns`
-- `@example`
+- `@example`  最后渲染的代码块会以 `tsx` 进行包裹，因此语法也是支持的，可以有多个 `@example`

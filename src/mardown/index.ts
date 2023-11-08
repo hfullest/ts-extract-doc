@@ -23,6 +23,6 @@ const templateReplacement = (doc: Document, options: GenMarkdownOptions): string
   const desc = `${description}`;
   const table = `表格`;
   const extra = `${extraDescription}`;
-  const exampleCode = example ? `\`\`\`tsx\n${example}\n\`\`\`` : '';
+  const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
   return [header, desc, table, extra, exampleCode].filter(Boolean).join('\n');
 };
