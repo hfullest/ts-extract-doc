@@ -69,10 +69,12 @@ export type ExampleType = string | number | UiButtonProps;
  * @see {@link https://abc123.com}
  * 
  * @description 
- *  这里是内容
+ * 这里是内容
  * 
  * 其他的内容区内容
  * 
+ * @example
+ *  const a = 123;
  */
 export interface ExampleInterface {
   /** a属性

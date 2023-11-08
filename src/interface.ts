@@ -7,30 +7,37 @@ export interface StringIndexedObject<T> {
 
 export interface DocumentTag {
   name: string;
-  comment: string;
+  text: string;
   self: JSDocTag;
   parent: Node;
 }
 
-export interface Document {
-  symbol?: Symbol;
-  rootSymbol?: Symbol;
-  displayName: string;
-  filePath: string;
+export interface CommonDocField {
+  /** 名称 */
+  name: string;
+  /** 简单描述，取自注释`tag`标记之前的文本内容 */
   description: string;
   fullText: string;
-  props: Record<string, DocumentProp>;
-  tags?: DocumentTag[];
+  /** 额外补充描述，一般取`@description`修饰内容 */
+  extraDescription?: string;
+  /** `JSDoc的标签` */
+  tags: DocumentTag[];
+  /** `JSDoc`注释的例子 */
+  example?: string;
 }
 
-export interface DocumentProp {
-  name: string;
+export interface Document extends CommonDocField {
+  symbol?: Symbol;
+  rootSymbol?: Symbol;
+  filePath: string;
+  props: Record<string, DocumentProp>;
+}
+
+export interface DocumentProp extends CommonDocField {
   required: boolean;
   type: Type;
-  description: string;
   defaultValue: any;
   parent: Node;
-  tags: DocumentTag[];
   /** 是否为方法，可用来区分属性和方法 */
   isMethod: boolean;
   /** 属性或方法修饰符，用于类，比如`private` */
@@ -42,28 +49,12 @@ export interface DocumentProp {
   };
 }
 
-// export interface DocumentMethod {
-//   name: string;
-//   docblock: string;
-//   modifiers: ts.ModifierFlags;
-//   params: DocumentMethodParameter[];
-//   returns?: {
-//     description?: string | null;
-//     type?: string;
-//   } | null;
-//   description: string;
-// }
-
 export interface DocumentMethodParameter {
   name: string;
   required: boolean;
-  defaultValue:any;
+  defaultValue: any;
   description?: string | null;
   type: Type;
-}
-
-export interface Component {
-  name: string;
 }
 
 export interface Type {
@@ -72,9 +63,8 @@ export interface Type {
   raw?: string;
 }
 
-export interface ParentType {
+export interface Component {
   name: string;
-  fileName: string;
 }
 
 export type PropFilter = (props: DocumentProp, component: Component) => boolean;

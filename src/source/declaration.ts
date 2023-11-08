@@ -5,25 +5,29 @@ import { Document, DocumentProp, InterfaceOrTypeAliasOrModuleDeclaration } from 
 export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
   const node = symbol?.getDeclarations()[0] as InterfaceOrTypeAliasOrModuleDeclaration;
   const nodeKind = node?.getKind();
+  let outputDocument = {} as Document;
   switch (nodeKind) {
     case ts.SyntaxKind.InterfaceDeclaration:
-      const document = {} as Document;
+      const document = outputDocument;
       const jsDoc = node?.getJsDocs()[0];
       document.symbol = symbol;
       document.rootSymbol = symbol;
-      document.displayName = symbol?.getName();
+      document.name = symbol?.getName();
       document.fullText = jsDoc?.getFullText();
       document.description = jsDoc?.getDescription();
-      document.filePath = jsDoc?.getSourceFile().getFilePath();
       const jsDocTags = jsDoc?.getTags();
       document.tags = jsDocTags.map((tag) => {
         return {
           name: tag.getTagName(),
-          comment: tag.getCommentText(),
+          text: tag.getCommentText(),
           self: tag,
           parent: tag.getParent(),
         };
       });
+      document.extraDescription = jsDoc?.getFirstDescendantByKind(ts.SyntaxKind.JSDocTag)?.getCommentText();
+      document.example = document.tags?.find((t) => t.name === 'example')?.text;
+      document.filePath = jsDoc?.getSourceFile().getFilePath();
+
       const properties = (node as InterfaceDeclaration)?.getProperties();
       document.props = properties.reduce<typeof document.props>((result, prop) => {
         const propName = `${prop?.getName()}`;
@@ -34,6 +38,8 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
         const docProp: DocumentProp = {
           name: prop?.getName(),
           description: jsDoc?.getDescription(),
+          fullText: jsDoc?.getFullText(),
+          extraDescription: jsDoc?.getFirstDescendantByKind(ts.SyntaxKind.JSDocTag)?.getCommentText(),
           defaultValue: defaultTagNode?.getCommentText(),
           type: {
             name: typeNode?.getText(),
@@ -44,7 +50,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           parent: prop?.getParent(),
           tags: jsDocTags?.map((tag) => ({
             name: tag.getTagName(),
-            comment: tag.getCommentText(),
+            text: tag.getCommentText(),
             parent: tag.getParent(),
             self: tag,
           })),
@@ -92,7 +98,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
         return result;
       }, {});
       console.log({
-        document: document.props[`${document.displayName}#bb`],
+        document: document.props[`${document.name}#bb`],
         jsDocTags: jsDocTags.map((it) => it.print()),
         fulltext: jsDoc.getFullText(),
       });
@@ -105,5 +111,5 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
   }
 
   console.log('collectDocFromDeclaration:', symbol.getName());
-  return null;
+  return outputDocument;
 };

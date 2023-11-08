@@ -1,7 +1,7 @@
 import { Document } from '../interface';
 
 export interface GenMarkdownOptions {
-  topLevel?: '0' | '1' | '2' | '3' | '4' | '5' | '6';
+  headLevel?: '1' | '2' | '3' | '4' | '5' | '6';
 }
 
 export const generateMarkdown = (docsFiles: Document[][], options: GenMarkdownOptions = {}): string => {
@@ -11,13 +11,18 @@ export const generateMarkdown = (docsFiles: Document[][], options: GenMarkdownOp
       documents.push(templateReplacement(doc, options));
     });
   });
-  return '';
+  return documents.join('\n');
 };
 
-const getHeadLevel = (level: GenMarkdownOptions['topLevel']) => '#######'.slice(+level);
+const getHeadLevel = (level: GenMarkdownOptions['headLevel']) => '#######'.slice(-+level);
 
 const templateReplacement = (doc: Document, options: GenMarkdownOptions): string => {
-  const { topLevel } = options;
-  const { displayName, fullText } = doc;
-  return doc.fullText;
+  const { headLevel: topLevel = '3' } = options;
+  const { name, description, extraDescription, example } = doc;
+  const header = `${getHeadLevel(topLevel)} ${name}`;
+  const desc = `${description}`;
+  const table = `表格`;
+  const extra = `${extraDescription}`;
+  const exampleCode = example ? `\`\`\`tsx\n${example}\n\`\`\`` : '';
+  return [header, desc, table, extra, exampleCode].filter(Boolean).join('\n');
 };
