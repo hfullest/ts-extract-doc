@@ -14,7 +14,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
       document.rootSymbol = symbol;
       document.name = symbol?.getName();
       document.fullText = jsDoc?.getFullText();
-      document.description = jsDoc?.getDescription();
+      document.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
       const jsDocTags = jsDoc?.getTags();
       document.tags = jsDocTags.map((tag) => {
         return {
@@ -24,7 +24,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           parent: tag.getParent(),
         };
       });
-      document.extraDescription = document.tags?.find((t) => t.name === 'description')?.text;
+      document.extraDescription = document.tags?.find((t) => t.name === 'description')?.text?.replace(/(^\n)|(\n$)/g, '');
       document.example = document.tags?.find((t) => t.name === 'example')?.text;
       document.version = document.tags?.find((t) => t.name === 'version')?.text;
       document.filePath = jsDoc?.getSourceFile().getFilePath();
@@ -38,9 +38,9 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
         const defaultTagNode = jsDocTags?.find((t) => /^default(Value)?/.test(t.getTagName()));
         const docProp: DocumentProp = {
           name: prop?.getName(),
-          description: jsDoc?.getDescription(),
+          description: jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, ''),
           fullText: jsDoc?.getFullText(),
-          extraDescription: jsDocTags?.find((t) => t.getTagName() === 'description')?.getCommentText(),
+          extraDescription: jsDocTags?.find((t) => t.getTagName() === 'description')?.getCommentText()?.replace(/(^\n)|(\n$)/g, ''),
           defaultValue: defaultTagNode?.getCommentText()?.split('\n\n')?.[0],
           type: {
             name: typeNode?.getText(),
@@ -88,7 +88,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
               },
               defaultValue: parameter?.getInitializer(),
               isOptional: parameter?.hasQuestionToken(),
-              description: paramCommentNode?.getCommentText(),
+              description: paramCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, ''),
               fullText: parameter?.getFullText(),
             };
           });
@@ -100,7 +100,7 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
               value: functionTypeNode?.getType()?.getLiteralValue(),
               raw: functionTypeNode?.getText(),
             },
-            description: returnCommentNode?.getCommentText(),
+            description: returnCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, ''),
           };
         }
 

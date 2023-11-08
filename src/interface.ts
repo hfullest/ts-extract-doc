@@ -1,9 +1,6 @@
 import { InterfaceDeclaration, ModuleDeclaration, TypeAliasDeclaration, ts, Symbol, Node, JSDocTag } from 'ts-morph';
 
 export type InterfaceOrTypeAliasOrModuleDeclaration = TypeAliasDeclaration | InterfaceDeclaration | ModuleDeclaration;
-export interface StringIndexedObject<T> {
-  [key: string]: T;
-}
 
 export interface DocumentTag {
   name: string;
@@ -62,7 +59,7 @@ export interface Type {
   raw?: string;
 }
 
-export interface TableDataSource {
+export interface DataSource {
   name: string;
   description: string;
   type: string;
@@ -71,6 +68,38 @@ export interface TableDataSource {
   version: string;
 }
 
+export interface OptionsColums {
+  /** 列名称 */
+  title: string;
+  /** 列数据在数据项中对应的属性名 */
+  dataIndex: keyof DataSource;
+  /** 列布局 */
+  align?: 'left' | 'right' | 'center';
+  /** 自定义列渲染，输出应为`markdown`字符串 */
+  render?: (record: DataSource, index: number) => string;
+}
+export interface GenMarkdownOptions {
+  /** 默认标题等级 */
+  headLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+  /** 表格列配置 */
+  columns: OptionsColums[];
+  /** 标题自定义渲染
+   * @param doc 文档块
+   * @param headerMark 标题标记，例如`###`
+   */
+  headerRender?: (doc: Document, headerMark: string) => string;
+  table?: {
+    /** 表格中换行符的替换字符（由于markdown表格中换行符会破坏表格结构，因此需要替换）
+     *
+     *  默认值为`空格`
+     */
+    lineBreakDelimiter?: string;
+    /** 表格空白位占位填充 默认值为空格 */
+    whiteSpaceFill?: string;
+  };
+}
+
+///////////////////////////////
 export interface Component {
   name: string;
 }
