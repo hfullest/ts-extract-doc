@@ -23,7 +23,8 @@ export interface CommonDocField {
   /** `JSDoc的标签` */
   tags: DocumentTag[];
   /** `JSDoc`注释的例子 */
-  example?: string;
+  example: string;
+  version: string;
 }
 
 export interface Document extends CommonDocField {
@@ -34,7 +35,7 @@ export interface Document extends CommonDocField {
 }
 
 export interface DocumentProp extends CommonDocField {
-  required: boolean;
+  isOptional: boolean;
   type: Type;
   defaultValue: any;
   parent: Node;
@@ -49,11 +50,9 @@ export interface DocumentProp extends CommonDocField {
   };
 }
 
-export interface DocumentMethodParameter {
+export interface DocumentMethodParameter extends Omit<CommonDocField, 'tags' | 'example' | 'version'> {
   name: string;
-  required: boolean;
   defaultValue: any;
-  description?: string | null;
   type: Type;
 }
 
@@ -61,6 +60,15 @@ export interface Type {
   name: string;
   value?: any;
   raw?: string;
+}
+
+export interface TableDataSource {
+  name: string;
+  description: string;
+  type: string;
+  isOptional: boolean;
+  defaultValue: string;
+  version: string;
 }
 
 export interface Component {

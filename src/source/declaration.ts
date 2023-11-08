@@ -24,8 +24,9 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           parent: tag.getParent(),
         };
       });
-      document.extraDescription = jsDoc?.getFirstDescendantByKind(ts.SyntaxKind.JSDocTag)?.getCommentText();
+      document.extraDescription = document.tags?.find((t) => t.name === 'description')?.text;
       document.example = document.tags?.find((t) => t.name === 'example')?.text;
+      document.version = document.tags?.find((t) => t.name === 'version')?.text;
       document.filePath = jsDoc?.getSourceFile().getFilePath();
 
       const properties = (node as InterfaceDeclaration)?.getProperties();
@@ -39,14 +40,14 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           name: prop?.getName(),
           description: jsDoc?.getDescription(),
           fullText: jsDoc?.getFullText(),
-          extraDescription: jsDoc?.getFirstDescendantByKind(ts.SyntaxKind.JSDocTag)?.getCommentText(),
-          defaultValue: defaultTagNode?.getCommentText(),
+          extraDescription: jsDocTags?.find((t) => t.getTagName() === 'description')?.getCommentText(),
+          defaultValue: defaultTagNode?.getCommentText()?.split('\n\n')?.[0],
           type: {
             name: typeNode?.getText(),
             value: prop?.getType()?.getLiteralValue(),
             raw: prop?.getText(),
           },
-          required: !prop?.hasQuestionToken(),
+          isOptional: prop?.hasQuestionToken(),
           parent: prop?.getParent(),
           tags: jsDocTags?.map((tag) => ({
             name: tag.getTagName(),
@@ -54,6 +55,14 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
             parent: tag.getParent(),
             self: tag,
           })),
+          example: jsDocTags
+            ?.find((t) => t.getTagName() === 'example')
+            ?.getCommentText()
+            ?.split('\n\n')?.[0],
+          version: jsDocTags
+            ?.find((t) => t.getTagName() === 'version')
+            ?.getCommentText()
+            ?.split('\n\n')?.[0],
           modifiers: prop.getCombinedModifierFlags() | jsDoc?.getCombinedModifierFlags(),
           // 以下为方法默认需要的属性配置
           isMethod: false,
@@ -78,8 +87,9 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
                 raw: parameter?.getText(),
               },
               defaultValue: parameter?.getInitializer(),
-              required: !parameter?.hasQuestionToken(),
+              isOptional: parameter?.hasQuestionToken(),
               description: paramCommentNode?.getCommentText(),
+              fullText: parameter?.getFullText(),
             };
           });
           const returnTypeNode = functionTypeNode.getReturnTypeNode();
@@ -97,11 +107,6 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
         result[propName] = docProp;
         return result;
       }, {});
-      console.log({
-        document: document.props[`${document.name}#bb`],
-        jsDocTags: jsDocTags.map((it) => it.print()),
-        fulltext: jsDoc.getFullText(),
-      });
       break;
     case ts.SyntaxKind.TypeAliasDeclaration:
       break;

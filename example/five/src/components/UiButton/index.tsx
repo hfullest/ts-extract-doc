@@ -75,6 +75,8 @@ export type ExampleType = string | number | UiButtonProps;
  * 
  * @example
  *  const a = 123;
+ * 
+ * @version 3.2.15
  */
 export interface ExampleInterface {
   /** a属性
