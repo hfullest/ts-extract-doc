@@ -1,7 +1,7 @@
 import { parse } from './parse';
 import { GenMarkdownOptions } from './interface';
 import { defaultOptions, generateMarkdown } from './mardown';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 
 export const parseSourceFile = (filePathOrPaths: string | string[]) => {
   return parse(filePathOrPaths);

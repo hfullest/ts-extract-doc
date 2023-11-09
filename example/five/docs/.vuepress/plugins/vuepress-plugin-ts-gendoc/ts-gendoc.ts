@@ -5,7 +5,7 @@ import {
   renderers,
 } from "react-docgen-typescript-markdown-render";
 import { MarkdownImportOptions } from "./vuepress-plugin-markdown-import";
-import { generateMarkdown, parseSourceFile } from "../../../../../../src/index";
+import { extractTsToMarkdown } from "../../../../../../src/index";
 import { writeFileSync } from "fs";
 
 export default {
@@ -17,7 +17,7 @@ export default {
       const { path, params } = token.meta;
       /*************************************** */
 
-      const result = generateMarkdown(parseSourceFile(path));
+      const result = extractTsToMarkdown(path);
       writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
 
       process.exit();
