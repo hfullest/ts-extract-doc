@@ -1,19 +1,16 @@
-import { Project } from 'ts-morph';
 import { parse } from './parse';
-
-// const project = new Project();
-
-// 从文件系统加载tsconfig.json文件，并将其中的所有源文件添加到项目中
-// project.addSourceFilesAtPaths('../example/tsconfig.json');
-// project.addSourceFilesAtPaths('./example/**/*.ts');
-
-// 获取项目中的所有源文件
-// const sourceFiles = project.getSourceFiles();
-
-// console.log(sourceFiles);
+import { GenMarkdownOptions } from './interface';
+import { defaultOptions, generateMarkdown } from './mardown';
+import { merge } from 'lodash';
 
 export const parseSourceFile = (filePathOrPaths: string | string[]) => {
   return parse(filePathOrPaths);
 };
 
-export { generateMarkdown } from './mardown';
+export { generateMarkdown };
+
+/** 从ts文件中提取文档，支持`type`、`interface`、`enum`、react组件、函数、类等 */
+export const extractTsToMarkdown = (filePathOrPaths: string | string[], options?: GenMarkdownOptions) => {
+  const mergeOptions: GenMarkdownOptions = merge({}, defaultOptions, options);
+  return generateMarkdown(parseSourceFile(filePathOrPaths), mergeOptions);
+};

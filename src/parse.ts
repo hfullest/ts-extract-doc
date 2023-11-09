@@ -15,7 +15,7 @@ import { collectDocFromFCComponent } from './source/fc-component';
 import { collectDocFromClassComponent } from './source/class-component';
 import { collectDocFromEnumOrLiteral } from './source/enum-literal-object';
 
-export const defaultOptions: ts.CompilerOptions = {
+export const defaultCompilerOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
   module: ts.ModuleKind.CommonJS,
   target: ts.ScriptTarget.Latest,
@@ -29,7 +29,7 @@ export const getFullJsDocComment = (symbol: Symbol) => {
 
 export const parse = (
   filePathOrPaths: string | string[],
-  compilerOptions: ts.CompilerOptions = defaultOptions,
+  compilerOptions: ts.CompilerOptions = defaultCompilerOptions,
   parserOpts: ParserOptions = defaultParserOpts
 ): Document[][] => {
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];

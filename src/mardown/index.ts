@@ -11,3 +11,5 @@ export const generateMarkdown = (docsFiles: Document[][], options: GenMarkdownOp
   });
   return documents.join('\n');
 };
+
+export { defaultOptions };
