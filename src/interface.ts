@@ -1,4 +1,13 @@
 import { InterfaceDeclaration, ModuleDeclaration, TypeAliasDeclaration, ts, Symbol, Node, JSDocTag } from 'ts-morph';
+import {
+  DocumentLiteral,
+  DocumentFunction,
+  DocumentClass,
+  DocumentTypeAlias,
+  DocumentInterface,
+  DocumentExport,
+  DocumentProp,
+} from './modules';
 
 export type InterfaceOrTypeAliasOrModuleDeclaration = TypeAliasDeclaration | InterfaceDeclaration | ModuleDeclaration;
 
@@ -67,71 +76,70 @@ export type Document =
   | DocumentInterface
   | DocumentExport;
 
-/** 变量类型 */
-export interface DocumentLiteral extends CommonDocField {
-  kind: DocumentKind.Literal;
-}
+// export interface DocumentLiteral extends CommonDocField {
+//   kind: DocumentKind.Literal;
+// }
 
-export interface DocumentFunction extends CommonDocField {
-  kind: DocumentKind.Function;
-  /** 参数 */
-  parameters: DocumentParameter[];
-  /** 方法返回 */
-  returns: DocumentReturn;
-}
+// export interface DocumentFunction extends CommonDocField {
+//   kind: DocumentKind.Function;
+//   /** 参数 */
+//   parameters: DocumentParameter[];
+//   /** 方法返回 */
+//   returns: DocumentReturn;
+// }
 
-export interface DocumentClass extends Omit<DocumentInterface, 'kind'> {
-  kind: DocumentKind.Class;
-  /** 构造函数文档 */
-  constructor: DocumentFunction;
-  /** 静态属性 */
-  staticProps: Record<string, DocumentProp>;
-  /** 静态方法 */
-  staticMethods: Record<string, DocumentMethod>;
-}
+// export interface DocumentClass extends Omit<DocumentInterface, 'kind'> {
+//   kind: DocumentKind.Class;
+//   /** 构造函数文档 */
+//   constructor: DocumentMethod;
+//   /** 静态属性 */
+//   staticProps: Record<string, DocumentProp>;
+//   /** 静态方法 */
+//   staticMethods: Record<string, DocumentMethod>;
+// }
 
-export interface DocumentTypeAlias extends CommonDocField {
-  kind: DocumentKind.TypeAlias;
-}
+// export interface DocumentTypeAlias extends CommonDocField {
+//   kind: DocumentKind.TypeAlias;
+// }
 
-export interface DocumentInterface extends CommonDocField {
-  kind: DocumentKind.Interface;
-  /** 属性 */
-  props: Record<string, DocumentProp>;
-  /** 方法 */
-  methods: Record<string, DocumentFunction>;
-}
+// export interface DocumentInterface extends CommonDocField {
+//   kind: DocumentKind.Interface;
+//   /** 属性 */
+//   props: Record<string, DocumentProp>;
+//   /** 方法 */
+//   methods: Record<string, DocumentFunction>;
+// }
 
-export interface DocumentExport extends CommonDocField {
-  kind: DocumentKind.Export;
-}
+// export interface DocumentExport extends CommonDocField {
+//   kind: DocumentKind.Export;
+// }
 
-export interface DocumentProp extends CommonDocField {
-  /** 是否可选  */
-  isOptional: boolean;
-  type: DocumentType;
-  defaultValue: any;
-  parent: Node;
-  /** 属性或方法修饰符，用于类，比如`private` */
-  modifiers: ts.ModifierFlags;
-}
+// export interface DocumentProp extends CommonDocField {
+//   /** 是否可选  */
+//   isOptional: boolean;
+//   type: DocumentType;
+//   defaultValue: any;
+//   parent: Node;
+//   /** 属性或方法修饰符，用于类，比如`private` */
+//   modifiers: ts.ModifierFlags;
+// }
 
-export interface DocumentMethod extends DocumentFunction {
-  /** 装饰器 */
-  decorator?: DocumentDecorator[];
-  /** 是否可选  */
-  isOptional: boolean;
-  /** 修饰符 */
-  modifiers: ts.ModifierFlags;
-}
+// export interface DocumentMethod extends DocumentFunction {
+//   /** 装饰器 */
+//   decorator?: DocumentDecorator[];
+//   /** 是否可选  */
+//   isOptional: boolean;
+//   /** 修饰符 */
+//   modifiers: ts.ModifierFlags;
+// }
 
-export interface DocumentDecorator extends CommonDocField {
-  //TODO: 支持装饰器
-}
+// export interface DocumentDecorator extends CommonDocField {
+//   //TODO: 支持装饰器
+// }
 
-export type DocumentParameter = DocumentLiteral | DocumentFunction | DocumentClass;
+// export type DocumentParameter = DocumentLiteral | DocumentFunction | DocumentClass;
 
-export type DocumentReturn = DocumentLiteral | DocumentFunction | DocumentClass;
+// export type DocumentReturn = DocumentLiteral | DocumentFunction | DocumentClass;
 
 export interface DocumentType {
   name: string;
