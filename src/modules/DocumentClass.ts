@@ -9,4 +9,6 @@ export default class DocumentClass extends DocumentInterface {
   staticProps: Record<string, DocumentProp>;
   /** 静态方法 */
   staticMethods: Record<string, DocumentMethod>;
+
+  
 }

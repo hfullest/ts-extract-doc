@@ -1,8 +1,11 @@
-import { DocumentKind, DocumentTag } from '../interface';
+import { ClassDeclaration, Symbol } from 'ts-morph';
+import { DocumentKind, DocumentTag, DocumentType } from '../interface';
 
 export default class BaseDocField {
   /** 当前 symbol */
   symbol: Symbol;
+  /** 父级 symbol */
+  parentSymbol: Symbol;
   /** 顶级 symbol */
   rootSymbol: Symbol;
   /** 文档路径 */
@@ -32,4 +35,34 @@ export default class BaseDocField {
     /** 结束位置 [行,列] */
     end: [number, number];
   };
+
+  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
+    this.symbol = symbol;
+    this.parentSymbol = parentSymbol;
+    this.rootSymbol = rootSymbol;
+    this.assign(symbol);
+  }
+
+  assign(symbol: Symbol) {
+    const node = symbol?.getDeclarations()[0] as ClassDeclaration; /** 指定任意有jsdoc声明，方便使用api */
+    const jsDoc = node?.getJsDocs()[0];
+    this.name = symbol?.getName();
+    this.fullText = jsDoc?.getFullText();
+    this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
+    const jsDocTags = jsDoc?.getTags();
+    this.tags = jsDocTags?.map((tag) => {
+      return {
+        name: tag.getTagName(),
+        text: tag.getCommentText(),
+        self: tag,
+        parent: tag.getParent(),
+      };
+    });
+    this.extraDescription = this.tags?.find((t) => t.name === 'description')?.text?.replace(/(^\n)|(\n$)/g, '');
+    this.example = this.tags?.find((t) => t.name === 'example')?.text;
+    this.version = this.tags?.find((t) => t.name === 'version')?.text;
+    this.filePath = jsDoc?.getSourceFile().getFilePath();
+    this.pos.start = [node?.getStartLineNumber(), node?.getStartLinePos()];
+    this.pos.end = [node?.getEndLineNumber(), node?.getPos()]; // TODO：确认结束位置
+  }
 }

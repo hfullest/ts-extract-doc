@@ -8,6 +8,5 @@ export { default as DocumentLiteral } from './DocumentLiteral';
 export { default as DocumentMethod } from './DocumentMethod';
 export { default as DocumentProp } from './DocumentProp';
 export { default as DocumentTypeAlias } from './DocumentTypeAlias';
-
-export { type DocumentParameter } from './DocumentParameter';
-export { type DocumentReturn } from './DocumentReturn';
+export { default as DocumentParameter } from './DocumentParameter';
+export { default as DocumentReturn } from './DocumentReturn';
