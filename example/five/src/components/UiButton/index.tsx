@@ -122,6 +122,7 @@ export const exampleObj = {
 }
 
 
+/** 这个是对ExampleClass类的描述 */
 export class ExampleClass {
   /** a属性
    * @default 'hahah'
@@ -150,9 +151,10 @@ export class ExampleClass {
 
   private cccPrivate = '1234';
 
-  public dddPublic = 12;
+  /** 测试公共方法 */
+  public dddPublic: number = 12;
 
-  static fffStaticProp = true;
+  static fffStaticProp: boolean = true;
 
   /** 这个是静态方法 */
   static eeeStaticMethod = (a: number, b?: string) => {

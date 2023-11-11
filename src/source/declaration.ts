@@ -1,8 +1,10 @@
 import { InterfaceDeclaration, Node, Symbol, ts } from 'ts-morph';
 import { Document, DocumentProp, InterfaceOrTypeAliasOrModuleDeclaration } from '../interface';
+import { DocumentInterface } from '../modules';
 
 /** 从ts类型中提取文档 */
 export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
+  // return new DocumentInterface(symbol);
   const node = symbol?.getDeclarations()[0] as InterfaceOrTypeAliasOrModuleDeclaration;
   const nodeKind = node?.getKind();
   let outputDocument = {} as Document;
@@ -24,7 +26,9 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           parent: tag.getParent(),
         };
       });
-      document.extraDescription = document.tags?.find((t) => t.name === 'description')?.text?.replace(/(^\n)|(\n$)/g, '');
+      document.extraDescription = document.tags
+        ?.find((t) => t.name === 'description')
+        ?.text?.replace(/(^\n)|(\n$)/g, '');
       document.example = document.tags?.find((t) => t.name === 'example')?.text;
       document.version = document.tags?.find((t) => t.name === 'version')?.text;
       document.filePath = jsDoc?.getSourceFile().getFilePath();
@@ -40,7 +44,10 @@ export const collectDocFromDeclaration = (symbol: Symbol): Document | null => {
           name: prop?.getName(),
           description: jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, ''),
           fullText: jsDoc?.getFullText(),
-          extraDescription: jsDocTags?.find((t) => t.getTagName() === 'description')?.getCommentText()?.replace(/(^\n)|(\n$)/g, ''),
+          extraDescription: jsDocTags
+            ?.find((t) => t.getTagName() === 'description')
+            ?.getCommentText()
+            ?.replace(/(^\n)|(\n$)/g, ''),
           defaultValue: defaultTagNode?.getCommentText()?.split('\n\n')?.[0],
           type: {
             name: typeNode?.getText(),
