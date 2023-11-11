@@ -1,4 +1,4 @@
-import { ClassDeclaration, Node, Symbol } from 'ts-morph';
+import { ClassDeclaration, Node, Symbol, ts } from 'ts-morph';
 import { DocumentKind, DocumentTag, DocumentType } from '../interface';
 export default class BaseDocField {
   /** 当前 symbol */
@@ -44,9 +44,12 @@ export default class BaseDocField {
 
   #assign(symbol: Symbol) {
     const node = symbol?.getDeclarations()[0] as ClassDeclaration; /** 指定任意有jsdoc声明，方便使用api */
-    const jsDoc = node?.getJsDocs?.()[0];
-    this.name = symbol?.getName();
-    this.fullText = jsDoc?.getFullText();
+    const ancestorNode = Node.isVariableDeclaration(node)
+      ? node?.getFirstAncestorByKind?.(ts.SyntaxKind.VariableStatement) // 做兼容修正，VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
+      : node;
+    const jsDoc = ancestorNode?.getJsDocs?.()[0];
+    this.name = symbol?.getName?.();
+    this.fullText = jsDoc?.getFullText?.();
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
     const jsDocTags = jsDoc?.getTags();
     this.tags = jsDocTags?.map((tag) => {
@@ -66,6 +69,4 @@ export default class BaseDocField {
       end: [node?.getEndLineNumber(), node?.getEnd()], // TODO：确认结束位置
     };
   }
-
-
 }

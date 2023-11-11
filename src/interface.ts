@@ -1,4 +1,4 @@
-import { InterfaceDeclaration, ModuleDeclaration, TypeAliasDeclaration, ts, Symbol, Node, JSDocTag } from 'ts-morph';
+import { ts, Symbol, Node, JSDocTag } from 'ts-morph';
 import {
   DocumentLiteral,
   DocumentFunction,
@@ -8,8 +8,7 @@ import {
   DocumentExport,
   DocumentProp,
 } from './modules';
-
-export type InterfaceOrTypeAliasOrModuleDeclaration = TypeAliasDeclaration | InterfaceDeclaration | ModuleDeclaration;
+import DataSource from './mardown/DataSource';
 
 export interface DocumentTag {
   name: string;
@@ -145,15 +144,6 @@ export interface DocumentType {
   name: string;
   value?: any;
   raw?: string;
-}
-
-export interface DataSource {
-  name: string;
-  description: string;
-  type: string;
-  isOptional: boolean;
-  defaultValue: string;
-  version: string;
 }
 
 export interface OptionsColums {

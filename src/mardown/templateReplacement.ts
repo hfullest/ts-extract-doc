@@ -1,19 +1,15 @@
-import { DataSource, Document, GenMarkdownOptions } from '../interface';
+import { Document, GenMarkdownOptions } from '../interface';
 import { DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../modules';
+import DataSource from './DataSource';
+
+export type FillType = 'props' | 'methods' | 'staticProps' | 'staticMethods';
 
 const getHeadLevel = (level: GenMarkdownOptions['headLevel']) => '#######'.slice(-level);
 
-/** 填充表格 */
-const classFillTableByDoc = (
-  doc: DocumentInterface | DocumentClass,
-  type: 'props' | 'methods' | 'staticProps' | 'staticMethods',
-  options: GenMarkdownOptions
-): string => {
-  const { columns = [] } = options ?? {};
-  debugger;
-  const currentHeader = getHeadLevel((options?.headLevel ?? 0) + 1);
+const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: string } & GenMarkdownOptions) => {
+  const headMark = config?.headMark ?? '';
   const typeMap: Record<
-    typeof type,
+    FillType,
     {
       header: string;
       member:
@@ -24,27 +20,39 @@ const classFillTableByDoc = (
     }
   > = {
     props: {
-      header: Object.keys(doc?.props ?? {}).length ? `${currentHeader} ${options?.table?.propHeadName}\n` : '',
+      header: Object.keys(doc?.props ?? {}).length ? `${headMark} ${config?.table?.propHeadName}\n` : '',
       member: doc?.props,
     },
     methods: {
-      header: Object.keys(doc?.methods ?? {}).length ? `${currentHeader} ${options?.table?.methodHeadName}\n` : '',
+      header: Object.keys(doc?.methods ?? {}).length ? `${headMark} ${config?.table?.methodHeadName}\n` : '',
       member: doc?.methods,
     },
     staticProps: {
       header: Object.keys((doc as DocumentClass)?.staticProps ?? {}).length
-        ? `${currentHeader} ${options?.table?.staticPropHeadName}\n`
+        ? `${headMark} ${config?.table?.staticPropHeadName}\n`
         : '',
       member: (doc as DocumentClass)?.staticProps,
     },
     staticMethods: {
       header: Object.keys((doc as DocumentClass)?.staticMethods ?? {}).length
-        ? `${currentHeader} ${options?.table?.staticPropHeadName}\n`
+        ? `${headMark} ${config?.table?.staticPropHeadName}\n`
         : '',
       member: (doc as DocumentClass)?.staticMethods,
     },
   };
-  const target = typeMap[type];
+  return typeMap[type];
+};
+
+/** 填充类或interface文档表格 */
+const fillClassOrInterfaceTableByDoc = (
+  doc: DocumentInterface | DocumentClass,
+  type: FillType,
+  options: GenMarkdownOptions
+): string => {
+  const { columns = [] } = options ?? {};
+  debugger;
+  const headMark = getHeadLevel((options?.headLevel ?? 0) + 1);
+  const target = getTargetInfo(type, doc as DocumentClass, { ...options, headMark });
   const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(target?.member ?? {});
   const titleStr = columns.map((it) => it.title).join('|');
   const colSpanStr = columns
@@ -68,14 +76,7 @@ const classFillTableByDoc = (
   const defaultSpace = String.fromCharCode(32); /** 空格 */
   const propsStr = propsDoc
     ?.map(([, doc], index) => {
-      const dataSource: DataSource = {
-        name: doc.name,
-        description: doc.description,
-        defaultValue: doc?.defaultValue,
-        isOptional: doc.isOptional,
-        type: doc.type?.name,
-        version: doc.version,
-      };
+      const dataSource = new DataSource(doc);
       const fields = columns.map((col) => {
         if (typeof col?.render === 'function') return col.render(dataSource, index);
         return dataSource[col?.dataIndex] ?? options?.table?.whiteSpaceFill ?? defaultSpace;
@@ -90,7 +91,7 @@ const classFillTableByDoc = (
   const tableColSpan = colSpanStr ? `|${colSpanStr}|` : '';
   const dataRows = `${propsStr}`;
   const result = [header, tableTitle, tableColSpan, dataRows].filter(Boolean).join('\n');
-  return `${result}\n`;
+  return dataRows ? `${result}\n` : '';
 };
 
 export const templateReplacement = (doc: Document, options: GenMarkdownOptions): string => {
@@ -98,10 +99,18 @@ export const templateReplacement = (doc: Document, options: GenMarkdownOptions):
   const { name, description, extraDescription, example } = doc;
   const header = headerRender?.(doc, getHeadLevel(headLevel)) ?? `${getHeadLevel(headLevel)} ${name}\n`;
   const desc = description ? `${description}\n` : '';
-  const propsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'props', options);
-  const methodsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'methods', options);
-  const staticPropsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'staticProps', options);
-  const staticMethodsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'staticMethods', options);
+  const propsTable = fillClassOrInterfaceTableByDoc(doc as DocumentInterface | DocumentClass, 'props', options);
+  const methodsTable = fillClassOrInterfaceTableByDoc(doc as DocumentInterface | DocumentClass, 'methods', options);
+  const staticPropsTable = fillClassOrInterfaceTableByDoc(
+    doc as DocumentInterface | DocumentClass,
+    'staticProps',
+    options
+  );
+  const staticMethodsTable = fillClassOrInterfaceTableByDoc(
+    doc as DocumentInterface | DocumentClass,
+    'staticMethods',
+    options
+  );
   const extra = extraDescription ? `${extraDescription}` : '';
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
   const result = [header, desc, propsTable, methodsTable, staticPropsTable, staticMethodsTable, extra, exampleCode]

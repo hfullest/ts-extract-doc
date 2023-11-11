@@ -19,7 +19,10 @@ export default class DocumentParameter extends BaseDocField {
     const parameter = symbol?.getDeclarations()[0] as ParameterDeclaration;
     const parentNode = (this.parentSymbol?.getValueDeclaration() ??
       this.parentSymbol?.getDeclarations()[0]) as FunctionDeclaration;
-    const jsDoc = parentNode?.getJsDocs()[0];
+    const ancestorNode = Node.isVariableDeclaration(parentNode)
+      ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement) // VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
+      : parentNode;
+    const jsDoc = ancestorNode?.getJsDocs?.()[0];
     const jsDocTags = jsDoc?.getTags();
     const paramTypeNode = parameter?.getTypeNode();
     const paramCommentNode = jsDocTags?.find(
@@ -27,7 +30,7 @@ export default class DocumentParameter extends BaseDocField {
     ) as JSDocParameterTag;
 
     this.defaultValue = parameter?.getInitializer();
-    this.isOptional = parameter?.hasQuestionToken();
+    this.isOptional = !!(parameter?.getInitializer() ?? parameter?.hasQuestionToken());
     // 参数前注释
     const leadingComment = parameter?.getLeadingCommentRanges()?.[0]?.getText();
     // 参数后注释

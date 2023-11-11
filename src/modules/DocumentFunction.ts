@@ -1,4 +1,4 @@
-import { PropertySignature, Symbol, ts, Node, FunctionDeclaration, FunctionExpression, ArrowFunction } from 'ts-morph';
+import { Symbol, ts, Node, FunctionDeclaration, FunctionExpression, ArrowFunction } from 'ts-morph';
 import BaseDocField from './BaseDocField';
 import DocumentReturn from './DocumentReturn';
 import DocumentParameter from './DocumentParameter';
@@ -16,20 +16,27 @@ export default class DocumentFunction extends BaseDocField {
   }
 
   #assign(symbol: Symbol) {
-    const prop = symbol?.getDeclarations()[0] as PropertySignature;
-    const functionTypeNode =
-      prop?.asKind(ts.SyntaxKind.FunctionDeclaration) ??
-      prop?.getFirstDescendantByKind(ts.SyntaxKind.FunctionType) ??
-      prop?.getFirstDescendantByKind(ts.SyntaxKind.JSDocFunctionType) ??
-      prop?.getFirstDescendantByKind(ts.SyntaxKind.MethodSignature) ??
-      prop?.getFirstDescendantByKind(ts.SyntaxKind.FunctionExpression) ??
-      prop?.getFirstDescendantByKind(ts.SyntaxKind.ArrowFunction);
+    const node = symbol?.getDeclarations()[0];
+    debugger;
+    const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
     const parametersNode = functionTypeNode?.getParameters();
     this.parameters = parametersNode?.map(
       (parameter) => new DocumentParameter(parameter.getSymbol(), symbol, this.rootSymbol)
     );
     const returnTypeNode = functionTypeNode.getReturnTypeNode();
     this.returns = new DocumentReturn(returnTypeNode?.getSymbol(), symbol, this.rootSymbol);
+  }
+
+  /** 根据节点获取子级函数类型节点的通用方法 */
+  static getFunctionTypeNode(node: Node) {
+    const functionTypeNode =
+      node?.asKind?.(ts.SyntaxKind.FunctionDeclaration) ??
+      node?.getFirstDescendantByKind?.(ts.SyntaxKind.FunctionType) ??
+      node?.getFirstDescendantByKind?.(ts.SyntaxKind.JSDocFunctionType) ??
+      node?.getFirstDescendantByKind?.(ts.SyntaxKind.MethodSignature) ??
+      node?.getFirstDescendantByKind?.(ts.SyntaxKind.FunctionExpression) ??
+      node?.getFirstDescendantByKind?.(ts.SyntaxKind.ArrowFunction);
+    return functionTypeNode;
   }
 
   static isTarget(node: Node): node is FunctionDeclaration | FunctionExpression | ArrowFunction {

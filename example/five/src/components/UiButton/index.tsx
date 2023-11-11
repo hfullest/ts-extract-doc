@@ -42,9 +42,17 @@ export { UI_PREFIX };
  * @param p2 参数二
  * @returns  返回字符串
  */
-export const ABFunction = (p1: string, p2: number): string => {
+export const ArrowFunction = (p1: string, p2: number): string => {
   return p1 + p2;
 }
+
+/**
+ * 这个是DelcarationFunction 的描述
+ * 
+ * @description
+ * 这里是对`DeclarationFunction`函数的补充描述，这里可以使用`markdown`语法
+ */
+export function DeclarationFunction(a: number/** 测试声明函数的a参数后置注释 */, b?: symbol, c: string = 'ssss'): void { }
 
 
 /** 错误边界 */
