@@ -1,4 +1,4 @@
-import { Node, PropertySignature, Symbol, ts } from 'ts-morph';
+import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
 import BaseDocField from './BaseDocField';
 
 export default class DocumentProp extends BaseDocField {
@@ -22,17 +22,17 @@ export default class DocumentProp extends BaseDocField {
     const jsDocTags = jsDoc?.getTags();
     const typeNode = prop?.getTypeNode();
     const defaultTagNode = jsDocTags?.find((t) => /^default(Value)?/.test(t.getTagName()));
-    this.defaultValue = defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
+    this.defaultValue = prop?.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
     this.isOptional = prop?.hasQuestionToken();
     this.modifiers = prop?.getCombinedModifierFlags() | jsDoc?.getCombinedModifierFlags();
     this.type = {
-      name: typeNode?.getText(),
+      name: typeNode?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, ''),
       value: prop?.getType()?.getLiteralValue(),
       raw: prop?.getText(),
     };
   }
 
-  static isTarget(node: Node): node is PropertySignature {
-    return Node.isPropertySignature(node);
+  static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {
+    return Node.isPropertySignature(node) || Node.isPropertyDeclaration(node);
   }
 }

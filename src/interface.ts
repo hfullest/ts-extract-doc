@@ -181,6 +181,10 @@ export interface GenMarkdownOptions {
     propHeadName: string;
     /** 表格头部方法标题 默认值`方法` */
     methodHeadName: string;
+    /** 表格头部静态属性标题 默认值`静态属性` */
+    staticPropHeadName: string;
+    /** 表格头部静态方法标题 默认值`静态方法` */
+    staticMethodHeadName: string;
     /** 表格中换行符的替换字符（由于markdown表格中换行符会破坏表格结构，因此需要替换）
      *
      *  默认值为`空格`

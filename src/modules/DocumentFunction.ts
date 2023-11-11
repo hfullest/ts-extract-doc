@@ -18,9 +18,12 @@ export default class DocumentFunction extends BaseDocField {
   #assign(symbol: Symbol) {
     const prop = symbol?.getDeclarations()[0] as PropertySignature;
     const functionTypeNode =
+      prop?.asKind(ts.SyntaxKind.FunctionDeclaration) ??
       prop?.getFirstDescendantByKind(ts.SyntaxKind.FunctionType) ??
       prop?.getFirstDescendantByKind(ts.SyntaxKind.JSDocFunctionType) ??
-      prop?.getFirstDescendantByKind(ts.SyntaxKind.MethodSignature);
+      prop?.getFirstDescendantByKind(ts.SyntaxKind.MethodSignature) ??
+      prop?.getFirstDescendantByKind(ts.SyntaxKind.FunctionExpression) ??
+      prop?.getFirstDescendantByKind(ts.SyntaxKind.ArrowFunction);
     const parametersNode = functionTypeNode?.getParameters();
     this.parameters = parametersNode?.map(
       (parameter) => new DocumentParameter(parameter.getSymbol(), symbol, this.rootSymbol)

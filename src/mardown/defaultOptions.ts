@@ -19,6 +19,8 @@ const defaultOptions: GenMarkdownOptions = {
   table: {
     propHeadName: '属性',
     methodHeadName: '方法',
+    staticPropHeadName: '静态属性',
+    staticMethodHeadName: '静态方法',
     lineBreakDelimiter: ' ',
     whiteSpaceFill: '-',
   },

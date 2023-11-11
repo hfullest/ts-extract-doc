@@ -99,7 +99,9 @@ export interface ExampleInterface {
    * @param {number} p2 参数二数值
    * @returns {boolean} 返回值测试
    */
-  bb: ((p1: string, p2?: number) => string);
+  bb: ((
+    // p1 前置内容
+    p1: string/* 测试p1后文本内容        */,/** 测试p2前部分内容 */ p2?: number) => string);
 }
 
 /** 枚举类型 */
@@ -116,5 +118,44 @@ export const exampleObj = {
   b2: true,
   c3: {
     tt: 323,
+  }
+}
+
+
+export class ExampleClass {
+  /** a属性
+   * @default 'hahah'
+   * 
+   * 这里是markdown区域
+   */
+  a: string = '124';
+  /**
+   * `button`描述
+   * 
+   * button的==内容==区
+   * 
+   * @version 3.2.15
+   */
+  button?: UiButtonProps;
+
+  /** 接口函数定义
+   * @param {string} p1 参数一字符串
+   * @param {number} p2 参数二数值
+   * @returns {boolean} 返回值测试
+   */
+  bb: ((
+    // p1 前置内容
+    p1: string/* 测试p1后文本内容        */,/** 测试p2前部分内容 */ p2?: number) => string) = () => '';
+
+
+  private cccPrivate = '1234';
+
+  public dddPublic = 12;
+
+  static fffStaticProp = true;
+
+  /** 这个是静态方法 */
+  static eeeStaticMethod = (a: number, b?: string) => {
+    return 456;
   }
 }

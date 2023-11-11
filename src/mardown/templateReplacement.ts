@@ -4,17 +4,48 @@ import { DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '
 const getHeadLevel = (level: GenMarkdownOptions['headLevel']) => '#######'.slice(-level);
 
 /** 填充表格 */
-const fillTableByDoc = (
+const classFillTableByDoc = (
   doc: DocumentInterface | DocumentClass,
-  type: 'props' | 'methods',
+  type: 'props' | 'methods' | 'staticProps' | 'staticMethods',
   options: GenMarkdownOptions
 ): string => {
-  const { columns = [], table: { propHeadName = '', methodHeadName = '' } = {} } = options ?? {};
+  const { columns = [] } = options ?? {};
   debugger;
   const currentHeader = getHeadLevel((options?.headLevel ?? 0) + 1);
-  const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(
-    (type === 'methods' ? doc?.methods : doc?.props) ?? {}
-  );
+  const typeMap: Record<
+    typeof type,
+    {
+      header: string;
+      member:
+        | DocumentClass['props']
+        | DocumentClass['methods']
+        | DocumentClass['staticProps']
+        | DocumentClass['staticMethods'];
+    }
+  > = {
+    props: {
+      header: Object.keys(doc?.props ?? {}).length ? `${currentHeader} ${options?.table?.propHeadName}\n` : '',
+      member: doc?.props,
+    },
+    methods: {
+      header: Object.keys(doc?.methods ?? {}).length ? `${currentHeader} ${options?.table?.methodHeadName}\n` : '',
+      member: doc?.methods,
+    },
+    staticProps: {
+      header: Object.keys((doc as DocumentClass)?.staticProps ?? {}).length
+        ? `${currentHeader} ${options?.table?.staticPropHeadName}\n`
+        : '',
+      member: (doc as DocumentClass)?.staticProps,
+    },
+    staticMethods: {
+      header: Object.keys((doc as DocumentClass)?.staticMethods ?? {}).length
+        ? `${currentHeader} ${options?.table?.staticPropHeadName}\n`
+        : '',
+      member: (doc as DocumentClass)?.staticMethods,
+    },
+  };
+  const target = typeMap[type];
+  const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(target?.member ?? {});
   const titleStr = columns.map((it) => it.title).join('|');
   const colSpanStr = columns
     .map((it) => {
@@ -40,7 +71,7 @@ const fillTableByDoc = (
       const dataSource: DataSource = {
         name: doc.name,
         description: doc.description,
-        defaultValue: type === 'props' ? (doc as DocumentProp)?.defaultValue : void 0,
+        defaultValue: doc?.defaultValue,
         isOptional: doc.isOptional,
         type: doc.type?.name,
         version: doc.version,
@@ -54,8 +85,7 @@ const fillTableByDoc = (
     })
     .filter(Boolean)
     .join('\n');
-  const headerName = type === 'methods' ? methodHeadName : propHeadName;
-  const header = `${currentHeader} ${headerName}\n`;
+  const header = target?.header;
   const tableTitle = titleStr ? `|${titleStr}|` : '';
   const tableColSpan = colSpanStr ? `|${colSpanStr}|` : '';
   const dataRows = `${propsStr}`;
@@ -67,11 +97,15 @@ export const templateReplacement = (doc: Document, options: GenMarkdownOptions):
   const { headLevel = 3, headerRender } = options ?? {};
   const { name, description, extraDescription, example } = doc;
   const header = headerRender?.(doc, getHeadLevel(headLevel)) ?? `${getHeadLevel(headLevel)} ${name}\n`;
-  const desc = `${description}\n`;
-  const propsTable = fillTableByDoc(doc as DocumentInterface | DocumentClass, 'props', options);
-  const methodsTable = fillTableByDoc(doc as DocumentInterface | DocumentClass, 'methods', options);
-  const extra = `${extraDescription}`;
+  const desc = description ? `${description}\n` : '';
+  const propsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'props', options);
+  const methodsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'methods', options);
+  const staticPropsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'staticProps', options);
+  const staticMethodsTable = classFillTableByDoc(doc as DocumentInterface | DocumentClass, 'staticMethods', options);
+  const extra = extraDescription ? `${extraDescription}` : '';
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
-  const result = [header, desc, propsTable, methodsTable, extra, exampleCode].filter(Boolean).join('\n');
+  const result = [header, desc, propsTable, methodsTable, staticPropsTable, staticMethodsTable, extra, exampleCode]
+    .filter(Boolean)
+    .join('\n');
   return `${result}\n`;
 };

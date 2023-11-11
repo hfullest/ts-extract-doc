@@ -18,6 +18,8 @@ import DocumentDecorator from './DocumentDecorator';
 export default class DocumentMethod extends DocumentFunction {
   /** 装饰器 */
   decorator?: DocumentDecorator[];
+  /** 默认值 */
+  defaultValue: any;
   /** 是否可选  */
   isOptional: boolean;
   /** 修饰符 */
@@ -33,20 +35,24 @@ export default class DocumentMethod extends DocumentFunction {
     const node = symbol?.getDeclarations()[0];
     if (!DocumentMethod.isTarget(node)) return;
     const jsDoc = node?.getJsDocs()[0];
+    const jsDocTags = jsDoc?.getTags();
     const typeNode = node?.getTypeNode();
     this.isOptional = node?.hasQuestionToken();
     this.modifiers = node?.getCombinedModifierFlags() | jsDoc?.getCombinedModifierFlags();
+    const defaultTagNode = jsDocTags?.find((t) => /^default(Value)?/.test(t.getTagName()));
+    this.defaultValue = node.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
     this.type = {
       // 去除注释
       name: typeNode?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, ''),
       value: node?.getType()?.getLiteralValue(),
-      raw: node?.getText(),
+      raw: node?.getFullText(),
     };
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {
     if (Node.isMethodSignature(node)) return true;
-    const propertySignature = node?.asKind(ts.SyntaxKind.PropertySignature);
+    const propertySignature =
+      node?.asKind(ts.SyntaxKind.PropertySignature) ?? node?.asKind(ts.SyntaxKind.PropertyDeclaration);
     const wrapperDeclaration =
       propertySignature?.getFirstChildByKind(ts.SyntaxKind.ParenthesizedType) ?? propertySignature;
     const functionNode =

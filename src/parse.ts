@@ -14,7 +14,7 @@ import { collectDocFromClass } from './source/class';
 import { collectDocFromFCComponent } from './source/fc-component';
 import { collectDocFromClassComponent } from './source/class-component';
 import { collectDocFromEnumOrLiteral } from './source/enum-literal-object';
-import { DocumentInterface } from './modules';
+import { DocumentClass, DocumentInterface } from './modules';
 
 export const defaultCompilerOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
@@ -55,9 +55,10 @@ export const genDocuments = (file: SourceFile): Document[] => {
       if (isFCComponentKind(it)) return collectDocFromFCComponent(it);
       if (isClassComponentKind(it)) return collectDocFromClassComponent(it);
       if (DocumentInterface.isTarget(node)) return new DocumentInterface(it);
+      if (DocumentClass.isTarget(node)) return new DocumentClass(it);
+
       // if (isDeclarationKind(it)) return collectDocFromDeclaration(it);
       if (isFunctionKind(it)) return collectDocFromFunction(it);
-      if (isClassKind(it)) return collectDocFromClass(it);
       if (isEnumOrLiteralOrRecordKind(it)) return collectDocFromEnumOrLiteral(it);
       return null;
     }) as Document[]

@@ -1,6 +1,5 @@
 import { InterfaceDeclaration, Node, Symbol } from 'ts-morph';
 import BaseDocField from './BaseDocField';
-import DocumentFunction from './DocumentFunction';
 import DocumentProp from './DocumentProp';
 import DocumentMethod from './DocumentMethod';
 
@@ -8,7 +7,7 @@ export default class DocumentInterface extends BaseDocField {
   /** 属性 */
   props: Record<string, DocumentProp> = {};
   /** 方法 */
-  methods: Record<string, DocumentFunction> = {};
+  methods: Record<string, DocumentMethod> = {};
 
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
     super(symbol, parentSymbol, rootSymbol);
