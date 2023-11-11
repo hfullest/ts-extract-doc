@@ -1,12 +1,20 @@
 import { DataSource, Document, GenMarkdownOptions } from '../interface';
+import { DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../modules';
 
 const getHeadLevel = (level: GenMarkdownOptions['headLevel']) => '#######'.slice(-level);
 
 /** 填充表格 */
-const fillTableByDoc = (doc: Document, type: 'props' | 'method', options: GenMarkdownOptions): string => {
-  const { columns = [] } = options ?? {};
+const fillTableByDoc = (
+  doc: DocumentInterface | DocumentClass,
+  type: 'props' | 'methods',
+  options: GenMarkdownOptions
+): string => {
+  const { columns = [], table: { propHeadName = '', methodHeadName = '' } = {} } = options ?? {};
   debugger;
-  const propsDoc = Object.entries(doc?.props ?? {}).filter(([, prop]) => !prop.isMethod);
+  const currentHeader = getHeadLevel((options?.headLevel ?? 0) + 1);
+  const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(
+    (type === 'methods' ? doc?.methods : doc?.props) ?? {}
+  );
   const titleStr = columns.map((it) => it.title).join('|');
   const colSpanStr = columns
     .map((it) => {
@@ -32,7 +40,7 @@ const fillTableByDoc = (doc: Document, type: 'props' | 'method', options: GenMar
       const dataSource: DataSource = {
         name: doc.name,
         description: doc.description,
-        defaultValue: doc.defaultValue,
+        defaultValue: type === 'props' ? (doc as DocumentProp)?.defaultValue : void 0,
         isOptional: doc.isOptional,
         type: doc.type?.name,
         version: doc.version,
@@ -46,10 +54,12 @@ const fillTableByDoc = (doc: Document, type: 'props' | 'method', options: GenMar
     })
     .filter(Boolean)
     .join('\n');
+  const headerName = type === 'methods' ? methodHeadName : propHeadName;
+  const header = `${currentHeader} ${headerName}\n`;
   const tableTitle = titleStr ? `|${titleStr}|` : '';
   const tableColSpan = colSpanStr ? `|${colSpanStr}|` : '';
   const dataRows = `${propsStr}`;
-  const result = [tableTitle, tableColSpan, dataRows].filter(Boolean).join('\n');
+  const result = [header, tableTitle, tableColSpan, dataRows].filter(Boolean).join('\n');
   return `${result}\n`;
 };
 
@@ -57,10 +67,11 @@ export const templateReplacement = (doc: Document, options: GenMarkdownOptions):
   const { headLevel = 3, headerRender } = options ?? {};
   const { name, description, extraDescription, example } = doc;
   const header = headerRender?.(doc, getHeadLevel(headLevel)) ?? `${getHeadLevel(headLevel)} ${name}\n`;
-  const desc = `${description}`;
-  const propsTable = fillTableByDoc(doc, 'props', options);
+  const desc = `${description}\n`;
+  const propsTable = fillTableByDoc(doc as DocumentInterface | DocumentClass, 'props', options);
+  const methodsTable = fillTableByDoc(doc as DocumentInterface | DocumentClass, 'methods', options);
   const extra = `${extraDescription}`;
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
-  const result = [header, desc, propsTable, extra, exampleCode].filter(Boolean).join('\n');
+  const result = [header, desc, propsTable, methodsTable, extra, exampleCode].filter(Boolean).join('\n');
   return `${result}\n`;
 };

@@ -1,6 +1,7 @@
-import { FunctionDeclaration, Node, ParameterDeclaration, Symbol, ts } from 'ts-morph';
-import { BaseDocField } from '.';
+import { FunctionDeclaration, JSDocParameterTag, Node, ParameterDeclaration, Symbol, ts } from 'ts-morph';
+import BaseDocField from './BaseDocField';
 import { isFunctionKind } from '../utils/utils';
+import { DocumentFunction } from '.';
 
 export default class DocumentParameter extends BaseDocField {
   /** 是否可选  */
@@ -11,21 +12,31 @@ export default class DocumentParameter extends BaseDocField {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
     super(symbol, parentSymbol, rootSymbol);
 
-    this.assign(symbol);
+    this.#assign(symbol);
   }
 
-  assign(symbol: Symbol): void {
+  #assign(symbol: Symbol): void {
     const parameter = symbol?.getDeclarations()[0] as ParameterDeclaration;
-    const parentSymbol = parameter?.getParentIf((parent) => isFunctionKind(parent.getSymbol())) as FunctionDeclaration;
-    const jsDocTags = parentSymbol?.getJsDocs();
+    const parentNode = (this.parentSymbol?.getValueDeclaration() ??
+      this.parentSymbol?.getDeclarations()[0]) as FunctionDeclaration;
+    const jsDoc = parentNode?.getJsDocs()[0];
+    const jsDocTags = jsDoc?.getTags();
     const paramTypeNode = parameter?.getTypeNode();
-    const paramCommentNode = jsDocTags?.find((t) => Node.isJSDocParameterTag(t));
+    const paramCommentNode = jsDocTags?.find(
+      (t) => Node.isJSDocParameterTag(t) && t.getName() === parameter?.getName()
+    ) as JSDocParameterTag;
 
     this.defaultValue = parameter?.getInitializer();
     this.isOptional = parameter?.hasQuestionToken();
-    this.description = paramCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
+    // 参数前注释
+    const leadingComment = parameter?.getLeadingCommentRanges()?.[0]?.getText();
+    // 参数后注释
+    const trailingComment = parameter?.getTrailingCommentRanges()?.[0]?.getText();
+    this.description =
+      (leadingComment ?? trailingComment)?.replace(/(^\/{2,}\s?)|(^\/\*{1,2}\s?)|(\s?\*\/$)/g, '') ??
+      paramCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
     this.type = {
-      name: paramTypeNode?.getText(),
+      name: paramTypeNode?.getText() ?? paramCommentNode?.getTypeExpression()?.getText(),
       value: parameter?.getType()?.getLiteralValue(),
       raw: parameter?.getText(),
     };

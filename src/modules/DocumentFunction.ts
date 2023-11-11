@@ -1,4 +1,4 @@
-import { PropertySignature, Symbol, ts, Node } from 'ts-morph';
+import { PropertySignature, Symbol, ts, Node, FunctionDeclaration, FunctionExpression, ArrowFunction } from 'ts-morph';
 import BaseDocField from './BaseDocField';
 import DocumentReturn from './DocumentReturn';
 import DocumentParameter from './DocumentParameter';
@@ -12,10 +12,10 @@ export default class DocumentFunction extends BaseDocField {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
     super(symbol, parentSymbol, rootSymbol);
 
-    this.assign(symbol);
+    this.#assign(symbol);
   }
 
-  assign(symbol: Symbol) {
+  #assign(symbol: Symbol) {
     const prop = symbol?.getDeclarations()[0] as PropertySignature;
     const functionTypeNode =
       prop?.getFirstDescendantByKind(ts.SyntaxKind.FunctionType) ??
@@ -27,5 +27,13 @@ export default class DocumentFunction extends BaseDocField {
     );
     const returnTypeNode = functionTypeNode.getReturnTypeNode();
     this.returns = new DocumentReturn(returnTypeNode?.getSymbol(), symbol, this.rootSymbol);
+  }
+
+  static isTarget(node: Node): node is FunctionDeclaration | FunctionExpression | ArrowFunction {
+    if (Node.isFunctionDeclaration(node)) return true;
+    const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
+    const functionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.FunctionExpression);
+    const arrowFunctionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ArrowFunction);
+    return Node.isFunctionExpression(functionInitializer) || Node.isArrowFunction(arrowFunctionInitializer);
   }
 }

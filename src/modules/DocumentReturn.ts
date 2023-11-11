@@ -1,19 +1,24 @@
-import { FunctionDeclaration, Node, ReturnStatement, Symbol } from 'ts-morph';
+import { FunctionDeclaration, Node, ReturnStatement, Symbol, ts } from 'ts-morph';
 import BaseDocField from './BaseDocField';
-import { isFunctionKind } from '../utils/utils';
 
 export default class DocumentReturn extends BaseDocField {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
     super(symbol, parentSymbol, rootSymbol);
 
-    this.assign(symbol);
+    this.#assign(symbol);
   }
 
-  assign(symbol: Symbol): void {
+  #assign(symbol: Symbol): void {
     const returns = symbol?.getDeclarations()[0] as ReturnStatement;
-    const parentSymbol = returns?.getParentIf((parent) => isFunctionKind(parent.getSymbol())) as FunctionDeclaration;
-    const jsDocTags = parentSymbol?.getJsDocs();
-    const returnTypeNode = returns?.getType();
+    const parentNode = (this.parentSymbol?.getValueDeclaration() ??
+      this.parentSymbol?.getDeclarations()[0]) as FunctionDeclaration;
+    const functionTypeNode =
+      parentNode?.getFirstDescendantByKind(ts.SyntaxKind.FunctionType) ??
+      parentNode?.getFirstDescendantByKind(ts.SyntaxKind.JSDocFunctionType) ??
+      parentNode?.getFirstDescendantByKind(ts.SyntaxKind.MethodSignature);
+    const jsDoc = parentNode?.getJsDocs()[0];
+    const jsDocTags = jsDoc?.getTags();
+    const returnTypeNode = functionTypeNode?.getReturnTypeNode();
     const returnCommentNode = jsDocTags?.find((t) => Node.isJSDocReturnTag(t));
 
     this.type = {

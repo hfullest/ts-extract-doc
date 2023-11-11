@@ -168,7 +168,7 @@ export interface OptionsColums {
 }
 export interface GenMarkdownOptions {
   /** 默认标题等级 */
-  headLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+  headLevel?: 1 | 2 | 3 | 4 | 5 | 6 | number;
   /** 表格列配置 */
   columns: OptionsColums[];
   /** 标题自定义渲染
@@ -177,6 +177,10 @@ export interface GenMarkdownOptions {
    */
   headerRender?: (doc: Document, headerMark: string) => string;
   table?: {
+    /** 表格头部属性标题 默认值`属性` */
+    propHeadName: string;
+    /** 表格头部方法标题 默认值`方法` */
+    methodHeadName: string;
     /** 表格中换行符的替换字符（由于markdown表格中换行符会破坏表格结构，因此需要替换）
      *
      *  默认值为`空格`

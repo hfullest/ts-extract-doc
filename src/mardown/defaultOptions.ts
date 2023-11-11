@@ -17,6 +17,8 @@ const defaultOptions: GenMarkdownOptions = {
     { title: '版本', dataIndex: 'version', align: 'center' },
   ],
   table: {
+    propHeadName: '属性',
+    methodHeadName: '方法',
     lineBreakDelimiter: ' ',
     whiteSpaceFill: '-',
   },

@@ -1,6 +1,5 @@
-import { ClassDeclaration, Symbol } from 'ts-morph';
+import { ClassDeclaration, Node, Symbol } from 'ts-morph';
 import { DocumentKind, DocumentTag, DocumentType } from '../interface';
-
 export default class BaseDocField {
   /** 当前 symbol */
   symbol: Symbol;
@@ -40,12 +39,12 @@ export default class BaseDocField {
     this.symbol = symbol;
     this.parentSymbol = parentSymbol;
     this.rootSymbol = rootSymbol;
-    this.assign(symbol);
+    this.#assign(symbol);
   }
 
-  assign(symbol: Symbol) {
+  #assign(symbol: Symbol) {
     const node = symbol?.getDeclarations()[0] as ClassDeclaration; /** 指定任意有jsdoc声明，方便使用api */
-    const jsDoc = node?.getJsDocs()[0];
+    const jsDoc = node?.getJsDocs?.()[0];
     this.name = symbol?.getName();
     this.fullText = jsDoc?.getFullText();
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
@@ -62,7 +61,11 @@ export default class BaseDocField {
     this.example = this.tags?.find((t) => t.name === 'example')?.text;
     this.version = this.tags?.find((t) => t.name === 'version')?.text;
     this.filePath = jsDoc?.getSourceFile().getFilePath();
-    this.pos.start = [node?.getStartLineNumber(), node?.getStartLinePos()];
-    this.pos.end = [node?.getEndLineNumber(), node?.getPos()]; // TODO：确认结束位置
+    this.pos = {
+      start: [node?.getStartLineNumber(), node?.getStartLinePos()],
+      end: [node?.getEndLineNumber(), node?.getEnd()], // TODO：确认结束位置
+    };
   }
+
+
 }
