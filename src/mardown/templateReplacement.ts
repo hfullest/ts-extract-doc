@@ -78,7 +78,7 @@ const fillClassOrInterfaceTableByDoc = (
     ?.map(([, doc], index) => {
       const dataSource = new DataSource(doc);
       const fields = columns.map((col) => {
-        if (typeof col?.render === 'function') return col.render(dataSource, index);
+        if (typeof col?.render === 'function') return col.render(dataSource, index, doc);
         return dataSource[col?.dataIndex] ?? options?.table?.whiteSpaceFill ?? defaultSpace;
       });
       if (!fields.length) return '';

@@ -1,5 +1,6 @@
 import { ClassDeclaration, JSDocTag, Node, Symbol, VariableStatement, ts } from 'ts-morph';
-import { DocumentKind, DocumentTag, DocumentType } from '../interface';
+import { DocumentTag, DocumentType } from '../interface';
+import { JSDocCustomTagEnum, JSDocTagEnum } from '../utils/constants';
 export default class BaseDocField {
   /** 当前 symbol */
   symbol: Symbol;
@@ -9,8 +10,6 @@ export default class BaseDocField {
   rootSymbol: Symbol;
   /** 文档路径 */
   filePath: string;
-  /** 当前文档类型 */
-  kind: DocumentKind;
   /** 类型描述 */
   type: DocumentType;
   /** 名称 */
@@ -32,6 +31,8 @@ export default class BaseDocField {
   version: string;
   /** 标记表示在特定版本中添加了类、方法或其他符号， 取`@since`修饰内容 */
   since: string;
+  /** 是否废弃 `取@deprecated`修饰内容，可以为字符串表示废弃描述 */
+  deprecated: boolean | string = false;
   /** 位置信息 */
   pos: {
     /** 开始位置 [行,列] */
@@ -87,7 +88,7 @@ export default class BaseDocField {
     });
 
     this.tags?.forEach((tag) => {
-      switch (tag.name) {
+      switch (tag.name as keyof typeof JSDocTagEnum | keyof typeof JSDocCustomTagEnum) {
         case 'description':
           this.extraDescription = tag.text?.replace(/(^\n)|(\n$)/g, '');
           break;
@@ -100,53 +101,19 @@ export default class BaseDocField {
         case 'since':
           this.since = tag.text;
           break;
+        case 'deprecated':
+          this.deprecated = tag.text;
+          break;
         default:
-        //TODO: 可以优化补充
       }
     });
   }
 
   /** 无处理的解析 JSDoc 标签 */
   #assginJsDocTags(jsDocTags: JSDocTag<ts.JSDocTag>[]) {
-    /** JSDoc 标准标签 */
-    const JSDOC_TAGS = [
-      'abstract',
-      'virtual',
-      'access',
-      'alias',
-      'async',
-      'augments',
-      'extends',
-      'author',
-      'borrows',
-      'callback',
-      'class',
-      'constructor',
-      'classdesc',
-      'constant',
-      'const',
-      'constructs',
-      'copyright',
-      'default',
-      'defaultvalue',
-      'deprecated',
-      'description',
-      'desc',
-      'enum',
-      'event',
-      'example',
-      'exports',
-      'external',
-      'host',
-      'file',
-      'fileoverview',
-      'overview',
-      'fires',
-      'emits',
-    ];
     jsDocTags?.forEach((tag) => {
       const name = tag.getTagName();
-      if (!JSDOC_TAGS.includes(name)) return;
+      if (JSDocTagEnum[name] === void 0) return;
       const text = tag.getCommentText();
       const fullText = tag.getFullText();
       this.jsDocTags.push({ name, text, fullText });

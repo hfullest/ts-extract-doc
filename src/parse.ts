@@ -1,20 +1,20 @@
-import { Project, SourceFile, ts, Symbol } from 'ts-morph';
-import { Document, ParserOptions } from './interface';
 import {
-  isClassComponentKind,
-  isClassKind,
-  isFunctionKind,
-  isFCComponentKind,
-  isDeclarationKind,
-  isEnumOrLiteralOrRecordKind,
-} from './utils/utils';
-import { collectDocFromDeclaration } from './source/declaration';
-import { collectDocFromFunction } from './source/function';
-import { collectDocFromClass } from './source/class';
+  Project,
+  SourceFile,
+  ts,
+  Symbol,
+  Node,
+  InterfaceDeclaration,
+  FunctionDeclaration,
+  ClassDeclaration,
+} from 'ts-morph';
+import { Document, ParserOptions } from './interface';
+import { isClassComponentKind, isFCComponentKind, isEnumOrLiteralOrRecordKind } from './utils/utils';
 import { collectDocFromFCComponent } from './source/fc-component';
 import { collectDocFromClassComponent } from './source/class-component';
 import { collectDocFromEnumOrLiteral } from './source/enum-literal-object';
 import { DocumentClass, DocumentFunction, DocumentInterface, DocumentTypeAlias } from './modules';
+import { JSDocCustomTagEnum } from './utils/constants';
 
 export const defaultCompilerOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
@@ -23,10 +23,6 @@ export const defaultCompilerOptions: ts.CompilerOptions = {
 };
 
 export const defaultParserOpts: ParserOptions = {};
-
-export const getFullJsDocComment = (symbol: Symbol) => {
-  console.log(symbol);
-};
 
 export const parse = (
   filePathOrPaths: string | string[],
@@ -47,10 +43,23 @@ export const parse = (
 };
 
 export const genDocuments = (file: SourceFile): Document[] => {
-  const exportSymbols = file.getExportSymbols();
+  const localSymbols = file.getLocals();
   debugger;
+  const outputSymbols = localSymbols
+    ?.map((symbol) => {
+      const node = (symbol.getValueDeclaration() ?? symbol.getDeclarations()[0]) as InterfaceDeclaration;
+      if (node?.isExported?.()) return symbol;
+      const tags = symbol?.getJsDocTags();
+      if (tags?.some((tag) => tag.getName() === JSDocCustomTagEnum['output'])) return symbol;
+    })
+    .filter(Boolean)
+    ?.sort((aSym, bSym) => {
+      const aStartLine = aSym?.getDeclarations()?.[0]?.getStartLineNumber();
+      const bStartLine = bSym?.getDeclarations()?.[0]?.getStartLineNumber();
+      return aStartLine - bStartLine;
+    });
   const docs = (
-    exportSymbols.map((it) => {
+    Array.from(outputSymbols).map((it) => {
       const node = it?.getValueDeclaration() ?? it?.getDeclarations()[0];
       if (isFCComponentKind(it)) return collectDocFromFCComponent(it);
       if (isClassComponentKind(it)) return collectDocFromClassComponent(it);

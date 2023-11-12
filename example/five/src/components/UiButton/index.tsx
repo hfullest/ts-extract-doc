@@ -10,6 +10,7 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 /** UiButton */
 export type UiButtonProps<N = false> = AntdButtonProps & CompatButtonProps<N>;
 
+/** @output */
 interface CompatButtonProps<N> {
   /**是否使用原生按钮 */
   native?: N;
@@ -85,8 +86,10 @@ export type ExampleType = string | number | UiButtonProps;
  *  const a = 123;
  * 
  * @version 3.5.19
+ * 
+ * @output
  */
-export interface ExampleInterface {
+ interface ExampleInterface {
   /** a属性
    * @default 'hahah'
    * 

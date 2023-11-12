@@ -1,5 +1,4 @@
-import { Document } from '../interface';
-import { DocumentClass, DocumentFunction, DocumentInterface, DocumentProp } from '../modules';
+import { DocumentClass, DocumentFunction, DocumentInterface, DocumentMethod, DocumentProp } from '../modules';
 
 export default class DataSource {
   /** 字段名称 */
@@ -14,16 +13,19 @@ export default class DataSource {
   defaultValue: string;
   /** 版本号 */
   version: string;
+  /** 是否废弃，字符串表示废弃描述 */
+  deprecated: boolean | string;
   /** 文档类型 */
   kind: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
 
-  constructor(doc: Document) {
-    this.name = doc.name;
+  constructor(doc: DocumentProp | DocumentMethod) {
+    this.name = doc?.name;
     this.description = doc.description;
-    this.defaultValue = (doc as DocumentProp)?.defaultValue;
-    this.isOptional = (doc as DocumentProp)?.isOptional;
-    this.type = doc.type?.name;
-    this.version = doc.version;
+    this.defaultValue = doc?.defaultValue;
+    this.isOptional = doc?.isOptional;
+    this.type = doc?.type?.name;
+    this.version = doc?.version;
+    this.deprecated = doc?.deprecated;
     if (doc instanceof DocumentFunction) this.kind = 'Function';
     else if (doc instanceof DocumentClass) this.kind = 'Class';
     else if (doc instanceof DocumentInterface) this.kind = 'Interface';

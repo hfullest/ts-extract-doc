@@ -13,6 +13,7 @@ export default class DocumentTypeAlias extends BaseDocField {
     debugger;
     const typeAliasDeclaration = node.asKind(ts.SyntaxKind.TypeAliasDeclaration);
     const typeNode = typeAliasDeclaration?.getTypeNode().asKind(ts.SyntaxKind.IntersectionType);
+    const typeText =typeAliasDeclaration?.getTypeNode()?.getChildren()
   }
 
   static isTarget(node: Node): node is TypeAliasDeclaration {
