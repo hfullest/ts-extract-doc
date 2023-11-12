@@ -9,7 +9,7 @@ const defaultOptions: GenMarkdownOptions = {
       title: '名称',
       dataIndex: 'name',
       align: 'center',
-      render: (record) => `${record.name}${record.isOptional ? ` ~(可选)~` : ''}`,
+      render: (record) => `${record.name}${record.isOptional ? ` ~(可选)~` : ''} ${record?.deprecated ? `*~(已废弃)~*` : ''}`,
     },
     { title: '说明', dataIndex: 'description', align: 'center' },
     { title: '类型', dataIndex: 'type', align: 'center' },

@@ -88,6 +88,7 @@ export default class BaseDocField {
     });
 
     this.tags?.forEach((tag) => {
+      debugger;
       switch (tag.name as keyof typeof JSDocTagEnum | keyof typeof JSDocCustomTagEnum) {
         case 'description':
           this.extraDescription = tag.text?.replace(/(^\n)|(\n$)/g, '');
@@ -102,7 +103,7 @@ export default class BaseDocField {
           this.since = tag.text;
           break;
         case 'deprecated':
-          this.deprecated = tag.text;
+          this.deprecated = !!tag.text ? tag.text : true; // 如果有描述使用描述，无描述则赋值true
           break;
         default:
       }

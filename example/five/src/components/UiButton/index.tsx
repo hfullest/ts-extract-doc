@@ -18,6 +18,7 @@ interface CompatButtonProps<N> {
   /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
    *  @deprecated
    * 
+   * @description
    * 哈哈哈这里可以是markdown
    * 
    *  */
