@@ -32,8 +32,7 @@ export default class DocumentClass extends BaseDocField {
       const currentSymbol = prop?.getSymbol();
       if (DocumentMethod.isTarget(prop)) {
         const methodDoc = new DocumentMethod(currentSymbol, symbol);
-        // 跳过私有方法
-        if (methodDoc.modifiers & (ts.ModifierFlags.Private | ts.ModifierFlags.Protected)) return;
+        if (this.#isIgnoreField(methodDoc)) return;
         if (methodDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticMethods[propName] = methodDoc;
         } else {
@@ -41,8 +40,7 @@ export default class DocumentClass extends BaseDocField {
         }
       } else if (DocumentProp.isTarget(prop)) {
         const propDoc = new DocumentProp(currentSymbol, symbol);
-        // 跳过私有属性
-        if (propDoc.modifiers & (ts.ModifierFlags.Private | ts.ModifierFlags.Protected)) return;
+        if (this.#isIgnoreField(propDoc)) return;
         if (propDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticProps[propName] = propDoc;
         } else {
@@ -50,6 +48,18 @@ export default class DocumentClass extends BaseDocField {
         }
       }
     });
+  }
+
+  /** 是否需要忽略该字段 */
+  #isIgnoreField(doc: DocumentProp | DocumentMethod): boolean {
+    // 跳过私有属性方法
+    if (doc.modifiers & (ts.ModifierFlags.Private | ts.ModifierFlags.Protected)) return;
+    const tagIgnores = [
+      'inner', // @inner
+      'private', // @private
+      'protected', // @protected
+    ];
+    return tagIgnores.some((tg) => doc.tags?.find((t) => t.name === tg));
   }
 
   static isTarget(node: Node): node is ClassDeclaration | ClassExpression {

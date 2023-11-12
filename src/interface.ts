@@ -13,7 +13,7 @@ import DataSource from './mardown/DataSource';
 export interface DocumentTag {
   name: string;
   text: string;
-  self: JSDocTag;
+  node: JSDocTag;
   parent: Node;
 }
 

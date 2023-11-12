@@ -17,7 +17,6 @@ export default class DocumentFunction extends BaseDocField {
 
   #assign(symbol: Symbol) {
     const node = symbol?.getDeclarations()[0];
-    debugger;
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
     const parametersNode = functionTypeNode?.getParameters();
     this.parameters = parametersNode?.map(

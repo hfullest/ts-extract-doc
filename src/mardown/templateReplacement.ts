@@ -35,7 +35,7 @@ const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: s
     },
     staticMethods: {
       header: Object.keys((doc as DocumentClass)?.staticMethods ?? {}).length
-        ? `${headMark} ${config?.table?.staticPropHeadName}\n`
+        ? `${headMark} ${config?.table?.staticMethodHeadName}\n`
         : '',
       member: (doc as DocumentClass)?.staticMethods,
     },

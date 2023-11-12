@@ -121,7 +121,15 @@ export enum ExampleEnum {
 export const exampleVar1 = 1234;
 
 /** 字面量对象 */
-export const exampleObj = {
+export const exampleObj: {
+  a1: number,
+  /** 这里是b2前置注释 */
+  b2: boolean,
+  /** 这里是c3的前置注释 */
+  c3: {
+    tt: number,
+  }
+} = {
   a1: 123,
   b2: true,
   c3: {

@@ -1,4 +1,4 @@
-import { ClassDeclaration, Node, Symbol, ts } from 'ts-morph';
+import { ClassDeclaration, JSDocTag, Node, Symbol, VariableStatement, ts } from 'ts-morph';
 import { DocumentKind, DocumentTag, DocumentType } from '../interface';
 export default class BaseDocField {
   /** 当前 symbol */
@@ -19,14 +19,19 @@ export default class BaseDocField {
   description: string;
   /** 全文本 */
   fullText: string;
-  /** 额外补充描述，一般取`@description`修饰内容 */
-  extraDescription?: string;
-  /** `JSDoc的标签` */
+  /** 全部的注释标签，包括`JSDoc标签`和自定义标签
+   *
+   * 如需仅查看`JSDoc标签`，可以参考`jsDocTags`属性
+   */
   tags: DocumentTag[];
-  /** `JSDoc`注释的例子 */
+  /** 额外补充描述，取`@description`修饰内容 */
+  extraDescription?: string;
+  /** `JSDoc`注释的例子，取`@example`修饰内容 */
   example: string;
-  /** 版本信息 */
+  /** 版本信息， 取`@version`修饰内容 */
   version: string;
+  /** 标记表示在特定版本中添加了类、方法或其他符号， 取`@since`修饰内容 */
+  since: string;
   /** 位置信息 */
   pos: {
     /** 开始位置 [行,列] */
@@ -34,6 +39,15 @@ export default class BaseDocField {
     /** 结束位置 [行,列] */
     end: [number, number];
   };
+  /** 全部 `JSDoc标签` */
+  jsDocTags: {
+    /** 标签名称 */
+    name: string;
+    /** 标签内容 */
+    text: string;
+    /** 全文本 */
+    fullText: string;
+  }[] = [];
 
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
     this.symbol = symbol;
@@ -52,21 +66,106 @@ export default class BaseDocField {
     this.fullText = jsDoc?.getFullText?.();
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
     const jsDocTags = jsDoc?.getTags();
-    this.tags = jsDocTags?.map((tag) => {
-      return {
-        name: tag.getTagName(),
-        text: tag.getCommentText(),
-        self: tag,
-        parent: tag.getParent(),
-      };
-    });
-    this.extraDescription = this.tags?.find((t) => t.name === 'description')?.text?.replace(/(^\n)|(\n$)/g, '');
-    this.example = this.tags?.find((t) => t.name === 'example')?.text;
-    this.version = this.tags?.find((t) => t.name === 'version')?.text;
+    this.#parseAndAssginTags(jsDocTags);
     this.filePath = jsDoc?.getSourceFile().getFilePath();
     this.pos = {
       start: [node?.getStartLineNumber(), node?.getStartLinePos()],
       end: [node?.getEndLineNumber(), node?.getEnd()], // TODO：确认结束位置
     };
+  }
+
+  /** 解析 JSDoc 相关标签并赋值 */
+  #parseAndAssginTags(jsDocTags: JSDocTag<ts.JSDocTag>[]) {
+    this.#assginJsDocTags(jsDocTags); // 这里解析供透传使用
+    this.tags = jsDocTags?.map((tag) => {
+      return {
+        name: tag.getTagName(),
+        text: tag.getCommentText(),
+        node: tag,
+        parent: tag.getParent(),
+      };
+    });
+
+    this.tags?.forEach((tag) => {
+      switch (tag.name) {
+        case 'description':
+          this.extraDescription = tag.text?.replace(/(^\n)|(\n$)/g, '');
+          break;
+        case 'example':
+          this.example = tag.text;
+          break;
+        case 'version':
+          this.version = tag.text;
+          break;
+        case 'since':
+          this.since = tag.text;
+          break;
+        default:
+        //TODO: 可以优化补充
+      }
+    });
+  }
+
+  /** 无处理的解析 JSDoc 标签 */
+  #assginJsDocTags(jsDocTags: JSDocTag<ts.JSDocTag>[]) {
+    /** JSDoc 标准标签 */
+    const JSDOC_TAGS = [
+      'abstract',
+      'virtual',
+      'access',
+      'alias',
+      'async',
+      'augments',
+      'extends',
+      'author',
+      'borrows',
+      'callback',
+      'class',
+      'constructor',
+      'classdesc',
+      'constant',
+      'const',
+      'constructs',
+      'copyright',
+      'default',
+      'defaultvalue',
+      'deprecated',
+      'description',
+      'desc',
+      'enum',
+      'event',
+      'example',
+      'exports',
+      'external',
+      'host',
+      'file',
+      'fileoverview',
+      'overview',
+      'fires',
+      'emits',
+    ];
+    jsDocTags?.forEach((tag) => {
+      const name = tag.getTagName();
+      if (!JSDOC_TAGS.includes(name)) return;
+      const text = tag.getCommentText();
+      const fullText = tag.getFullText();
+      this.jsDocTags.push({ name, text, fullText });
+    });
+  }
+
+  /** 获取兼容的父节点
+   *
+   * 由于 VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
+   * 这里对此获取父节点进行了兼容
+   *
+   * 可以指定父级symbol参数，也可以默认使用当前节点的父级symbol
+   */
+  protected getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
+    symbol ??= this.parentSymbol;
+    const parentNode = symbol?.getValueDeclaration() ?? this.parentSymbol?.getDeclarations()[0];
+    const ancestorNode = Node.isVariableDeclaration(parentNode)
+      ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
+      : parentNode;
+    return ancestorNode as T | VariableStatement;
   }
 }

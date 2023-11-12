@@ -11,16 +11,10 @@ export default class DocumentReturn extends BaseDocField {
 
   #assign(symbol: Symbol): void {
     const returns = symbol?.getDeclarations()[0] as ReturnStatement;
-    const parentNode = (this.parentSymbol?.getValueDeclaration() ??
-      this.parentSymbol?.getDeclarations()[0]) as FunctionDeclaration;
-    const ancestorNode = Node.isVariableDeclaration(parentNode)
-      ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement) // VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
-      : parentNode;
-    const jsDoc = ancestorNode?.getJsDocs?.()[0];
-    const jsDocTags = jsDoc?.getTags();
+    const parentNode = this.getCompatAncestorNode<FunctionDeclaration>(this.parentSymbol);
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(parentNode);
     const returnTypeNode = functionTypeNode?.getReturnTypeNode();
-    const returnCommentNode = jsDocTags?.find((t) => Node.isJSDocReturnTag(t));
+    const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node;
 
     this.type = {
       name: returnTypeNode?.getText() ?? returnCommentNode?.getType()?.getText(),
