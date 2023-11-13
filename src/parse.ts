@@ -35,13 +35,14 @@ export const parse = (
   const project = new Project();
 
   project.enableLogging();
+
   project.addSourceFilesFromTsConfig(resolve(process.cwd(), 'tsconfig.json'));
 
   project.addSourceFilesAtPaths(filePaths);
 
   const sourceFiles = project.getSourceFiles();
 
-  const filesDocs = sourceFiles.map(genDocuments);
+  const filesDocs = sourceFiles.filter((file) => filePaths.includes(file.getFilePath())).map(genDocuments);
 
   return filesDocs;
 };
