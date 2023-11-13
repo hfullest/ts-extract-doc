@@ -71,6 +71,13 @@ export interface GenMarkdownOptions {
   };
 }
 
+export interface ConfigOptions {
+  /** markdown 相关的配置 */
+  markdown?: GenMarkdownOptions;
+  /** `tsconfig.json路径` */
+  tsConfigPath?: string;
+}
+
 ///////////////////////////////
 export interface Component {
   name: string;

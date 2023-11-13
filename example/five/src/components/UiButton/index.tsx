@@ -7,30 +7,32 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
     3. 如果后续的样式及功能迭代需要复用antd的Button组件，使用NativeButton难维护和扩展
  *  */
 
+export type AAAAAA = string;
+
 /** UiButton */
-export type UiButtonProps<N = false> = AntdButtonProps & CompatButtonProps<N>;
+export type UiButtonProps<N = false> = {a:string,b:number} & CompatButtonProps<N>;
 
 /** @output */
-interface CompatButtonProps<N> {
+type CompatButtonProps<N> = {
   /**是否使用原生按钮 */
   native?: N;
   children?: React.ReactNode;
   /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
    *  @deprecated
-   * 
+   *
    * @description
    * 哈哈哈这里可以是markdown
-   * 
+   *
    *  */
   ant?: never;
-}
+};
 
 export const UiButton = <N extends boolean = false>(
   props: UiButtonProps<N>
 ): JSX.Element => {
   const { native = false, ...buttonProps } = props;
   const Button: any = AntdButton;
-  return <Button {...buttonProps} ></Button>;
+  return <Button {...buttonProps}></Button>;
 };
 
 UiButton.__ANT_BUTTON = true;
@@ -46,16 +48,19 @@ export { UI_PREFIX };
  */
 export const ArrowFunction = (p1: string, p2: number): string => {
   return p1 + p2;
-}
+};
 
 /**
  * 这个是DelcarationFunction 的描述
- * 
+ *
  * @description
  * 这里是对`DeclarationFunction`函数的补充描述，这里可以使用`markdown`语法
  */
-export function DeclarationFunction(a: number/** 测试声明函数的a参数后置注释 */, b?: symbol, c: string = 'ssss'): void { }
-
+export function DeclarationFunction(
+  a: number /** 测试声明函数的a参数后置注释 */,
+  b?: symbol,
+  c: string = "ssss"
+): void {}
 
 /** 错误边界 */
 export class ErrorBound {
@@ -63,45 +68,43 @@ export class ErrorBound {
    * @public
    */
   public render() {
-    return <div>哈哈哈</div>
+    return <div>哈哈哈</div>;
   }
 }
 
+// export type ExampleType = string | number | UiButtonProps;
 
-export type ExampleType = string | number | UiButtonProps;
-
-
-/** 
+/**
  * 接口
- * 
+ *
  * @param A {string} - {@link https://abc.com} 测试getCommentText &#64;param value Some description.
- * 
+ *
  * @see {@link https://abc123.com}
- * 
- * @description 
+ *
+ * @description
  * 这里是内容
- * 
+ *
  * 其他的内容区内容
- * 
+ *
  * @example
  *  const a = 123;
- * 
+ *
  * @version 3.5.19
- * 
+ *
  * @output
  */
- interface ExampleInterface {
+interface ExampleInterface {
   /** a属性
    * @default 'hahah'
-   * 
+   *
    * 这里是markdown区域
    */
   a: string;
   /**
    * `button`描述
-   * 
+   *
    * button的==内容==区
-   * 
+   *
    * @version 3.2.15
    */
   button?: UiButtonProps;
@@ -111,50 +114,51 @@ export type ExampleType = string | number | UiButtonProps;
    * @param {number} p2 参数二数值
    * @returns {boolean} 返回值测试
    */
-  bb: ((
+  bb: (
     // p1 前置内容
-    p1: string/* 测试p1后文本内容        */,/** 测试p2前部分内容 */ p2?: number) => string);
+    p1: string /* 测试p1后文本内容        */,
+    /** 测试p2前部分内容 */ p2?: number
+  ) => string;
 }
 
 /** 枚举类型 */
 export enum ExampleEnum {
   AAA,
-  BBB
+  BBB,
 }
 
 export const exampleVar1 = 1234;
 
 /** 字面量对象 */
 export const exampleObj: {
-  a1: number,
+  a1: number;
   /** 这里是b2前置注释 */
-  b2: boolean,
+  b2: boolean;
   /** 这里是c3的前置注释 */
   c3: {
-    tt: number,
-  }
+    tt: number;
+  };
 } = {
   a1: 123,
   b2: true,
   c3: {
     tt: 323,
-  }
-}
-
+  },
+};
 
 /** 这个是对ExampleClass类的描述 */
 export class ExampleClass {
   /** a属性
    * @default 'hahah'
-   * 
+   *
    * 这里是markdown区域
    */
-  a: string = '124';
+  a: string = "124";
   /**
    * `button`描述
-   * 
+   *
    * button的==内容==区
-   * 
+   *
    * @version 3.2.15
    */
   button?: UiButtonProps;
@@ -164,12 +168,13 @@ export class ExampleClass {
    * @param {number} p2 参数二数值
    * @returns {boolean} 返回值测试
    */
-  bb: ((
+  bb: (
     // p1 前置内容
-    p1: string/* 测试p1后文本内容        */,/** 测试p2前部分内容 */ p2?: number) => string) = () => '';
+    p1: string /* 测试p1后文本内容        */,
+    /** 测试p2前部分内容 */ p2?: number
+  ) => string = () => "";
 
-
-  private cccPrivate = '1234';
+  private cccPrivate = "1234";
 
   /** 测试公共方法 */
   public dddPublic: number = 12;
@@ -179,5 +184,5 @@ export class ExampleClass {
   /** 这个是静态方法 */
   static eeeStaticMethod = (a: number, b?: string) => {
     return 456;
-  }
+  };
 }

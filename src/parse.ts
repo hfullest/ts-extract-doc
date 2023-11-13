@@ -15,6 +15,7 @@ import { collectDocFromClassComponent } from './source/class-component';
 import { collectDocFromEnumOrLiteral } from './source/enum-literal-object';
 import { DocumentClass, DocumentFunction, DocumentInterface, DocumentTypeAlias } from './modules';
 import { JSDocCustomTagEnum } from './utils/constants';
+import { resolve } from 'path';
 
 export const defaultCompilerOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
@@ -32,6 +33,9 @@ export const parse = (
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
 
   const project = new Project();
+
+  project.enableLogging();
+  project.addSourceFilesFromTsConfig(resolve(process.cwd(), 'tsconfig.json'));
 
   project.addSourceFilesAtPaths(filePaths);
 
