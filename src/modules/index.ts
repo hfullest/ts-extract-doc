@@ -1,4 +1,4 @@
-export { default as BaseDocField } from './BaseDocField';
+// export { default as BaseDocField } from './BaseDocField';
 export { default as DocumentClass } from './DocumentClass';
 export { default as DocumentDecorator } from './DocumentDecorator';
 export { default as DocumentExport } from './DocumentExport';

@@ -17,7 +17,6 @@ export default class DocumentObject extends BaseDocField {
   }
 
   #assign(symbol: Symbol) {
-    debugger;
     const objectDeclaration = symbol?.getDeclarations()[0] as TypeAliasDeclaration;
     const node = objectDeclaration?.getTypeNode().asKind(ts.SyntaxKind.TypeLiteral);
     const properties = node?.getProperties();

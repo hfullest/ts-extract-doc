@@ -14,7 +14,6 @@ export default class DocumentTypeAlias<Kind extends TypeAliasType = 'Basic'> ext
 
   #assign(symbol: Symbol) {
     const node = (symbol?.getValueDeclaration() ?? symbol?.getDeclarations()?.[0]) as TypeAliasDeclaration;
-    debugger;
     const type = node?.getType();
     if (
       type?.isNumber() ||

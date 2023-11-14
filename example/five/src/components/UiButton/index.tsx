@@ -1,5 +1,13 @@
 import React from "react";
 import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
+
+export class ReactClassComponentA extends React.Component {
+  render(): React.ReactNode {
+    return <div>哈哈哈</div>
+  }
+}
+
+
 /**
  *? 为什么需要使用antd的Button组件进行封装
     1. antd提供了很多样式类型，但NativeButton暂未完全实现，例如：link按钮等
@@ -48,10 +56,14 @@ type CompatButtonProps<N> = {
 
 export const UiButton = <N extends boolean = false>(
   props: UiButtonProps<N>
-): JSX.Element => {
+) => {
   const { native = false, ...buttonProps } = props;
   const Button: any = AntdButton;
-  return <Button {...buttonProps}></Button>;
+  const innerFun = () => {
+    if (1 + 1 === 2) return <div>哈哈</div>;
+    else return <Button {...buttonProps}></Button>;
+  }
+
 };
 
 UiButton.__ANT_BUTTON = true;
@@ -79,7 +91,7 @@ export function DeclarationFunction(
   a: number /** 测试声明函数的a参数后置注释 */,
   b?: symbol,
   c: string = "ssss"
-): void {}
+): void { }
 
 /** 错误边界 */
 export class ErrorBound {

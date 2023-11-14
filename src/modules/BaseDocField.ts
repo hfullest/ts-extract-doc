@@ -129,7 +129,15 @@ export default class BaseDocField {
    */
   protected getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
     symbol ??= this.parentSymbol;
-    const parentNode = symbol?.getValueDeclaration() ?? this.parentSymbol?.getDeclarations()[0];
+    const parentNode = symbol?.getValueDeclaration() ?? symbol?.getDeclarations()[0];
+    const ancestorNode = Node.isVariableDeclaration(parentNode)
+      ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
+      : parentNode;
+    return ancestorNode as T | VariableStatement;
+  }
+
+  static getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
+    const parentNode = symbol?.getValueDeclaration() ?? symbol?.getDeclarations()[0];
     const ancestorNode = Node.isVariableDeclaration(parentNode)
       ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
       : parentNode;

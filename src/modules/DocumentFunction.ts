@@ -30,6 +30,8 @@ export default class DocumentFunction extends BaseDocField {
   static getFunctionTypeNode(node: Node) {
     const functionTypeNode =
       node?.asKind?.(ts.SyntaxKind.FunctionDeclaration) ??
+      node?.asKind?.(ts.SyntaxKind.FunctionExpression) ??
+      node?.asKind?.(ts.SyntaxKind.ArrowFunction) ??
       node?.getFirstDescendantByKind?.(ts.SyntaxKind.FunctionType) ??
       node?.getFirstDescendantByKind?.(ts.SyntaxKind.JSDocFunctionType) ??
       node?.getFirstDescendantByKind?.(ts.SyntaxKind.MethodSignature) ??
@@ -38,8 +40,15 @@ export default class DocumentFunction extends BaseDocField {
     return functionTypeNode;
   }
 
+  /** 根据symbol获取子级可能的函数节点 */
+  static getFunctionTypeNodeBySymbol(symbol: Symbol) {
+    const node = BaseDocField.getCompatAncestorNode(symbol);
+    const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
+    return functionTypeNode;
+  }
+
   static isTarget(node: Node): node is FunctionDeclaration | FunctionExpression | ArrowFunction {
-    if (Node.isFunctionDeclaration(node)) return true;
+    if (Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) || Node.isArrowFunction(node)) return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
     const functionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.FunctionExpression);
     const arrowFunctionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ArrowFunction);
