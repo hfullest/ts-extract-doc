@@ -17,13 +17,9 @@ export default class DocumentParameter extends BaseDocField {
 
   #assign(symbol: Symbol): void {
     const parameter = symbol?.getDeclarations()[0] as ParameterDeclaration;
-    const parentNode = this.getCompatAncestorNode<FunctionDeclaration>(this.parentSymbol);
-    const jsDoc = parentNode?.getJsDocs?.()[0];
-    const jsDocTags = jsDoc?.getTags();
     const paramTypeNode = parameter?.getTypeNode();
-    const paramCommentNode = jsDocTags?.find(
-      (t) => Node.isJSDocParameterTag(t) && t.getName() === parameter?.getName()
-    ) as JSDocParameterTag;
+    const paramCommentNode = this.tags?.find((t) => Node.isJSDocParameterTag(t.node) && t.name === parameter?.getName())
+      ?.node as JSDocParameterTag;
 
     this.defaultValue = parameter?.getInitializer();
     this.isOptional = !!(parameter?.getInitializer() ?? parameter?.hasQuestionToken());

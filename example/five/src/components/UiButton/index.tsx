@@ -6,7 +6,10 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
     2. 对antd按钮定制化的样式，同样也可以通过类名的方式给其他antd组件内部按钮添加样式，例如：Modal.confirm的按钮等
     3. 如果后续的样式及功能迭代需要复用antd的Button组件，使用NativeButton难维护和扩展
  *  */
-
+/** 2 */
+/** 3 */
+/** 4 */
+// 测试注释
 export type AAAAAA = string;
 
 /** UiButton */

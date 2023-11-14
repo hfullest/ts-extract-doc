@@ -1,13 +1,4 @@
-import {
-  Project,
-  SourceFile,
-  ts,
-  Symbol,
-  Node,
-  InterfaceDeclaration,
-  FunctionDeclaration,
-  ClassDeclaration,
-} from 'ts-morph';
+import { Project, SourceFile, ts, InterfaceDeclaration } from 'ts-morph';
 import { Document, ParserOptions } from './interface';
 import { isClassComponentKind, isFCComponentKind, isEnumOrLiteralOrRecordKind } from './utils/utils';
 import { collectDocFromFCComponent } from './source/fc-component';
@@ -72,8 +63,6 @@ export const genDocuments = (file: SourceFile): Document[] => {
       if (DocumentClass.isTarget(node)) return new DocumentClass(it);
       if (DocumentFunction.isTarget(node)) return new DocumentFunction(it);
       if (DocumentTypeAlias.isTarget(node)) return new DocumentTypeAlias(it);
-      // if (isDeclarationKind(it)) return collectDocFromDeclaration(it);
-      // if (isFunctionKind(it)) return collectDocFromFunction(it);
       if (isEnumOrLiteralOrRecordKind(it)) return collectDocFromEnumOrLiteral(it);
       return null;
     }) as Document[]

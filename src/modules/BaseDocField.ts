@@ -62,7 +62,7 @@ export default class BaseDocField {
     const ancestorNode = Node.isVariableDeclaration(node)
       ? node?.getFirstAncestorByKind?.(ts.SyntaxKind.VariableStatement) // 做兼容修正，VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
       : node;
-    const jsDoc = ancestorNode?.getJsDocs?.()[0];
+    const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
