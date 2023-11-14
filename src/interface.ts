@@ -1,6 +1,6 @@
 import { ts, Node, JSDocTag } from 'ts-morph';
 import {
-  DocumentLiteral,
+  DocumentObject,
   DocumentFunction,
   DocumentClass,
   DocumentTypeAlias,
@@ -19,7 +19,7 @@ export interface DocumentTag {
 }
 
 export type Document =
-  | DocumentLiteral
+  | DocumentObject
   | DocumentFunction
   | DocumentClass
   | DocumentTypeAlias
