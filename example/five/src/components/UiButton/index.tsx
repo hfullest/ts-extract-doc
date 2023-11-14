@@ -12,8 +12,24 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 // 测试注释
 export type AAAAAA = string;
 
+/** 测试 TypeObjectLiteral 描述
+ *
+ * @description
+ * 这里是TypeObjectLiteral 额外描述
+ * 
+ * @example
+ * const abc:TypeObjectLiteral = {};
+ */
+export type TypeObjectLiteral = {
+  a: string;
+  /** 测试b */
+  readonly b?: number;
+};
 /** UiButton */
-export type UiButtonProps<N = false> = {a:string,b:number} & CompatButtonProps<N>;
+export type UiButtonProps<N = false> = {
+  a: string;
+  b: number;
+} & CompatButtonProps<N>;
 
 /** @output */
 type CompatButtonProps<N> = {

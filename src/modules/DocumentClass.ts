@@ -25,7 +25,6 @@ export default class DocumentClass extends BaseDocField {
   #assign(symbol: Symbol): void {
     const node = symbol?.getDeclarations()[0];
     if (!DocumentClass.isTarget(node)) return;
-    debugger;
     const properties = node?.getProperties();
     properties.forEach((prop) => {
       const propName = prop?.getName();

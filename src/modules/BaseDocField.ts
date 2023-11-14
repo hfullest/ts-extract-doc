@@ -88,7 +88,6 @@ export default class BaseDocField {
     });
 
     this.tags?.forEach((tag) => {
-      debugger;
       switch (tag.name as keyof typeof JSDocTagEnum | keyof typeof JSDocCustomTagEnum) {
         case 'description':
           this.extraDescription = tag.text?.replace(/(^\n)|(\n$)/g, '');

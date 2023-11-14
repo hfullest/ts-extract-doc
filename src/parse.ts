@@ -1,12 +1,8 @@
 import { Project, SourceFile, ts, InterfaceDeclaration } from 'ts-morph';
 import { Document, ParserOptions } from './interface';
-import { isClassComponentKind, isFCComponentKind, isEnumOrLiteralOrRecordKind } from './utils/utils';
-import { collectDocFromFCComponent } from './source/fc-component';
-import { collectDocFromClassComponent } from './source/class-component';
-import { collectDocFromEnumOrLiteral } from './source/enum-literal-object';
-import { DocumentClass, DocumentFunction, DocumentInterface, DocumentTypeAlias } from './modules';
 import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
+import universalParse from './utils/universalParse';
 
 export const defaultCompilerOptions: ts.CompilerOptions = {
   jsx: ts.JsxEmit.React,
@@ -52,21 +48,12 @@ export const genDocuments = (file: SourceFile): Document[] => {
     ?.sort((aSym, bSym) => {
       const aStartLine = aSym?.getDeclarations()?.[0]?.getStartLineNumber();
       const bStartLine = bSym?.getDeclarations()?.[0]?.getStartLineNumber();
-      return aStartLine - bStartLine;
+      if (aStartLine !== bStartLine) return aStartLine - bStartLine;
+      const aEndLine = aSym?.getDeclarations()?.[0]?.getEndLineNumber();
+      const bEndLine = bSym?.getDeclarations()?.[0]?.getEndLineNumber();
+      return aEndLine - bEndLine;
     });
-  const docs = (
-    Array.from(outputSymbols).map((it) => {
-      const node = it?.getValueDeclaration() ?? it?.getDeclarations()[0];
-      if (isFCComponentKind(it)) return collectDocFromFCComponent(it);
-      if (isClassComponentKind(it)) return collectDocFromClassComponent(it);
-      if (DocumentInterface.isTarget(node)) return new DocumentInterface(it);
-      if (DocumentClass.isTarget(node)) return new DocumentClass(it);
-      if (DocumentFunction.isTarget(node)) return new DocumentFunction(it);
-      if (DocumentTypeAlias.isTarget(node)) return new DocumentTypeAlias(it);
-      if (isEnumOrLiteralOrRecordKind(it)) return collectDocFromEnumOrLiteral(it);
-      return null;
-    }) as Document[]
-  ).filter(Boolean);
+  const docs = (Array.from(outputSymbols).map((it) => universalParse(it)) as Document[]).filter(Boolean);
 
   return docs;
 };

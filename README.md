@@ -59,9 +59,9 @@ function (p1:string /** 这里是p1后置注释 */,
 |                    |                        |                    |  |  |
 |                    |                        |                    |  |  |
 
-
-
 TODO:
 
 - [ ] apparent type 替换
 - [ ] 类构造函数处理
+- [ ] 解析readonly
+- [ ]
