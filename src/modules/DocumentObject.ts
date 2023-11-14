@@ -1,9 +1,10 @@
-import { InterfaceDeclaration, Node, Symbol, TypeLiteralNode } from 'ts-morph';
-import BaseDocField from './BaseDocField';
+import { Node, Symbol, TypeAliasDeclaration, ts } from 'ts-morph';
 import DocumentProp from './DocumentProp';
 import DocumentMethod from './DocumentMethod';
+import BaseDocField from './BaseDocField';
 
-export default class DocumentInterface extends BaseDocField {
+// @ts-ignore
+export default class DocumentObject extends BaseDocField {
   /** 属性 */
   props: Record<string, DocumentProp> = {};
   /** 方法 */
@@ -16,7 +17,9 @@ export default class DocumentInterface extends BaseDocField {
   }
 
   #assign(symbol: Symbol) {
-    const node = symbol?.getDeclarations()[0] as InterfaceDeclaration | TypeLiteralNode;
+    debugger;
+    const objectDeclaration = symbol?.getDeclarations()[0] as TypeAliasDeclaration;
+    const node = objectDeclaration?.getTypeNode().asKind(ts.SyntaxKind.TypeLiteral);
     const properties = node?.getProperties();
     properties.forEach((prop) => {
       const propName = prop?.getName();
@@ -29,8 +32,8 @@ export default class DocumentInterface extends BaseDocField {
     });
   }
 
-  /** 判断是否命中当前目标 */
-  static isTarget(node: Node): node is InterfaceDeclaration {
-    return Node.isInterfaceDeclaration(node);
+  static isTarget(node: Node) {
+    const type = node?.getType();
+    return type?.isObject();
   }
 }

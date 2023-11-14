@@ -64,4 +64,4 @@ TODO:
 - [ ] apparent type 替换
 - [ ] 类构造函数处理
 - [ ] 解析readonly
-- [ ]
+- [ ] 处理泛型参数

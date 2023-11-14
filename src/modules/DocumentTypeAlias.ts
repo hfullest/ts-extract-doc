@@ -27,8 +27,6 @@ export default class DocumentTypeAlias<Kind extends TypeAliasType = 'Basic'> ext
       type?.isNullable()
     ) {
       this.#handleBasic(type);
-    } else if (type?.isObject()) {
-      this.#handleObject(type);
     } else if (type?.isEnum() || type?.isEnumLiteral()) {
       this.#handleEnum(type);
     } else if (type?.isIntersection()) {
@@ -47,8 +45,6 @@ export default class DocumentTypeAlias<Kind extends TypeAliasType = 'Basic'> ext
   }
 
   #handleBasic(type: Type) {}
-
-  #handleObject(type: Type<ts.ObjectType>) {}
 
   #handleEnum(type: Type) {}
 
