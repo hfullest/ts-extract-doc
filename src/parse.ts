@@ -21,7 +21,7 @@ export const parse = (
 
   const project = new Project();
 
-  project.enableLogging();
+  // project.enableLogging();
 
   project.addSourceFilesFromTsConfig(resolve(process.cwd(), 'tsconfig.json'));
 
