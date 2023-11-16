@@ -18,8 +18,8 @@ export default {
       const { path, params } = token.meta;
       /*************************************** */
 
-      // const result = extractTsToMarkdown(path);
-      // writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
+      const result = extractTsToMarkdown(path);
+      writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
       debugger;
       parse(path);
 

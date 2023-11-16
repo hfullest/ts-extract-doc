@@ -1,6 +1,7 @@
-import { Node, Symbol, ts } from 'ts-morph';
+import { Node, Symbol, VariableStatement, ts } from 'ts-morph';
 import BaseDocField from '../BaseDocField';
 import DocumentFunction from '../DocumentFunction';
+import { JSDocCustomTagEnum } from '../../utils/constants';
 
 export default class DocumentFunctionComponent extends BaseDocField {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
@@ -13,16 +14,23 @@ export default class DocumentFunctionComponent extends BaseDocField {
 
   static isTarget(node: Node) {
     debugger;
+    const parentNode = DocumentFunction.getCompatAncestorNode<VariableStatement>(node?.getSymbol());
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(node?.getSymbol());
     if (!DocumentFunction.isTarget(functionTypeNode)) return false;
-    const type = functionTypeNode.getReturnType();
-    //TODO: 这里需要递归判断return
-    type.getAliasSymbol()
-    type.getFlags()
-   const node1= functionTypeNode.getReturnTypeNode();
-    const descendant  = functionTypeNode?.forEachDescendantAsArray();
-    const returnStatement = functionTypeNode?.getFirstDescendantByKind(ts.SyntaxKind.ReturnStatement);
-    const jsxElement = returnStatement?.getFirstDescendantByKind(ts.SyntaxKind.JsxElement);
-    return Node.isJsxElement(jsxElement);
+    const jsDocTags = parentNode?.getJsDocs()?.at(-1)?.getTags();
+    const isJsxElement = !!jsDocTags?.find((tag) => tag.getTagName() === JSDocCustomTagEnum.reactComponent);
+    if (isJsxElement) return true;
+    const returnTypeNode = functionTypeNode?.getReturnTypeNode(); // 如果指定了函数返回类型
+    const returnType = returnTypeNode?.getType();
+    const returnSubstitionType = functionTypeNode
+      ?.getType()
+      ?.getCallSignatures()[0]
+      ?.compilerSignature?.getReturnType();
+    const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
+    if (/^(React\.)?(\w+?)Element\b/.test(returnType?.getText()) || returnSubstitionSymbol?.getName() === 'Element') {
+      return true; // 支持 React.(匹配类型)Element、JSX.Element
+    }
+    // 处理React.FC情况
+    return false;
   }
 }

@@ -92,4 +92,6 @@ export enum JSDocTagEnum {
 export enum JSDocCustomTagEnum {
   /** 手动指定文档输出 使用`@doc-output` */
   'output' = 'output',
+  /** 手动指定为`react`组件 */
+  'reactComponent' = 'reactComponent',
 }

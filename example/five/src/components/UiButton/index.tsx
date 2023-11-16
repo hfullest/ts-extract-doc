@@ -54,19 +54,24 @@ type CompatButtonProps<N> = {
   ant?: never;
 };
 
+/** 测试UiButton 描述
+ *  
+ *  */
 export const UiButton = <N extends boolean = false>(
-  props: UiButtonProps<N>
-) => {
-  const { native = false, ...buttonProps } = props;
+  props1: UiButtonProps<N>
+):React.ClassicElement<any> => {
+  const { native = false, ...buttonProps } = props1;
   const Button: any = AntdButton;
   const innerFun = () => {
     if (1 + 1 === 2) return <div>哈哈</div>;
     else return <Button {...buttonProps}></Button>;
   }
-  // return <div>哈哈哈</div>;
+  return <div>哈哈哈</div>;
   // return React.createElement('div',{})
 
 };
+
+export const testRefUiButton = () => React.forwardRef(UiButton)
 
 export default UiButton;
 
