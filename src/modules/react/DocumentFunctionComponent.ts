@@ -17,6 +17,10 @@ export default class DocumentFunctionComponent extends BaseDocField {
     if (!DocumentFunction.isTarget(functionTypeNode)) return false;
     const type = functionTypeNode.getReturnType();
     //TODO: 这里需要递归判断return
+    type.getAliasSymbol()
+    type.getFlags()
+   const node1= functionTypeNode.getReturnTypeNode();
+    const descendant  = functionTypeNode?.forEachDescendantAsArray();
     const returnStatement = functionTypeNode?.getFirstDescendantByKind(ts.SyntaxKind.ReturnStatement);
     const jsxElement = returnStatement?.getFirstDescendantByKind(ts.SyntaxKind.JsxElement);
     return Node.isJsxElement(jsxElement);

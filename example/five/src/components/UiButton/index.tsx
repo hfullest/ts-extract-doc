@@ -63,8 +63,12 @@ export const UiButton = <N extends boolean = false>(
     if (1 + 1 === 2) return <div>哈哈</div>;
     else return <Button {...buttonProps}></Button>;
   }
+  // return <div>哈哈哈</div>;
+  // return React.createElement('div',{})
 
 };
+
+export default UiButton;
 
 UiButton.__ANT_BUTTON = true;
 UiButton.Group = AntdButton.Group;

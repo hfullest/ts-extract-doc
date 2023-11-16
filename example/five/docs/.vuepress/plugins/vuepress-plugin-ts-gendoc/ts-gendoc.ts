@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import parser from "react-docgen-typescript";
+// import parser from "react-docgen-typescript";
 import {
   markdownRender,
   renderers,
@@ -7,6 +7,7 @@ import {
 import { MarkdownImportOptions } from "./vuepress-plugin-markdown-import";
 import { extractTsToMarkdown } from "../../../../../../src/index";
 import { writeFileSync } from "fs";
+import { parse } from "../../../../../../src/react-docgen-typescript/src/index";
 
 export default {
   "ts-gendoc": {
@@ -17,28 +18,30 @@ export default {
       const { path, params } = token.meta;
       /*************************************** */
 
-      const result = extractTsToMarkdown(path);
-      writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
+      // const result = extractTsToMarkdown(path);
+      // writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
+      debugger;
+      parse(path);
 
       process.exit();
       /***************************************** */
 
-      const componentDocs = parser.parse(path, {
-        savePropValueAsString: true,
-      });
-      const mdDoc = markdownRender(componentDocs, {
-        renderer: renderers.aliMaterialRenderer,
-        language: "zh_CN",
-      });
-      const componentTokens = md.parse(mdDoc, {});
-      componentTokens.forEach(
-        (it) => (it.level = Math.max(it.level + token.level - 3, 0))
-      );
-      const html = md.renderer.render(componentTokens, {}, {});
+      // const componentDocs = parser.parse(path, {
+      //   savePropValueAsString: true,
+      // });
+      // const mdDoc = markdownRender(componentDocs, {
+      //   renderer: renderers.aliMaterialRenderer,
+      //   language: "zh_CN",
+      // });
+      // const componentTokens = md.parse(mdDoc, {});
+      // componentTokens.forEach(
+      //   (it) => (it.level = Math.max(it.level + token.level - 3, 0))
+      // );
+      // const html = md.renderer.render(componentTokens, {}, {});
 
-      console.log(mdDoc);
-      process.exit();
-      return html.replace(/}}/g, "} }"); // 为了解决vue-loader误把 }} 当做模版字符解析
+      // console.log(mdDoc);
+      // process.exit();
+      // return html.replace(/}}/g, "} }"); // 为了解决vue-loader误把 }} 当做模版字符解析
     },
   },
 } as MarkdownImportOptions["importers"];
