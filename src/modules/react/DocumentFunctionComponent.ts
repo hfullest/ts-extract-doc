@@ -1,19 +1,25 @@
 import { Node, Symbol, VariableStatement, ts } from 'ts-morph';
-import BaseDocField from '../BaseDocField';
 import DocumentFunction from '../DocumentFunction';
 import { JSDocCustomTagEnum } from '../../utils/constants';
+import DocumentObject from '../DocumentObject';
 
-export default class DocumentFunctionComponent extends BaseDocField {
+export default class DocumentFunctionComponent extends DocumentObject {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+    const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol);
+    const propsNode = functionTypeNode?.getParameters()?.[0];
+    debugger;
+    const propsSymbol = propsNode?.getSymbol();
+    const propsType = propsNode?.getType();
+    const propsTypeSymbol = propsType?.getSymbol() ?? propsType?.getAliasSymbol();
+    const issame = propsSymbol === propsTypeSymbol;
+    super(propsTypeSymbol, parentSymbol, rootSymbol);
 
-    this.#assign(symbol);
+    this.#assign(propsTypeSymbol);
   }
 
   #assign(symbol: Symbol) {}
 
   static isTarget(node: Node) {
-    debugger;
     const parentNode = DocumentFunction.getCompatAncestorNode<VariableStatement>(node?.getSymbol());
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(node?.getSymbol());
     if (!DocumentFunction.isTarget(functionTypeNode)) return false;

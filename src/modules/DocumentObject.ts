@@ -20,7 +20,7 @@ export default class DocumentObject extends BaseDocField {
     const objectDeclaration = symbol?.getDeclarations()[0] as TypeAliasDeclaration;
     const node = objectDeclaration?.getTypeNode().asKind(ts.SyntaxKind.TypeLiteral);
     const properties = node?.getProperties();
-    properties.forEach((prop) => {
+    properties?.forEach((prop) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       if (DocumentMethod.isTarget(prop)) {
