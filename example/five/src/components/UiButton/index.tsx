@@ -3,10 +3,9 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 
 export class ReactClassComponentA extends React.Component {
   render(): React.ReactNode {
-    return <div>哈哈哈</div>
+    return <div>哈哈哈</div>;
   }
 }
-
 
 /**
  *? 为什么需要使用antd的Button组件进行封装
@@ -24,7 +23,7 @@ export type AAAAAA = string;
  *
  * @description
  * 这里是TypeObjectLiteral 额外描述
- * 
+ *
  * @example
  * const abc:TypeObjectLiteral = {};
  */
@@ -55,23 +54,23 @@ type CompatButtonProps<N> = {
 };
 
 /** 测试UiButton 描述
- *  
+ *
  *  */
 export const UiButton = <N extends boolean = false>(
   props1: UiButtonProps<N>
-):React.ClassicElement<any> => {
+) => {
   const { native = false, ...buttonProps } = props1;
   const Button: any = AntdButton;
   const innerFun = () => {
     if (1 + 1 === 2) return <div>哈哈</div>;
     else return <Button {...buttonProps}></Button>;
-  }
-  return <div>哈哈哈</div>;
+  };
+  if (1 + 1 === 2) return null;
+  // else return <div>哈哈哈</div>;
   // return React.createElement('div',{})
-
 };
 
-export const testRefUiButton = () => React.forwardRef(UiButton)
+export const testRefUiButton = () => React.forwardRef(UiButton);
 
 export default UiButton;
 
@@ -100,7 +99,7 @@ export function DeclarationFunction(
   a: number /** 测试声明函数的a参数后置注释 */,
   b?: symbol,
   c: string = "ssss"
-): void { }
+): void {}
 
 /** 错误边界 */
 export class ErrorBound {
