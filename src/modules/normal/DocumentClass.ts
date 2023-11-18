@@ -1,10 +1,8 @@
 import { ClassDeclaration, ClassExpression, Node, Symbol, ts } from 'ts-morph';
-import BaseDocField from './BaseDocField';
-import DocumentMethod from './DocumentMethod';
-import DocumentProp from './DocumentProp';
+import { BaseDocField, DocumentMethod, DocumentProp } from '../helper';
 
 // @ts-ignore
-export default class DocumentClass extends BaseDocField {
+export class DocumentClass extends BaseDocField {
   /** 构造函数文档 */
   constructors: DocumentMethod;
   /** 属性 */

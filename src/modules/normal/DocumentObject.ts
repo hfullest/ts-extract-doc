@@ -1,10 +1,8 @@
 import { Node, Symbol, TypeAliasDeclaration, ts } from 'ts-morph';
-import DocumentProp from './DocumentProp';
-import DocumentMethod from './DocumentMethod';
-import BaseDocField from './BaseDocField';
+import { DocumentProp, BaseDocField, DocumentMethod } from '../helper';
 
 // @ts-ignore
-export default class DocumentObject extends BaseDocField {
+export class DocumentObject extends BaseDocField {
   /** 属性 */
   props: Record<string, DocumentProp> = {};
   /** 方法 */

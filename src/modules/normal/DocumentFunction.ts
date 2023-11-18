@@ -1,9 +1,7 @@
 import { Symbol, ts, Node, FunctionDeclaration, FunctionExpression, ArrowFunction } from 'ts-morph';
-import BaseDocField from './BaseDocField';
-import DocumentReturn from './DocumentReturn';
-import DocumentParameter from './DocumentParameter';
+import { BaseDocField, DocumentReturn, DocumentParameter } from '../helper';
 
-export default class DocumentFunction extends BaseDocField {
+export class DocumentFunction extends BaseDocField {
   /** 参数 */
   parameters: DocumentParameter[];
   /** 方法返回 */
@@ -23,6 +21,12 @@ export default class DocumentFunction extends BaseDocField {
       (parameter) => new DocumentParameter(parameter.getSymbol(), symbol, this.rootSymbol)
     );
     const returnTypeNode = functionTypeNode.getReturnTypeNode();
+    const returnType = returnTypeNode?.getType();
+    const returnSubstitionType = functionTypeNode
+      ?.getType()
+      ?.getCallSignatures()[0]
+      ?.compilerSignature?.getReturnType();
+    const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
     this.returns = new DocumentReturn(returnTypeNode?.getSymbol(), symbol, this.rootSymbol);
   }
 

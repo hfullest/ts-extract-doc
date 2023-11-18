@@ -1,7 +1,7 @@
 import { ClassDeclaration, JSDocTag, Node, Symbol, VariableStatement, ts } from 'ts-morph';
-import { DocumentTag, DocumentType } from '../interface';
-import { JSDocCustomTagEnum, JSDocTagEnum } from '../utils/constants';
-export default class BaseDocField {
+import { DocumentTag, DocumentType } from '../../interface';
+import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
+export class BaseDocField {
   /** 当前 symbol */
   symbol: Symbol;
   /** 父级 symbol */

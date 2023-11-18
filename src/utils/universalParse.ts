@@ -1,7 +1,13 @@
 import { Symbol } from 'ts-morph';
-import { DocumentInterface, DocumentClass, DocumentFunction, DocumentTypeAlias, DocumentObject } from '../modules';
-import DocumentFunctionComponent from '../modules/react/DocumentFunctionComponent';
-import DocumentClassComponent from '../modules/react/DocumentClassComponent';
+import {
+  DocumentInterface,
+  DocumentClass,
+  DocumentFunction,
+  DocumentTypeAlias,
+  DocumentObject,
+  DocumentFunctionComponent,
+  DocumentClassComponent,
+} from '../modules';
 
 /** 通用解析，能对所有类型(已定义类型)进行解析 */
 export default function universalParse(symbol: Symbol) {

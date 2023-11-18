@@ -1,8 +1,8 @@
 import { Node, Symbol } from 'ts-morph';
-import BaseDocField from '../BaseDocField';
-import DocumentFunction from '../DocumentFunction';
+import { BaseDocField } from '../helper';
+import { DocumentFunction } from '../normal/DocumentFunction';
 
-export default class DocumentClassComponent extends BaseDocField {
+export class DocumentClassComponent extends BaseDocField {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
     super(symbol, parentSymbol, rootSymbol);
 

@@ -1,21 +1,9 @@
-import {
-  ArrowFunction,
-  FunctionDeclaration,
-  FunctionExpression,
-  FunctionTypeNode,
-  JSDocFunctionType,
-  MethodSignature,
-  Node,
-  PropertyDeclaration,
-  PropertySignature,
-  Symbol,
-  ts,
-} from 'ts-morph';
-import DocumentFunction from './DocumentFunction';
-import DocumentDecorator from './DocumentDecorator';
+import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
+import { DocumentFunction } from '../normal/DocumentFunction';
+import { DocumentDecorator } from './DocumentDecorator';
 
 // @ts-ignore 忽略继承导致的静态类型不兼容 https://segmentfault.com/q/1010000023736777
-export default class DocumentMethod extends DocumentFunction {
+export class DocumentMethod extends DocumentFunction {
   /** 装饰器 */
   decorator?: DocumentDecorator[];
   /** 默认值 */

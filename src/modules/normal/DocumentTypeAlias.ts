@@ -1,9 +1,9 @@
 import { Node, Symbol, Type, TypeAliasDeclaration, ts } from 'ts-morph';
-import BaseDocField from './BaseDocField';
+import { BaseDocField } from '../helper';
 
 export type TypeAliasType = 'Basic' | 'Intersection' | 'Union' | 'Array' | 'Tuple' | 'Object' | 'Enum';
 
-export default class DocumentTypeAlias<Kind extends TypeAliasType = 'Basic'> extends BaseDocField {
+export class DocumentTypeAlias<Kind extends TypeAliasType = 'Basic'> extends BaseDocField {
   kind: 'Object';
 
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {

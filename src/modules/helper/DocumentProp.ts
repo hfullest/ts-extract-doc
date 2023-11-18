@@ -1,7 +1,7 @@
 import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
-import BaseDocField from './BaseDocField';
+import {BaseDocField} from './BaseDocField';
 
-export default class DocumentProp extends BaseDocField {
+export  class DocumentProp extends BaseDocField {
   /** 是否可选  */
   isOptional: boolean;
   /** 默认值 */

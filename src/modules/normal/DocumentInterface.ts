@@ -1,9 +1,7 @@
 import { InterfaceDeclaration, Node, Symbol, TypeLiteralNode } from 'ts-morph';
-import BaseDocField from './BaseDocField';
-import DocumentProp from './DocumentProp';
-import DocumentMethod from './DocumentMethod';
+import { BaseDocField, DocumentProp, DocumentMethod } from '../helper';
 
-export default class DocumentInterface extends BaseDocField {
+export class DocumentInterface extends BaseDocField {
   /** 属性 */
   props: Record<string, DocumentProp> = {};
   /** 方法 */

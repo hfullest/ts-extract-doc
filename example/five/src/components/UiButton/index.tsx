@@ -57,7 +57,19 @@ type CompatButtonProps<N> = {
  *
  *  */
 export const UiButton = <N extends boolean = false>(
-  props1: UiButtonProps<N>
+  props1: {
+    /**是否使用原生按钮 */
+    native?: N;
+    children?: React.ReactNode;
+    /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
+     *  @deprecated
+     *
+     * @description
+     * 哈哈哈这里可以是markdown
+     *
+     *  */
+    ant?: never;
+  }
 ) => {
   const { native = false, ...buttonProps } = props1;
   const Button: any = AntdButton;

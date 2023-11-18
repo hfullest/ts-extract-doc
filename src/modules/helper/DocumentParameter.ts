@@ -1,9 +1,7 @@
-import { FunctionDeclaration, JSDocParameterTag, Node, ParameterDeclaration, Symbol, ts } from 'ts-morph';
-import BaseDocField from './BaseDocField';
-import { isFunctionKind } from '../utils/utils';
-import { DocumentFunction } from '.';
+import { JSDocParameterTag, Node, ParameterDeclaration, Symbol } from 'ts-morph';
+import { BaseDocField } from './BaseDocField';
 
-export default class DocumentParameter extends BaseDocField {
+export class DocumentParameter extends BaseDocField {
   /** 是否可选  */
   isOptional: boolean;
   /** 默认值 */
