@@ -7,7 +7,7 @@ export class DocumentFunctionComponent extends DocumentFunction {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol);
     const propsNode = functionTypeNode?.getParameters()?.[0];
-    debugger;
+    // debugger;
     const propsSymbol = propsNode?.getSymbol();
     const propsType = propsNode?.getType();
     const propsTypeSymbol = propsType?.getSymbol() ?? propsType?.getAliasSymbol();

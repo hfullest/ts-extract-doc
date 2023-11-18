@@ -7,6 +7,7 @@ export class DocumentTypeAlias<Kind extends TypeAliasType = 'Basic'> extends Bas
   kind: 'Object';
 
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
+    debugger;
     super(symbol, parentSymbol, rootSymbol);
 
     this.#assign(symbol);

@@ -1,4 +1,4 @@
-import { FunctionDeclaration, Node, ReturnStatement, Symbol } from 'ts-morph';
+import { FunctionDeclaration, JSDocReturnTag, Node, ReturnStatement, Symbol } from 'ts-morph';
 import { BaseDocField } from './BaseDocField';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentType } from './DocumentType';
@@ -15,9 +15,9 @@ export class DocumentReturn extends BaseDocField {
     const parentNode = this.getCompatAncestorNode<FunctionDeclaration>(this.parentSymbol);
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(parentNode);
     const returnTypeNode = functionTypeNode?.getReturnTypeNode();
-    const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node;
+    const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node as JSDocReturnTag;
 
-    this.type = new DocumentType(returnTypeNode);
+    this.type = new DocumentType(returnTypeNode, returnCommentNode);
     this.description = returnCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
   }
 }

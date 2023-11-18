@@ -1,45 +1,29 @@
-import { Node, Type, ts } from 'ts-morph';
+import { JSDocParameterTag, JSDocReturnTag, Node, Type, ts } from 'ts-morph';
 
-export type TypeAliasType = 'Basic' | 'Intersection' | 'Union' | 'Array' | 'Tuple' | 'Object' | 'Enum';
+export type DocumentTypeKind = 'Basic' | 'Intersection' | 'Union' | 'Array' | 'Tuple' | 'Object' | 'Enum';
 
 export class DocumentType {
   name: never;
-  value?: any;
+  value: any;
   raw?: string;
+  /** 类型文本展示 */
+  text: string;
+  /** 类型原始文本展示 */
+  fullText: string;
+  /** 类型 */
+  kind: DocumentTypeKind;
 
-  constructor(node: Node<ts.TypeNode>) {
-    // DocumentProp
-    // name: typeNode?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, ''),
-    // value: prop?.getType()?.getLiteralValue(),
-    // raw: prop?.getText(),
-
-    // DocumentReturn
-    // {
-    //     name: returnTypeNode?.getText() ?? returnCommentNode?.getType()?.getText(),
-    //     value: returns?.getType()?.getLiteralValue(),
-    //     raw: returns?.getText(),
-    //   }
-
-    // DocumentMethod
-    //  {
-    //     // 去除注释
-    //     name: typeNode?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, ''),
-    //     value: node?.getType()?.getLiteralValue(),
-    //     raw: node?.getFullText(),
-    //   };
-
-    // DocumentParameter
-
-    // {
-    //     name: paramTypeNode?.getText() ?? paramCommentNode?.getTypeExpression()?.getText(),
-    //     value: parameter?.getType()?.getLiteralValue(),
-    //     raw: parameter?.getText(),
-    //   };
-
-    this.#assign(node);
+  constructor(node: Node<ts.TypeNode>, jsDocNode?: JSDocParameterTag | JSDocReturnTag) {
+    this.#assign(node, jsDocNode);
   }
 
-  #assign(node: Node<ts.TypeNode>) {
+  #assign(node: Node<ts.TypeNode>, jsDocNode: JSDocParameterTag | JSDocReturnTag) {
+    this.text =
+      node?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, '') ?? // 去除注释
+      jsDocNode?.getTypeExpression()?.getText() ??
+      jsDocNode?.getType()?.getText();
+    this.fullText = node?.getFullText();
+
     const type = node?.getType();
     if (
       type?.isNumber() ||
@@ -69,17 +53,30 @@ export class DocumentType {
     }
   }
 
-  #handleBasic(type: Type) {}
+  #handleBasic(type: Type) {
+    this.kind = 'Basic';
+    this.value = type?.getText();
+  }
 
-  #handleEnum(type: Type) {}
+  #handleEnum(type: Type) {
+    this.kind = 'Enum';
+  }
 
-  #handleIntersection(type: Type<ts.IntersectionType>) {}
+  #handleIntersection(type: Type<ts.IntersectionType>) {
+    this.kind = 'Intersection';
+  }
 
-  #handleUnion(type: Type<ts.UnionType>) {}
+  #handleUnion(type: Type<ts.UnionType>) {
+    this.kind = 'Union';
+  }
 
-  #handleArray(type: Type) {}
+  #handleArray(type: Type) {
+    this.kind = 'Array';
+  }
 
-  #handleTuple(type: Type<ts.TupleType>) {}
+  #handleTuple(type: Type<ts.TupleType>) {
+    this.kind = 'Tuple';
+  }
 
   #handleAny(type: Type) {}
 
