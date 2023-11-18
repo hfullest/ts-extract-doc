@@ -11,13 +11,6 @@ import {
 } from './modules';
 import DataSource from './mardown/DataSource';
 
-export interface DocumentTag {
-  name: string;
-  text: string;
-  node: JSDocTag;
-  parent: Node;
-}
-
 export type Document =
   | DocumentObject
   | DocumentFunction
@@ -25,12 +18,6 @@ export type Document =
   | DocumentTypeAlias
   | DocumentInterface
   | DocumentExport;
-
-export interface DocumentType {
-  name: string;
-  value?: any;
-  raw?: string;
-}
 
 export interface OptionsColums {
   /** 列名称 */
@@ -76,36 +63,4 @@ export interface ConfigOptions {
   markdown?: GenMarkdownOptions;
   /** `tsconfig.json路径` */
   tsConfigPath?: string;
-}
-
-///////////////////////////////
-export interface Component {
-  name: string;
-}
-
-export type PropFilter = (props: DocumentProp, component: Component) => boolean;
-
-export type ComponentNameResolver = (exp: ts.Symbol, source: ts.SourceFile) => string | undefined | null | false;
-
-export interface ParserOptions {
-  propFilter?: StaticPropFilter | PropFilter;
-  componentNameResolver?: ComponentNameResolver;
-  shouldExtractLiteralValuesFromEnum?: boolean;
-  shouldRemoveUndefinedFromOptional?: boolean;
-  shouldExtractValuesFromUnion?: boolean;
-  skipChildrenPropWithoutDoc?: boolean;
-  savePropValueAsString?: boolean;
-  shouldIncludePropTagMap?: boolean;
-  shouldIncludeExpression?: boolean;
-  customComponentTypes?: string[];
-}
-
-export interface StaticPropFilter {
-  skipPropsWithName?: string[] | string;
-  skipPropsWithoutDoc?: boolean;
-}
-
-export interface FileParser {
-  parse(filePathOrPaths: string | string[]): Document[];
-  parseWithProgramProvider(filePathOrPaths: string | string[], programProvider?: () => ts.Program): Document[];
 }

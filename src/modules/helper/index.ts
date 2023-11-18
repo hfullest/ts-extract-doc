@@ -6,3 +6,4 @@ export * from './DocumentProp';
 export * from './DocumentParameter';
 export * from './DocumentReturn';
 export * from './DocumentType';
+export * from './DocumentTag';

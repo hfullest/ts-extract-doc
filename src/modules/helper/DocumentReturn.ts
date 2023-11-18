@@ -1,6 +1,7 @@
 import { FunctionDeclaration, Node, ReturnStatement, Symbol } from 'ts-morph';
 import { BaseDocField } from './BaseDocField';
 import { DocumentFunction } from '../normal/DocumentFunction';
+import { DocumentType } from './DocumentType';
 
 export class DocumentReturn extends BaseDocField {
   constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
@@ -16,11 +17,7 @@ export class DocumentReturn extends BaseDocField {
     const returnTypeNode = functionTypeNode?.getReturnTypeNode();
     const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node;
 
-    this.type = {
-      name: returnTypeNode?.getText() ?? returnCommentNode?.getType()?.getText(),
-      value: returns?.getType()?.getLiteralValue(),
-      raw: returns?.getText(),
-    };
+    this.type = new DocumentType(returnTypeNode);
     this.description = returnCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
   }
 }

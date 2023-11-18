@@ -1,7 +1,8 @@
 import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
-import {BaseDocField} from './BaseDocField';
+import { BaseDocField } from './BaseDocField';
+import { DocumentType } from './DocumentType';
 
-export  class DocumentProp extends BaseDocField {
+export class DocumentProp extends BaseDocField {
   /** 是否可选  */
   isOptional: boolean;
   /** 默认值 */
@@ -25,11 +26,7 @@ export  class DocumentProp extends BaseDocField {
     this.defaultValue = prop?.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
     this.isOptional = prop?.hasQuestionToken();
     this.modifiers = prop?.getCombinedModifierFlags() | jsDoc?.getCombinedModifierFlags();
-    this.type = {
-      name: typeNode?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, ''),
-      value: prop?.getType()?.getLiteralValue(),
-      raw: prop?.getText(),
-    };
+    this.type = new DocumentType(typeNode);
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {

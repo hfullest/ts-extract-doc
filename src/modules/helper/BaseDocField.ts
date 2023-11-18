@@ -1,6 +1,7 @@
 import { ClassDeclaration, JSDocTag, Node, Symbol, VariableStatement, ts } from 'ts-morph';
-import { DocumentTag, DocumentType } from '../../interface';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
+import { DocumentType } from './DocumentType';
+import { DocumentTag } from './DocumentTag';
 export class BaseDocField {
   /** 当前 symbol */
   symbol: Symbol;
@@ -78,14 +79,7 @@ export class BaseDocField {
   /** 解析 JSDoc 相关标签并赋值 */
   #parseAndAssginTags(jsDocTags: JSDocTag<ts.JSDocTag>[]) {
     this.#assginJsDocTags(jsDocTags); // 这里解析供透传使用
-    this.tags = jsDocTags?.map((tag) => {
-      return {
-        name: tag.getTagName(),
-        text: tag.getCommentText(),
-        node: tag,
-        parent: tag.getParent(),
-      };
-    });
+    this.tags = jsDocTags?.map((tag) => new DocumentTag(tag));
 
     this.tags?.forEach((tag) => {
       switch (tag.name as keyof typeof JSDocTagEnum | keyof typeof JSDocCustomTagEnum) {

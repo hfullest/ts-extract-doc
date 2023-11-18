@@ -1,6 +1,7 @@
 import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentDecorator } from './DocumentDecorator';
+import { DocumentType } from './DocumentType';
 
 // @ts-ignore 忽略继承导致的静态类型不兼容 https://segmentfault.com/q/1010000023736777
 export class DocumentMethod extends DocumentFunction {
@@ -23,18 +24,12 @@ export class DocumentMethod extends DocumentFunction {
     const node = symbol?.getDeclarations()[0];
     if (!DocumentMethod.isTarget(node)) return;
     const jsDoc = node?.getJsDocs()[0];
-    const jsDocTags = jsDoc?.getTags();
     const typeNode = node?.getTypeNode();
     this.isOptional = node?.hasQuestionToken();
     this.modifiers = node?.getCombinedModifierFlags() | jsDoc?.getCombinedModifierFlags();
-    const defaultTagNode = jsDocTags?.find((t) => /^default(Value)?/.test(t.getTagName()));
+    const defaultTagNode = this.tags?.find((t) => /^default(Value)?/.test(t.name))?.node;
     this.defaultValue = node.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
-    this.type = {
-      // 去除注释
-      name: typeNode?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, ''),
-      value: node?.getType()?.getLiteralValue(),
-      raw: node?.getFullText(),
-    };
+    this.type = new DocumentType(typeNode);
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {
