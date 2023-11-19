@@ -16,7 +16,9 @@ export class DocumentObject extends BaseDocField {
 
   #assign(symbol: Symbol) {
     const objectDeclaration = symbol?.getDeclarations()[0] as TypeAliasDeclaration;
-    const node = objectDeclaration?.getTypeNode().asKind(ts.SyntaxKind.TypeLiteral);
+    const node =
+      objectDeclaration?.asKind(ts.SyntaxKind.TypeLiteral) ?? // 兼容
+      objectDeclaration?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral);
     const properties = node?.getProperties();
     properties?.forEach((prop) => {
       const propName = prop?.getName();
@@ -31,6 +33,6 @@ export class DocumentObject extends BaseDocField {
 
   static isTarget(node: Node) {
     const type = node?.getType();
-    return type?.isObject();
+    return type?.isObject() && !type?.isArray() && !type?.isTuple() && !type?.isNullable();
   }
 }

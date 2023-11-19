@@ -1,40 +1,109 @@
 import { JSDocParameterTag, JSDocReturnTag, Node, Type, ts } from 'ts-morph';
+import { Document } from '../../interface';
+import universalParse from '../../utils/universalParse';
+import { DocumentInterface, DocumentObject } from '../normal';
+import { DocumentProp } from './DocumentProp';
+import { DocumentMethod } from './DocumentMethod';
 
-export type DocumentTypeKind = 'Basic' | 'Intersection' | 'Union' | 'Array' | 'Tuple' | 'Object' | 'Enum';
+export interface TypeValues {
+  Basic: string;
+  /** 相交类型 */
+  Intersection: any[];
+  /** 联合类型 */
+  Union: any[];
+  Array: [string];
+  Tuple: string;
+  Object: string;
+  Enum: string;
+}
+export namespace DocumentTypeInfo {
+  /** 基本类型，比如`string`,`number`,`boolean`,`null`,`undefined`等 */
+
+  export interface Basic {
+    kind: 'Basic';
+    value: string;
+  }
+
+  export interface Intersection {
+    kind: 'Intersection';
+    /** 分别解析，未合并的值 */
+    parsedValue: Document[];
+    /** 最终处理的结果 */
+    value: { props: DocumentProp; methods: DocumentMethod };
+  }
+
+  export interface Union {
+    kind: 'Union';
+    /** 分别解析 */
+    parsedValue: (Document | DocumentType)[];
+    /** 最终处理的结果 */
+    value: (Document | DocumentType)[];
+  }
+
+  export interface Tuple {
+    kind: 'Tuple';
+    /** 分别解析 */
+    parsedValue: (Document | DocumentType)[];
+    /** 最终处理的结果 */
+    value: (Document | DocumentType)[];
+  }
+
+  export interface Array {
+    kind: 'Array';
+    /** 分别解析 */
+    parsedValue: Document | DocumentType;
+    /** 最终处理的数组元素类型结果 */
+    value: Document | DocumentType;
+  }
+
+  export interface Enum {
+    kind: 'Enum';
+    value: Document; // 暂时不处理解析
+  }
+}
+
+export type DocumentTypeInfoType =
+  | DocumentTypeInfo.Basic
+  | DocumentTypeInfo.Intersection
+  | DocumentTypeInfo.Union
+  | DocumentTypeInfo.Tuple
+  | DocumentTypeInfo.Array
+  | DocumentTypeInfo.Enum;
+
+export type DocumentTypeKind = DocumentTypeInfoType['kind'];
 
 export class DocumentType {
-  name: never;
-  value: any;
-  raw?: string;
   /** 类型文本展示 */
   text: string;
   /** 类型原始文本展示 */
   fullText: string;
   /** 类型 */
   kind: DocumentTypeKind;
+  /** 类型值集合，同时只会有一个有值，根据不同类型kind取相应的值即可 */
+  value = {} as DocumentTypeInfoType['value'];
+  /** 类型相关详细信息 */
+  info = {} as DocumentTypeInfoType;
+  /** 当前类型节点，方便自行获取并处理类型 */
+  typeNode: Node<ts.TypeNode> | null = null;
+  /** 当前类型`type`对象 */
+  current: Type;
 
-  constructor(node: Node<ts.TypeNode>, jsDocNode?: JSDocParameterTag | JSDocReturnTag) {
+  constructor(node: Type | Node<ts.TypeNode>, jsDocNode?: JSDocParameterTag | JSDocReturnTag) {
     this.#assign(node, jsDocNode);
   }
 
-  #assign(node: Node<ts.TypeNode>, jsDocNode: JSDocParameterTag | JSDocReturnTag) {
+  #assign(node: Type | Node<ts.TypeNode>, jsDocNode: JSDocParameterTag | JSDocReturnTag) {
     this.text =
       node?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, '') ?? // 去除注释
       jsDocNode?.getTypeExpression()?.getText() ??
       jsDocNode?.getType()?.getText();
-    this.fullText = node?.getFullText();
-
-    const type = node?.getType();
-    if (
-      type?.isNumber() ||
-      type?.isNumberLiteral() ||
-      type?.isBoolean() ||
-      type?.isBooleanLiteral() ||
-      type?.isString() ||
-      type?.isStringLiteral() ||
-      type?.isTemplateLiteral() ||
-      type?.isNullable()
-    ) {
+    if (Node.isNode(node)) {
+      this.fullText = node?.getFullText();
+      this.typeNode = node;
+    }
+    const type = Node.isNode(node) ? node?.getType() : node;
+    this.current = type;
+    if (this.#isBasicType(type)) {
       this.#handleBasic(type);
     } else if (type?.isEnum() || type?.isEnumLiteral()) {
       this.#handleEnum(type);
@@ -51,11 +120,27 @@ export class DocumentType {
     } else {
       this.#handleUnknown(type);
     }
+
+    this.value = this.info.value;
+  }
+
+  #isBasicType(type: Type) {
+    return (
+      type?.isNumber() ||
+      type?.isNumberLiteral() ||
+      type?.isBoolean() ||
+      type?.isBooleanLiteral() ||
+      type?.isString() ||
+      type?.isStringLiteral() ||
+      type?.isTemplateLiteral() ||
+      type?.isNullable()
+    );
   }
 
   #handleBasic(type: Type) {
     this.kind = 'Basic';
-    this.value = type?.getText();
+    this.info.kind = 'Basic';
+    this.info.value = type?.getText();
   }
 
   #handleEnum(type: Type) {
@@ -64,21 +149,65 @@ export class DocumentType {
 
   #handleIntersection(type: Type<ts.IntersectionType>) {
     this.kind = 'Intersection';
+    const intersectionTypes = type?.getIntersectionTypes();
+    const docs = intersectionTypes?.map((it) => this.#handleParseType(it)).filter(Boolean) as (
+      | DocumentObject
+      | DocumentInterface
+    )[];
+    const combineDoc = docs.reduce<DocumentTypeInfo.Intersection['value']>((pre, cur) => {
+      pre.props = { ...pre.props, ...cur?.props } as DocumentProp;
+      pre.methods = { ...pre.methods, ...cur?.methods } as DocumentMethod;
+      return pre;
+    }, {} as DocumentTypeInfo.Intersection['value']);
+    this.info = {
+      kind: 'Intersection',
+      parsedValue: docs,
+      value: combineDoc,
+    };
   }
 
   #handleUnion(type: Type<ts.UnionType>) {
     this.kind = 'Union';
+    const unionTypes = type?.getUnionTypes();
+    const docs = unionTypes?.map((it) => this.#handleParseType(it)).filter(Boolean) as (
+      | DocumentObject
+      | DocumentInterface
+    )[];
+    this.info = {
+      kind: 'Union',
+      parsedValue: docs,
+      value: docs,
+    };
   }
 
   #handleArray(type: Type) {
     this.kind = 'Array';
+    const arrayType = type?.getArrayElementType();
+    const doc = this.#handleParseType(arrayType);
+    this.info = {
+      kind: 'Array',
+      parsedValue: doc,
+      value: doc,
+    };
   }
 
   #handleTuple(type: Type<ts.TupleType>) {
     this.kind = 'Tuple';
+    const tupleTypes = type?.getTupleElements();
+    const docs = tupleTypes?.map(this.#handleParseType);
+    this.info = {
+      kind: 'Tuple',
+      parsedValue: docs,
+      value: docs,
+    };
   }
 
   #handleAny(type: Type) {}
 
   #handleUnknown(type: Type) {}
+
+  #handleParseType(type: Type) {
+    const symbol = type?.getAliasSymbol?.() ?? type?.getSymbol?.();
+    return universalParse(symbol) ?? new DocumentType(type); // 未命中定义类型则使用兜底类型
+  }
 }

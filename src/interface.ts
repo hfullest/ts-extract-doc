@@ -1,23 +1,26 @@
-import { ts, Node, JSDocTag } from 'ts-morph';
 import {
   DocumentObject,
   DocumentFunction,
   DocumentClass,
   DocumentTypeAlias,
   DocumentInterface,
-  DocumentExport,
   DocumentProp,
   DocumentMethod,
+  DocumentFunctionComponent,
+  DocumentClassComponent,
+  DocumentEnum,
 } from './modules';
 import DataSource from './mardown/DataSource';
 
 export type Document =
   | DocumentObject
-  | DocumentFunction
-  | DocumentClass
+  | DocumentEnum
   | DocumentTypeAlias
   | DocumentInterface
-  | DocumentExport;
+  | DocumentFunction
+  | DocumentClass
+  | DocumentFunctionComponent
+  | DocumentClassComponent;
 
 export interface OptionsColums {
   /** 列名称 */

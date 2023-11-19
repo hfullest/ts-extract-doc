@@ -12,7 +12,7 @@ export class DocumentClassComponent extends BaseDocField {
   #assign(symbol: Symbol) {}
 
   static isTarget(node: Node) {
-    node = BaseDocField.getCompatAncestorNode(node.getSymbol());
+    node = BaseDocField.getCompatAncestorNode(node?.getSymbol());
     if (!DocumentFunction.isTarget(node)) return false;
   }
 }

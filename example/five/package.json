@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "docs:dev": "vuepress dev docs --no-cache",
+    "docs:dev": "vuepress dev docs --no-cache --debug",
     "docs:build": "vuepress build docs"
   },
   "dependencies": {

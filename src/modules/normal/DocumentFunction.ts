@@ -21,12 +21,10 @@ export class DocumentFunction extends BaseDocField {
       (parameter) => new DocumentParameter(parameter.getSymbol(), symbol, this.rootSymbol)
     );
     const returnTypeNode = functionTypeNode.getReturnTypeNode();
-    const returnType = returnTypeNode?.getType();
     const returnSubstitionType = functionTypeNode
       ?.getType()
       ?.getCallSignatures()[0]
       ?.compilerSignature?.getReturnType();
-    const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
     this.returns = new DocumentReturn(returnTypeNode?.getSymbol(), symbol, this.rootSymbol);
   }
 

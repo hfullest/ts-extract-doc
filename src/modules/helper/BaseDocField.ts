@@ -59,7 +59,8 @@ export class BaseDocField {
   }
 
   #assign(symbol: Symbol) {
-    const node = symbol?.getDeclarations()[0] as ClassDeclaration; /** 指定任意有jsdoc声明，方便使用api */
+    const node = (symbol?.getValueDeclaration?.() ??
+      symbol?.getDeclarations?.()[0]) as ClassDeclaration; /** 指定任意有jsdoc声明，方便使用api */
     const ancestorNode = Node.isVariableDeclaration(node)
       ? node?.getFirstAncestorByKind?.(ts.SyntaxKind.VariableStatement) // 做兼容修正，VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
       : node;
@@ -74,6 +75,7 @@ export class BaseDocField {
       start: [node?.getStartLineNumber(), node?.getStartLinePos()],
       end: [node?.getEndLineNumber(), node?.getEnd()], // TODO：确认结束位置
     };
+    this.type = new DocumentType(node?.getType());
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
