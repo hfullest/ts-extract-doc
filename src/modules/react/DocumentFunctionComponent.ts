@@ -1,29 +1,36 @@
 import { Node, Symbol, VariableStatement, ts } from 'ts-morph';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { JSDocCustomTagEnum } from '../../utils/constants';
-import { DocumentOptions } from '../helper';
+import { DocumentOptions, DocumentType } from '../helper';
+import { DocumentObject } from '../normal';
 
 // @ts-ignore
 export class DocumentFunctionComponent extends DocumentFunction {
+  props: DocumentObject['props'];
+
+  methods: DocumentObject['methods'];
+
   constructor(symbol: Symbol, options: DocumentOptions) {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbol, options);
     this.#options = options;
 
-    const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol);
-    const propsNode = functionTypeNode?.getParameters()?.[0];
-    // debugger;
-    const propsSymbol = propsNode?.getSymbol();
-    const propsType = propsNode?.getType();
-    const propsTypeSymbol = propsType?.getSymbol() ?? propsType?.getAliasSymbol();
-
-    this.#assign(propsTypeSymbol);
+    this.#assign(symbol);
   }
 
   #options: DocumentOptions;
 
-  #assign(symbol: Symbol) {}
+  #assign(symbol: Symbol) {
+    const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol);
+    const propsNode = functionTypeNode?.getParameters()?.[0];
+    const typeNode = propsNode?.getTypeNode?.();
+    debugger;
+    const doc = new DocumentType(typeNode, this.#options);
+    const value = doc?.value as DocumentObject;
+    this.props = value?.props;
+    this.methods = value?.methods;
+  }
 
   static isTarget(node: Node) {
     const parentNode = DocumentFunction.getCompatAncestorNode<VariableStatement>(node?.getSymbol());

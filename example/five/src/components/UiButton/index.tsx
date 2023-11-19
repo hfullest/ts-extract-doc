@@ -18,9 +18,9 @@ export class ReactClassComponentA extends React.Component {
 /** 4 */
 export type AAAAAA = string;
 
-export enum BBBB{
-  AA='123',
-  BB='345',
+export enum BBBB {
+  AA = '123',
+  BB = '345',
 }
 
 /** 测试 TypeObjectLiteral 描述
@@ -37,10 +37,7 @@ export type TypeObjectLiteral = [{
   readonly b?: number;
 }, string]
 /** UiButton */
-export type UiButtonProps<N = false> = {
-  a: string;
-  b: number;
-} & CompatButtonProps<N>;
+export type UiButtonProps<N = false> = {} & CompatButtonProps<N>;
 
 /** @output */
 type CompatButtonProps<N> = {
@@ -55,6 +52,9 @@ type CompatButtonProps<N> = {
    *
    *  */
   ant?: never;
+
+  /** 测试嵌套 */
+  compat: TypeObjectLiteral;
 };
 
 /** 测试UiButton 描述
@@ -73,7 +73,11 @@ export const UiButton = <N extends boolean = false>(
      *
      *  */
     ant?: never;
-  }
+  } & {
+    /** a属性测试 */
+    a: string;
+    b: number;
+  } & CompatButtonProps<any>
 ) => {
   const { native = false, ...buttonProps } = props1;
   const Button: any = AntdButton;
@@ -207,6 +211,8 @@ export class ExampleClass {
    * @default 'hahah'
    *
    * 这里是markdown区域
+   * 
+   * 
    */
   a: string = "124";
   /**
@@ -215,6 +221,8 @@ export class ExampleClass {
    * button的==内容==区
    *
    * @version 3.2.15
+   * 
+   * @expand 3
    */
   button?: UiButtonProps;
 

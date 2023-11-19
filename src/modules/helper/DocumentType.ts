@@ -25,6 +25,13 @@ export namespace DocumentTypeInfo {
     value: string;
   }
 
+  export interface Object {
+    kind: 'Object';
+    parsedValue: DocumentObject;
+    /** 最终处理的结果 */
+    value: DocumentObject;
+  }
+
   export interface Intersection {
     kind: 'Intersection';
     /** 分别解析，未合并的值 */
@@ -65,6 +72,7 @@ export namespace DocumentTypeInfo {
 
 export type DocumentTypeInfoType =
   | DocumentTypeInfo.Basic
+  | DocumentTypeInfo.Object
   | DocumentTypeInfo.Intersection
   | DocumentTypeInfo.Union
   | DocumentTypeInfo.Tuple
@@ -123,6 +131,8 @@ export class DocumentType {
       this.#handleArray(type);
     } else if (type?.isTuple()) {
       this.#handleTuple(type);
+    } else if (type?.isObject()) {
+      this.#handleObject(type);
     } else if (type?.isAny()) {
       this.#handleAny(type);
     } else {
@@ -131,6 +141,13 @@ export class DocumentType {
 
     this.value = this.info.value;
   }
+
+  // /** 根据指定类型获取相应值 */
+  // getValueByKind<T extends DocumentTypeInfoType['kind']>(
+  //   kind: T
+  // ): { [K in DocumentTypeInfoType['kind'] extends T ? K : never]: DocumentTypeInfoType['value'] } {
+  //   return this.info.value;
+  // }
 
   #isBasicType(type: Type) {
     return (
@@ -185,6 +202,16 @@ export class DocumentType {
       kind: 'Union',
       parsedValue: docs,
       value: docs,
+    };
+  }
+
+  #handleObject(type: Type<ts.ObjectType>) {
+    this.kind = 'Object';
+    const doc = this.#handleParseType(type);
+    this.info = {
+      kind: 'Object',
+      parsedValue: doc as DocumentObject,
+      value: doc as DocumentObject,
     };
   }
 
