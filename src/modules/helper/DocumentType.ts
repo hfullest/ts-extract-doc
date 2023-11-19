@@ -4,6 +4,7 @@ import universalParse from '../../utils/universalParse';
 import { DocumentInterface, DocumentObject } from '../normal';
 import { DocumentProp } from './DocumentProp';
 import { DocumentMethod } from './DocumentMethod';
+import { DocumentOptions } from './BaseDocField';
 
 export interface TypeValues {
   Basic: string;
@@ -88,9 +89,16 @@ export class DocumentType {
   /** 当前类型`type`对象 */
   current: Type;
 
-  constructor(node: Type | Node<ts.TypeNode>, jsDocNode?: JSDocParameterTag | JSDocReturnTag) {
+  constructor(
+    node: Type | Node<ts.TypeNode>,
+    options: DocumentOptions,
+    jsDocNode?: JSDocParameterTag | JSDocReturnTag
+  ) {
+    this.#options = options;
     this.#assign(node, jsDocNode);
   }
+
+  #options: DocumentOptions;
 
   #assign(node: Type | Node<ts.TypeNode>, jsDocNode: JSDocParameterTag | JSDocReturnTag) {
     this.text =
@@ -194,7 +202,7 @@ export class DocumentType {
   #handleTuple(type: Type<ts.TupleType>) {
     this.kind = 'Tuple';
     const tupleTypes = type?.getTupleElements();
-    const docs = tupleTypes?.map(this.#handleParseType);
+    const docs = tupleTypes?.map((tuple) => this.#handleParseType(tuple));
     this.info = {
       kind: 'Tuple',
       parsedValue: docs,
@@ -207,7 +215,15 @@ export class DocumentType {
   #handleUnknown(type: Type) {}
 
   #handleParseType(type: Type) {
+    if (!(this.#options.nestedLevel < this.#options.maxNestedLevel)) return; // 超过嵌套深度跳出递归
     const symbol = type?.getAliasSymbol?.() ?? type?.getSymbol?.();
-    return universalParse(symbol) ?? new DocumentType(type); // 未命中定义类型则使用兜底类型
+    return (
+      universalParse(symbol) ??
+      new DocumentType(type, {
+        ...this.#options,
+        nestedLevel: this.#options.nestedLevel + 1,
+        maxNestedLevel: this.#options.maxNestedLevel,
+      }) // 未命中定义类型则使用兜底类型
+    );
   }
 }

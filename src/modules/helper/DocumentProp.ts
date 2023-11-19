@@ -28,7 +28,7 @@ export class DocumentProp extends BaseDocField {
     this.defaultValue = prop?.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
     this.isOptional = prop?.hasQuestionToken();
     this.modifiers = prop?.getCombinedModifierFlags() | jsDoc?.getCombinedModifierFlags();
-    this.type = new DocumentType(typeNode);
+    this.type = new DocumentType(typeNode, this.getComputedOptions());
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {

@@ -67,7 +67,10 @@ export class BaseDocField {
     this.parentSymbol = options?.parentSymbol;
     this.rootSymbol = options?.rootSymbol;
     this.#assign(symbol);
+    this.#options = options;
   }
+
+  #options: DocumentOptions;
 
   #assign(symbol: Symbol) {
     const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
@@ -138,6 +141,24 @@ export class BaseDocField {
       ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
       : parentNode;
     return ancestorNode as T | VariableStatement;
+  }
+
+  /** 计算并获取当前等级+n的配置 */
+  protected getComputedOptions(n: number = 1): DocumentOptions {
+    return { ...this.#options, nestedLevel: this.getNestedLevel(n), maxNestedLevel: this.getMaxNestedLevel() };
+  }
+
+  /** 计算并获取当前等级`+n`的等级数，默认`+1` */
+  protected getNestedLevel(n: number = 1) {
+    return Number(this.#options.nestedLevel + n) ?? 1;
+  }
+  /** 计算并获取最大嵌套等级数 */
+  protected getMaxNestedLevel() {
+    const targetTag = this.tags?.find((t) => t.name === JSDocCustomTagEnum.expand);
+    if (!targetTag) return this.#options.maxNestedLevel;
+    const maxNestedLevel = targetTag?.text;
+    const value = maxNestedLevel?.toString().trim() === '0' ? 0 : 1;
+    return this.#options.maxNestedLevel + value;
   }
 
   static getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {

@@ -6,13 +6,16 @@ export class DocumentTypeAlias extends BaseDocField {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbol, options);
+    this.#options = options;
 
     this.#assign(symbol);
   }
 
+  #options: DocumentOptions;
+
   #assign(symbol: Symbol) {
     const node = BaseDocField.getCompatAncestorNode(symbol) as TypeAliasDeclaration;
-    this.type = new DocumentType(node?.getTypeNode());
+    this.type = new DocumentType(node?.getTypeNode(), this.#options); // 类型别名第一层不增加深度
   }
 
   static isTarget(node: Node): node is TypeAliasDeclaration {

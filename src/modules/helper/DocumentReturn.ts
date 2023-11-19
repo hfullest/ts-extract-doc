@@ -19,7 +19,7 @@ export class DocumentReturn extends BaseDocField {
     const returnTypeNode = functionTypeNode?.getReturnTypeNode();
     const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node as JSDocReturnTag;
 
-    this.type = new DocumentType(returnTypeNode, returnCommentNode);
+    this.type = new DocumentType(returnTypeNode, this.getComputedOptions(), returnCommentNode);
     this.description = returnCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
   }
 }

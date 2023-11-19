@@ -1,5 +1,6 @@
 import { ClassDeclaration, ClassExpression, Node, Symbol, ts } from 'ts-morph';
 import { BaseDocField, DocumentMethod, DocumentOptions, DocumentProp } from '../helper';
+import { JSDocCustomTagEnum } from '../../utils/constants';
 
 // @ts-ignore
 export class DocumentClass extends BaseDocField {
@@ -32,8 +33,14 @@ export class DocumentClass extends BaseDocField {
     properties.forEach((prop) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
+      const options: DocumentOptions = {
+        ...this.#options,
+        parentSymbol: symbol,
+        nestedLevel: this.getNestedLevel(),
+        maxNestedLevel: this.getMaxNestedLevel(),
+      };
       if (DocumentMethod.isTarget(prop)) {
-        const methodDoc = new DocumentMethod(currentSymbol, { ...this.#options, parentSymbol: symbol });
+        const methodDoc = new DocumentMethod(currentSymbol, options);
         if (this.#isIgnoreField(methodDoc)) return;
         if (methodDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticMethods[propName] = methodDoc;
@@ -41,7 +48,7 @@ export class DocumentClass extends BaseDocField {
           this.methods[propName] = methodDoc;
         }
       } else if (DocumentProp.isTarget(prop)) {
-        const propDoc = new DocumentProp(currentSymbol, { ...this.#options, parentSymbol: symbol });
+        const propDoc = new DocumentProp(currentSymbol, options);
         if (this.#isIgnoreField(propDoc)) return;
         if (propDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticProps[propName] = propDoc;

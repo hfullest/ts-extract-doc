@@ -28,10 +28,11 @@ export class DocumentObject extends BaseDocField {
     properties?.forEach((prop) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
+      const options: DocumentOptions = { ...this.getComputedOptions(), parentSymbol: symbol };
       if (DocumentMethod.isTarget(prop)) {
-        this.methods[propName] = new DocumentMethod(currentSymbol, { ...this.#options, parentSymbol: symbol });
+        this.methods[propName] = new DocumentMethod(currentSymbol, options);
       } else if (DocumentProp.isTarget(prop)) {
-        this.props[propName] = new DocumentProp(currentSymbol, { ...this.#options, parentSymbol: symbol });
+        this.props[propName] = new DocumentProp(currentSymbol, options);
       }
     });
   }
