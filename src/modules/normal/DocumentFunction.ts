@@ -1,5 +1,5 @@
 import { Symbol, ts, Node, FunctionDeclaration, FunctionExpression, ArrowFunction } from 'ts-morph';
-import { BaseDocField, DocumentReturn, DocumentParameter } from '../helper';
+import { BaseDocField, DocumentReturn, DocumentParameter, DocumentOptions } from '../helper';
 
 export class DocumentFunction extends BaseDocField {
   /** 参数 */
@@ -7,25 +7,39 @@ export class DocumentFunction extends BaseDocField {
   /** 方法返回 */
   returns: DocumentReturn;
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
+    this.#options = options;
 
     this.#assign(symbol);
   }
+
+  #options: DocumentOptions;
 
   #assign(symbol: Symbol) {
     const node = symbol?.getDeclarations()[0];
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
     const parametersNode = functionTypeNode?.getParameters();
     this.parameters = parametersNode?.map(
-      (parameter) => new DocumentParameter(parameter.getSymbol(), symbol, this.rootSymbol)
+      (parameter) =>
+        new DocumentParameter(parameter.getSymbol(), {
+          ...this.#options,
+          parentSymbol: symbol,
+          rootSymbol: this.rootSymbol,
+        })
     );
     const returnTypeNode = functionTypeNode.getReturnTypeNode();
     const returnSubstitionType = functionTypeNode
       ?.getType()
       ?.getCallSignatures()[0]
       ?.compilerSignature?.getReturnType();
-    this.returns = new DocumentReturn(returnTypeNode?.getSymbol(), symbol, this.rootSymbol);
+    this.returns = new DocumentReturn(returnTypeNode?.getSymbol(), {
+      ...this.#options,
+      parentSymbol: symbol,
+      rootSymbol: this.rootSymbol,
+    });
   }
 
   /** 根据节点获取子级函数类型节点的通用方法 */

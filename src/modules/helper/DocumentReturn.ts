@@ -1,11 +1,13 @@
 import { FunctionDeclaration, JSDocReturnTag, Node, ReturnStatement, Symbol } from 'ts-morph';
-import { BaseDocField } from './BaseDocField';
+import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentType } from './DocumentType';
 
 export class DocumentReturn extends BaseDocField {
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
 
     this.#assign(symbol);
   }

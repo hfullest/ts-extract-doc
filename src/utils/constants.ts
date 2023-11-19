@@ -94,4 +94,10 @@ export enum JSDocCustomTagEnum {
   'output' = 'output',
   /** 手动指定为`react`组件 */
   'reactComponent' = 'reactComponent',
+  /** 指定属性是否需要展开，可以指定展示深度，默认为`1`，该标签可用于属性类型为接口类型，需要继续展示该属性接口类型时指定 */
+  'expand' = 'expand',
+  /** `jsDoc`内注释开始标签，由于注释内注释需要转译等操作，编写成本较高，因此提供标签注释，配合`@annoteEnd`一起使用 */
+  'annoteStart' = 'annoteStart',
+  /** `jsDoc`内注释结束标签，由于注释内注释需要转译等操作，编写成本较高，因此提供标签注释，配合`@annoteStart`一起使用 */
+  'annoteEnd' = 'annoteEnd',
 }

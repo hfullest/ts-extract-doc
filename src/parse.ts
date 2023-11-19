@@ -1,21 +1,13 @@
 import { Project, SourceFile, ts, InterfaceDeclaration } from 'ts-morph';
-import { Document, ParserOptions } from './interface';
+import { Document, DocumentParseOptions } from './interface';
 import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
 import universalParse from './utils/universalParse';
-
-export const defaultCompilerOptions: ts.CompilerOptions = {
-  jsx: ts.JsxEmit.React,
-  module: ts.ModuleKind.CommonJS,
-  target: ts.ScriptTarget.Latest,
-};
-
-export const defaultParserOpts: ParserOptions = {};
+import { defaultDocumentOptions } from './modules';
 
 export const parse = (
   filePathOrPaths: string | string[],
-  compilerOptions: ts.CompilerOptions = defaultCompilerOptions,
-  parserOpts: ParserOptions = defaultParserOpts
+  parserOpts: DocumentParseOptions = defaultDocumentOptions
 ): Document[][] => {
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
 
@@ -29,12 +21,14 @@ export const parse = (
 
   const sourceFiles = project.getSourceFiles();
 
-  const filesDocs = sourceFiles.filter((file) => filePaths.includes(file.getFilePath())).map(genDocuments);
+  const filesDocs = sourceFiles
+    .filter((file) => filePaths.includes(file.getFilePath()))
+    .map((it) => genDocuments(it, parserOpts));
 
   return filesDocs;
 };
 
-export const genDocuments = (file: SourceFile): Document[] => {
+export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOptions): Document[] => {
   const localSymbols = file.getLocals();
   debugger;
   const outputSymbols = localSymbols
@@ -53,7 +47,7 @@ export const genDocuments = (file: SourceFile): Document[] => {
       const bEndLine = bSym?.getDeclarations()?.[0]?.getEndLineNumber();
       return aEndLine - bEndLine;
     });
-  const docs = (Array.from(outputSymbols).map((it) => universalParse(it)) as Document[]).filter(Boolean);
+  const docs = (Array.from(outputSymbols).map((it) => universalParse(it, parseOptions)) as Document[]).filter(Boolean);
 
   return docs;
 };

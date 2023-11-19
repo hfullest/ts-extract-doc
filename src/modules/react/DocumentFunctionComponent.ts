@@ -1,21 +1,27 @@
 import { Node, Symbol, VariableStatement, ts } from 'ts-morph';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { JSDocCustomTagEnum } from '../../utils/constants';
+import { DocumentOptions } from '../helper';
 
 // @ts-ignore
 export class DocumentFunctionComponent extends DocumentFunction {
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
+    this.#options = options;
+
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol);
     const propsNode = functionTypeNode?.getParameters()?.[0];
     // debugger;
     const propsSymbol = propsNode?.getSymbol();
     const propsType = propsNode?.getType();
     const propsTypeSymbol = propsType?.getSymbol() ?? propsType?.getAliasSymbol();
-    const issame = propsSymbol === propsTypeSymbol;
-    super(symbol, parentSymbol, rootSymbol);
 
     this.#assign(propsTypeSymbol);
   }
+
+  #options: DocumentOptions;
 
   #assign(symbol: Symbol) {}
 

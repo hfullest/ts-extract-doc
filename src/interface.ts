@@ -22,6 +22,13 @@ export type Document =
   | DocumentFunctionComponent
   | DocumentClassComponent;
 
+export interface DocumentParseOptions {
+  /** 当前文档嵌套等级，默认`0` */
+  nestedLevel?: number;
+  /** 最大嵌套等级，默认`1` */
+  maxNestedLevel?: number;
+}
+
 export interface OptionsColums {
   /** 列名称 */
   title: string;
@@ -66,4 +73,6 @@ export interface ConfigOptions {
   markdown?: GenMarkdownOptions;
   /** `tsconfig.json路径` */
   tsConfigPath?: string;
+  /** 文档生成相关配置 */
+  document?: DocumentParseOptions;
 }

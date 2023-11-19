@@ -1,5 +1,5 @@
 import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
-import { BaseDocField } from './BaseDocField';
+import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { DocumentType } from './DocumentType';
 
 export class DocumentProp extends BaseDocField {
@@ -10,8 +10,10 @@ export class DocumentProp extends BaseDocField {
   /** 属性或方法修饰符，用于类，比如`private` */
   modifiers: ts.ModifierFlags;
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
 
     this.#assign(symbol);
   }

@@ -1,5 +1,5 @@
 import { JSDocParameterTag, Node, ParameterDeclaration, Symbol } from 'ts-morph';
-import { BaseDocField } from './BaseDocField';
+import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { DocumentType } from './DocumentType';
 
 export class DocumentParameter extends BaseDocField {
@@ -8,8 +8,10 @@ export class DocumentParameter extends BaseDocField {
   /** 默认值 */
   defaultValue: any;
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
 
     this.#assign(symbol);
   }

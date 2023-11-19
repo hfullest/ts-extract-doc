@@ -2,6 +2,7 @@ import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-mor
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentDecorator } from './DocumentDecorator';
 import { DocumentType } from './DocumentType';
+import { DocumentOptions } from './BaseDocField';
 
 // @ts-ignore 忽略继承导致的静态类型不兼容 https://segmentfault.com/q/1010000023736777
 export class DocumentMethod extends DocumentFunction {
@@ -14,8 +15,10 @@ export class DocumentMethod extends DocumentFunction {
   /** 修饰符 */
   modifiers: ts.ModifierFlags;
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
 
     this.#assign(symbol);
   }

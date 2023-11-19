@@ -1,5 +1,5 @@
 import { InterfaceDeclaration, Node, Symbol, TypeLiteralNode } from 'ts-morph';
-import { BaseDocField, DocumentProp, DocumentMethod } from '../helper';
+import { BaseDocField, DocumentProp, DocumentMethod, DocumentOptions } from '../helper';
 
 export class DocumentInterface extends BaseDocField {
   /** 属性 */
@@ -7,11 +7,16 @@ export class DocumentInterface extends BaseDocField {
   /** 方法 */
   methods: Record<string, DocumentMethod> = {};
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
+    this.#options = options;
 
     this.#assign(symbol);
   }
+
+  #options: DocumentOptions;
 
   #assign(symbol: Symbol) {
     const node = symbol?.getDeclarations()[0] as InterfaceDeclaration | TypeLiteralNode;
@@ -20,9 +25,9 @@ export class DocumentInterface extends BaseDocField {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       if (DocumentMethod.isTarget(prop)) {
-        this.methods[propName] = new DocumentMethod(currentSymbol, symbol);
+        this.methods[propName] = new DocumentMethod(currentSymbol, { ...this.#options, parentSymbol: symbol });
       } else if (DocumentProp.isTarget(prop)) {
-        this.props[propName] = new DocumentProp(currentSymbol, symbol);
+        this.props[propName] = new DocumentProp(currentSymbol, { ...this.#options, parentSymbol: symbol });
       }
     });
   }

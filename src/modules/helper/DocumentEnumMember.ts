@@ -1,6 +1,5 @@
-import { EnumMember, Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
-import { BaseDocField } from './BaseDocField';
-import { DocumentType } from './DocumentType';
+import { EnumMember, Node, Symbol, ts } from 'ts-morph';
+import { BaseDocField, DocumentOptions } from './BaseDocField';
 
 export class DocumentEnumMember extends BaseDocField {
   /** 键，避免使用`key`关键字，使用`label`代替 */
@@ -8,8 +7,10 @@ export class DocumentEnumMember extends BaseDocField {
   /** 值 */
   value: string | number | ts.PseudoBigInt;
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
 
     this.#assign(symbol);
   }

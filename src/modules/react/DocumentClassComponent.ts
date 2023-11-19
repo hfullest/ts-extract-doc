@@ -1,13 +1,18 @@
 import { Node, Symbol } from 'ts-morph';
-import { BaseDocField } from '../helper';
+import { BaseDocField, DocumentOptions } from '../helper';
 import { DocumentFunction } from '../normal/DocumentFunction';
 
 export class DocumentClassComponent extends BaseDocField {
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
+    this.#options = options;
 
     this.#assign(symbol);
   }
+
+  #options: DocumentOptions;
 
   #assign(symbol: Symbol) {}
 

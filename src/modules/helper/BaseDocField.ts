@@ -2,6 +2,17 @@ import { ClassDeclaration, JSDocTag, Node, Symbol, VariableStatement, ts } from 
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
 import { DocumentType } from './DocumentType';
 import { DocumentTag } from './DocumentTag';
+import { DocumentParseOptions } from '../../interface';
+
+export interface DocumentCarryInfo {
+  /** 父级 symbol */
+  parentSymbol?: Symbol;
+  /** 顶级 symbol */
+  rootSymbol?: Symbol;
+}
+
+export interface DocumentOptions extends DocumentCarryInfo, DocumentParseOptions {}
+
 export class BaseDocField {
   /** 当前 symbol */
   symbol: Symbol;
@@ -51,31 +62,28 @@ export class BaseDocField {
     fullText: string;
   }[] = [];
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
+  constructor(symbol: Symbol, options: DocumentOptions) {
     this.symbol = symbol;
-    this.parentSymbol = parentSymbol;
-    this.rootSymbol = rootSymbol;
+    this.parentSymbol = options?.parentSymbol;
+    this.rootSymbol = options?.rootSymbol;
     this.#assign(symbol);
   }
 
   #assign(symbol: Symbol) {
-    const node = (symbol?.getValueDeclaration?.() ??
-      symbol?.getDeclarations?.()[0]) as ClassDeclaration; /** 指定任意有jsdoc声明，方便使用api */
-    const ancestorNode = Node.isVariableDeclaration(node)
-      ? node?.getFirstAncestorByKind?.(ts.SyntaxKind.VariableStatement) // 做兼容修正，VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
-      : node;
+    const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
+    const ancestorNode = BaseDocField.getCompatAncestorNode<ClassDeclaration>(symbol);
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
     const jsDocTags = jsDoc?.getTags();
     this.#parseAndAssginTags(jsDocTags);
-    this.filePath = jsDoc?.getSourceFile().getFilePath();
+    this.filePath = jsDoc?.getSourceFile().getFilePath() ?? node?.getSourceFile()?.getFilePath();
     this.pos = {
       start: [node?.getStartLineNumber(), node?.getStartLinePos()],
       end: [node?.getEndLineNumber(), node?.getEnd()], // TODO：确认结束位置
     };
-    this.type = new DocumentType(node?.getType());
+    // this.type = new DocumentType((node as TypeAliasDeclaration)?.getTypeNode?.() ?? node?.getType()); // 由于递归解析造成不必要性能浪费，需要的位置在自行解析类型
   }
 
   /** 解析 JSDoc 相关标签并赋值 */

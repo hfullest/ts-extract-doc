@@ -1,5 +1,5 @@
 import { ClassDeclaration, ClassExpression, Node, Symbol, ts } from 'ts-morph';
-import { BaseDocField, DocumentMethod, DocumentProp } from '../helper';
+import { BaseDocField, DocumentMethod, DocumentOptions, DocumentProp } from '../helper';
 
 // @ts-ignore
 export class DocumentClass extends BaseDocField {
@@ -14,11 +14,16 @@ export class DocumentClass extends BaseDocField {
   /** 静态方法 */
   staticMethods: Record<string, DocumentMethod> = {};
 
-  constructor(symbol: Symbol, parentSymbol: Symbol = symbol, rootSymbol: Symbol = parentSymbol) {
-    super(symbol, parentSymbol, rootSymbol);
+  constructor(symbol: Symbol, options: DocumentOptions) {
+    options.parentSymbol ??= symbol;
+    options.rootSymbol ??= options?.parentSymbol;
+    super(symbol, options);
+    this.#options = options;
 
     this.#assign(symbol);
   }
+
+  #options: DocumentOptions;
 
   #assign(symbol: Symbol): void {
     const node = symbol?.getDeclarations()[0];
@@ -28,7 +33,7 @@ export class DocumentClass extends BaseDocField {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       if (DocumentMethod.isTarget(prop)) {
-        const methodDoc = new DocumentMethod(currentSymbol, symbol);
+        const methodDoc = new DocumentMethod(currentSymbol, { ...this.#options, parentSymbol: symbol });
         if (this.#isIgnoreField(methodDoc)) return;
         if (methodDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticMethods[propName] = methodDoc;
@@ -36,7 +41,7 @@ export class DocumentClass extends BaseDocField {
           this.methods[propName] = methodDoc;
         }
       } else if (DocumentProp.isTarget(prop)) {
-        const propDoc = new DocumentProp(currentSymbol, symbol);
+        const propDoc = new DocumentProp(currentSymbol, { ...this.#options, parentSymbol: symbol });
         if (this.#isIgnoreField(propDoc)) return;
         if (propDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticProps[propName] = propDoc;
