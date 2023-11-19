@@ -16,8 +16,12 @@ export class ReactClassComponentA extends React.Component {
 /** 2 */
 /** 3 */
 /** 4 */
-// 测试注释
 export type AAAAAA = string;
+
+export enum BBBB{
+  AA='123',
+  BB='345',
+}
 
 /** 测试 TypeObjectLiteral 描述
  *
@@ -27,11 +31,11 @@ export type AAAAAA = string;
  * @example
  * const abc:TypeObjectLiteral = {};
  */
-export type TypeObjectLiteral = {
+export type TypeObjectLiteral = [{
   a: string;
   /** 测试b */
   readonly b?: number;
-};
+}, string]
 /** UiButton */
 export type UiButtonProps<N = false> = {
   a: string;
@@ -111,7 +115,7 @@ export function DeclarationFunction(
   a: number /** 测试声明函数的a参数后置注释 */,
   b?: symbol,
   c: string = "ssss"
-): void {}
+): void { }
 
 /** 错误边界 */
 export class ErrorBound {
