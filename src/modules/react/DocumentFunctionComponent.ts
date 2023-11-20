@@ -51,8 +51,11 @@ export class DocumentFunctionComponent extends DocumentFunction {
       ?.getCallSignatures()[0]
       ?.compilerSignature?.getReturnType();
     const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
-    if (/^(React\.)?(\w*?)Element\b/.test(returnType?.getText()) || returnSubstitionSymbol?.getName() === 'Element') {
-      return true; // 支持 React.(匹配类型)Element、JSX.Element
+    if (
+      /^(React\.)?((\w*?)Element|ReactNode)\b/.test(returnType?.getText()) ||
+      returnSubstitionSymbol?.getName() === 'Element'
+    ) {
+      return true; // 支持 React.(匹配类型)Element、JSX.Element、React.ReactNode
     }
     return false;
   }
