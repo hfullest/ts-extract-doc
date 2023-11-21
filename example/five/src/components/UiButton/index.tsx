@@ -1,11 +1,16 @@
 import React from "react";
 import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 
+
+
 export class ReactClassComponentA extends React.Component {
+  static defaultProps = { c: { c1: 'aaa' },e:'sdkfdsfs' };
   render(): React.ReactNode {
     return <div>哈哈哈</div>;
   }
 }
+
+
 
 /**
  *? 为什么需要使用antd的Button组件进行封装
