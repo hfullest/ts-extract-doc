@@ -23,12 +23,17 @@ export class DocumentObject extends BaseDocField {
     const objectDeclaration = symbol?.getDeclarations()[0] as TypeAliasDeclaration;
     const node =
       objectDeclaration?.asKind(ts.SyntaxKind.TypeLiteral) ?? // 兼容
+      objectDeclaration?.asKind(ts.SyntaxKind.ObjectLiteralExpression) ??
       objectDeclaration?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral);
     const properties = node?.getProperties();
-    properties?.forEach((prop) => {
+    properties?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
-      const options: DocumentOptions = { ...this.getComputedOptions(), parentSymbol: symbol };
+      const options: DocumentOptions & { index: number } = {
+        ...this.getComputedOptions(),
+        parentSymbol: symbol,
+        index,
+      };
       if (DocumentMethod.isTarget(prop)) {
         this.methods[propName] = new DocumentMethod(currentSymbol, options);
       } else if (DocumentProp.isTarget(prop)) {

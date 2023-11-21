@@ -21,13 +21,13 @@ export class DocumentInterface extends BaseDocField {
   #assign(symbol: Symbol) {
     const node = symbol?.getDeclarations()[0] as InterfaceDeclaration | TypeLiteralNode;
     const properties = node?.getProperties();
-    properties.forEach((prop) => {
+    properties.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       if (DocumentMethod.isTarget(prop)) {
-        this.methods[propName] = new DocumentMethod(currentSymbol, { ...this.#options, parentSymbol: symbol });
+        this.methods[propName] = new DocumentMethod(currentSymbol, { ...this.#options, parentSymbol: symbol, index });
       } else if (DocumentProp.isTarget(prop)) {
-        this.props[propName] = new DocumentProp(currentSymbol, { ...this.#options, parentSymbol: symbol });
+        this.props[propName] = new DocumentProp(currentSymbol, { ...this.#options, parentSymbol: symbol, index });
       }
     });
   }

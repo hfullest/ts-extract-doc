@@ -18,7 +18,7 @@ export class DocumentEnum extends BaseDocField {
   #assign(symbol: Symbol) {
     const node = BaseDocField.getCompatAncestorNode(symbol)?.asKind(ts.SyntaxKind.EnumDeclaration);
     const members = node.getMembers();
-    this.members = members.map((it) => new DocumentEnumMember(it.getSymbol(), this.#options));
+    this.members = members.map((it, index) => new DocumentEnumMember(it.getSymbol(), { ...this.#options, index }));
   }
 
   static isTarget(node: Node) {

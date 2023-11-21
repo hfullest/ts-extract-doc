@@ -30,7 +30,7 @@ export class DocumentClass extends BaseDocField {
     const node = symbol?.getDeclarations()[0];
     if (!DocumentClass.isTarget(node)) return;
     const properties = node?.getProperties();
-    properties.forEach((prop) => {
+    properties.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       const options: DocumentOptions = {
@@ -40,7 +40,7 @@ export class DocumentClass extends BaseDocField {
         maxNestedLevel: this.getMaxNestedLevel(),
       };
       if (DocumentMethod.isTarget(prop)) {
-        const methodDoc = new DocumentMethod(currentSymbol, options);
+        const methodDoc = new DocumentMethod(currentSymbol, { ...options, index });
         if (this.#isIgnoreField(methodDoc)) return;
         if (methodDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticMethods[propName] = methodDoc;
@@ -48,7 +48,7 @@ export class DocumentClass extends BaseDocField {
           this.methods[propName] = methodDoc;
         }
       } else if (DocumentProp.isTarget(prop)) {
-        const propDoc = new DocumentProp(currentSymbol, options);
+        const propDoc = new DocumentProp(currentSymbol, { ...options, index });
         if (this.#isIgnoreField(propDoc)) return;
         if (propDoc.modifiers & ts.ModifierFlags.Static) {
           this.staticProps[propName] = propDoc;

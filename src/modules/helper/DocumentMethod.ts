@@ -14,12 +14,15 @@ export class DocumentMethod extends DocumentFunction {
   isOptional: boolean;
   /** 修饰符 */
   modifiers: ts.ModifierFlags;
+  /** 属性方法的索引顺序，可以用来指定文档输出顺序 */
+  index: number = 0;
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
+  constructor(symbol: Symbol, options: DocumentOptions & { index?: number }) {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbol, options);
     this.#options = options;
+    this.index = options?.index ?? 0;
 
     this.#assign(symbol);
   }
@@ -35,7 +38,7 @@ export class DocumentMethod extends DocumentFunction {
     this.modifiers = node?.getCombinedModifierFlags() | jsDoc?.getCombinedModifierFlags();
     const defaultTagNode = this.tags?.find((t) => /^default(Value)?/.test(t.name))?.node;
     this.defaultValue = node.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
-    this.type = new DocumentType(typeNode, { ...this.#options,nestedLevel:this.#options.nestedLevel+1 });
+    this.type = new DocumentType(typeNode, { ...this.#options, nestedLevel: this.#options.nestedLevel + 1 });
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {

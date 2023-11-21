@@ -23,11 +23,12 @@ export class DocumentFunction extends BaseDocField {
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
     const parametersNode = functionTypeNode?.getParameters();
     this.parameters = parametersNode?.map(
-      (parameter) =>
+      (parameter, index) =>
         new DocumentParameter(parameter.getSymbol(), {
           ...this.#options,
           parentSymbol: symbol,
           rootSymbol: this.rootSymbol,
+          index,
         })
     );
     const returnTypeNode = functionTypeNode.getReturnTypeNode();
