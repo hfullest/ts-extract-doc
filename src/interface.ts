@@ -25,7 +25,7 @@ export type Document =
 export interface DocumentParseOptions {
   /** 当前文档嵌套等级，默认`0` */
   nestedLevel?: number;
-  /** 最大嵌套等级，默认`1` */
+  /** 最大嵌套等级，默认`2` */
   maxNestedLevel?: number;
 }
 

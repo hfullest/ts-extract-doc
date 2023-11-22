@@ -51,17 +51,17 @@ export namespace DocumentTypeInfo {
   export interface Tuple {
     kind: 'Tuple';
     /** 分别解析 */
-    parsedValue: (Document | DocumentType)[];
+    parsedValue?: (Document | DocumentType)[];
     /** 最终处理的结果 */
-    value: (Document | DocumentType)[];
+    value?: (Document | DocumentType)[];
   }
 
   export interface Array {
     kind: 'Array';
     /** 分别解析 */
-    parsedValue: Document | DocumentType;
+    parsedValue?: Document | DocumentType;
     /** 最终处理的数组元素类型结果 */
-    value: Document | DocumentType;
+    value?: Document | DocumentType;
   }
 
   export interface Enum {
@@ -83,11 +83,11 @@ export type DocumentTypeKind = DocumentTypeInfoType['kind'];
 
 export class DocumentType {
   /** 类型文本展示 */
-  text: string;
+  text: string = '';
   /** 类型原始文本展示 */
-  fullText: string;
+  fullText: string = '';
   /** 类型 */
-  kind: DocumentTypeKind;
+  kind: DocumentTypeKind | undefined;
   /** 类型值集合，同时只会有一个有值，根据不同类型kind取相应的值即可 */
   value = {} as DocumentTypeInfoType['value'];
   /** 类型相关详细信息 */
@@ -95,7 +95,7 @@ export class DocumentType {
   /** 当前类型节点，方便自行获取并处理类型 */
   typeNode: Node<ts.TypeNode> | null = null;
   /** 当前类型`type`对象 */
-  current: Type;
+  current?: Type;
 
   constructor(
     node: Type | Node<ts.TypeNode>,
@@ -106,9 +106,9 @@ export class DocumentType {
     this.#assign(node, jsDocNode);
   }
 
-  #options: DocumentOptions;
+  #options = {} as DocumentOptions;
 
-  #assign(node: Type | Node<ts.TypeNode>, jsDocNode: JSDocParameterTag | JSDocReturnTag) {
+  #assign(node: Type | Node<ts.TypeNode>, jsDocNode?: JSDocParameterTag | JSDocReturnTag) {
     this.text =
       node?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, '') ?? // 去除注释
       jsDocNode?.getTypeExpression()?.getText() ??
@@ -218,7 +218,7 @@ export class DocumentType {
   #handleArray(type: Type) {
     this.kind = 'Array';
     const arrayType = type?.getArrayElementType();
-    const doc = this.#handleParseType(arrayType);
+    const doc = arrayType ? this.#handleParseType(arrayType) : undefined;
     this.info = {
       kind: 'Array',
       parsedValue: doc,
@@ -229,7 +229,7 @@ export class DocumentType {
   #handleTuple(type: Type<ts.TupleType>) {
     this.kind = 'Tuple';
     const tupleTypes = type?.getTupleElements();
-    const docs = tupleTypes?.map((tuple) => this.#handleParseType(tuple));
+    const docs = tupleTypes?.map((tuple) => this.#handleParseType(tuple)) ?? [];
     this.info = {
       kind: 'Tuple',
       parsedValue: docs,
@@ -242,13 +242,13 @@ export class DocumentType {
   #handleUnknown(type: Type) {}
 
   #handleParseType(type: Type) {
-    if (!(this.#options.nestedLevel < this.#options.maxNestedLevel)) return; // 超过嵌套深度跳出递归
+    if (!((this.#options.nestedLevel ?? 0) < (this.#options.maxNestedLevel ?? 0))) return; // 超过嵌套深度跳出递归
     const symbol = type?.getAliasSymbol?.() ?? type?.getSymbol?.();
     return (
-      universalParse(symbol) ??
+      (symbol && universalParse(symbol)) ||
       new DocumentType(type, {
         ...this.#options,
-        nestedLevel: this.#options.nestedLevel + 1,
+        nestedLevel: (this.#options.nestedLevel ?? 0) + 1,
         maxNestedLevel: this.#options.maxNestedLevel,
       }) // 未命中定义类型则使用兜底类型
     );

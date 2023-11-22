@@ -1,4 +1,4 @@
-import { Project, SourceFile, ts, InterfaceDeclaration } from 'ts-morph';
+import { Project, SourceFile, InterfaceDeclaration, Symbol } from 'ts-morph';
 import { Document, DocumentParseOptions } from './interface';
 import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
@@ -40,14 +40,16 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
     })
     .filter(Boolean)
     ?.sort((aSym, bSym) => {
-      const aStartLine = aSym?.getDeclarations()?.[0]?.getStartLineNumber();
-      const bStartLine = bSym?.getDeclarations()?.[0]?.getStartLineNumber();
+      const aStartLine = aSym?.getDeclarations()?.[0]?.getStartLineNumber() ?? 0;
+      const bStartLine = bSym?.getDeclarations()?.[0]?.getStartLineNumber() ?? 0;
       if (aStartLine !== bStartLine) return aStartLine - bStartLine;
-      const aEndLine = aSym?.getDeclarations()?.[0]?.getEndLineNumber();
-      const bEndLine = bSym?.getDeclarations()?.[0]?.getEndLineNumber();
+      const aEndLine = aSym?.getDeclarations()?.[0]?.getEndLineNumber() ?? 0;
+      const bEndLine = bSym?.getDeclarations()?.[0]?.getEndLineNumber() ?? 0;
       return aEndLine - bEndLine;
     });
-  const docs = (Array.from(outputSymbols).map((it) => universalParse(it, parseOptions)) as Document[]).filter(Boolean);
+  const docs = (
+    Array.from(outputSymbols ?? []).map((it) => universalParse(it as Symbol, parseOptions)) as Document[]
+  ).filter(Boolean);
 
   return docs;
 };

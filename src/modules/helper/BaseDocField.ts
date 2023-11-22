@@ -1,7 +1,7 @@
 import { ClassDeclaration, JSDocTag, Node, Symbol, VariableStatement, ts } from 'ts-morph';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
 import { DocumentType } from './DocumentType';
-import { DocumentTag } from './DocumentTag';
+import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
 
 export interface DocumentCarryInfo {
@@ -21,32 +21,32 @@ export class BaseDocField {
   /** 顶级 symbol */
   rootSymbol: Symbol;
   /** 文档路径 */
-  filePath: string;
+  filePath: string | undefined;
   /** 类型描述 */
-  type: DocumentType;
+  type?: DocumentType;
   /** 名称 */
-  name: string;
+  name: string | undefined;
   /** 简单描述，取自注释`tag`标记之前的文本内容 */
-  description: string;
+  description?: string;
   /** 全文本 */
-  fullText: string;
+  fullText?: string;
   /** 全部的注释标签，包括`JSDoc标签`和自定义标签
    *
    * 如需仅查看`JSDoc标签`，可以参考`jsDocTags`属性
    */
-  tags: DocumentTag[];
+  tags: DocumentTag[] = [];
   /** 额外补充描述，取`@description`修饰内容 */
   extraDescription?: string;
   /** `JSDoc`注释的例子，取`@example`修饰内容 */
-  example: string;
+  example?: string;
   /** 版本信息， 取`@version`修饰内容 */
-  version: string;
+  version?: string;
   /** 标记表示在特定版本中添加了类、方法或其他符号， 取`@since`修饰内容 */
-  since: string;
+  since?: string;
   /** 是否废弃 `取@deprecated`修饰内容，可以为字符串表示废弃描述 */
   deprecated: boolean | string = false;
   /** 位置信息 */
-  pos: {
+  pos = {} as {
     /** 开始位置 [行,列] */
     start: [number, number];
     /** 结束位置 [行,列] */
@@ -64,22 +64,22 @@ export class BaseDocField {
 
   constructor(symbol: Symbol, options: DocumentOptions) {
     this.symbol = symbol;
-    this.parentSymbol = options?.parentSymbol;
-    this.rootSymbol = options?.rootSymbol;
+    this.parentSymbol = options?.parentSymbol ?? symbol;
+    this.rootSymbol = options?.rootSymbol ?? symbol;
     this.#assign(symbol);
     this.#options = options;
   }
 
-  #options: DocumentOptions;
+  #options = {} as DocumentOptions;
 
   #assign(symbol: Symbol) {
     const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
     const ancestorNode = BaseDocField.getCompatAncestorNode<ClassDeclaration>(symbol);
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
-    this.fullText = jsDoc?.getFullText?.();
-    this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
-    const jsDocTags = jsDoc?.getTags();
+    this.fullText = jsDoc?.getFullText?.() ?? '';
+    this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '') ?? '';
+    const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);
     this.filePath = jsDoc?.getSourceFile().getFilePath() ?? node?.getSourceFile()?.getFilePath();
     this.pos = {
@@ -119,11 +119,7 @@ export class BaseDocField {
   /** 无处理的解析 JSDoc 标签 */
   #assginJsDocTags(jsDocTags: JSDocTag<ts.JSDocTag>[]) {
     jsDocTags?.forEach((tag) => {
-      const name = tag.getTagName();
-      if (JSDocTagEnum[name] === void 0) return;
-      const text = tag.getCommentText();
-      const fullText = tag.getFullText();
-      this.jsDocTags.push({ name, text, fullText });
+      this.jsDocTags.push(new DocumentJSDocTag(tag));
     });
   }
 
@@ -150,7 +146,7 @@ export class BaseDocField {
 
   /** 计算并获取当前等级`+n`的等级数，默认`+1` */
   protected getNestedLevel(n: number = 1) {
-    return Number(this.#options.nestedLevel + n) ?? 1;
+    return Number((this.#options.nestedLevel ?? 0) + n) ?? 1;
   }
   /** 计算并获取最大嵌套等级数 */
   protected getMaxNestedLevel() {
@@ -158,7 +154,7 @@ export class BaseDocField {
     if (!targetTag) return this.#options.maxNestedLevel;
     const maxNestedLevel = targetTag?.text;
     const value = maxNestedLevel?.toString().trim() === '0' ? 0 : 1;
-    return this.#options.maxNestedLevel + value;
+    return (this.#options.maxNestedLevel ?? 0) + value;
   }
 
   static getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
