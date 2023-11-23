@@ -19,7 +19,7 @@ export class DocumentReturn extends BaseDocField {
   #assign(symbol: Symbol): void {
     const parentNode = this.getCompatAncestorNode<FunctionDeclaration>(this.parentSymbol);
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(parentNode);
-    const returnTypeNode = functionTypeNode?.getReturnTypeNode();
+    const returnTypeNode = (functionTypeNode as FunctionDeclaration)?.getReturnTypeNode();
     const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node as JSDocReturnTag;
     const returnSubstitionType = functionTypeNode?.getType()?.getCallSignatures()[0]?.getReturnType();
     const returnSubstitionNode = returnSubstitionType?.getSymbol()?.getDeclarations?.()[0] as Node<ts.TypeNode>;

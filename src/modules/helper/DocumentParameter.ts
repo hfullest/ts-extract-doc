@@ -4,7 +4,7 @@ import { DocumentType } from './DocumentType';
 
 export class DocumentParameter extends BaseDocField {
   /** 是否可选  */
-  isOptional: boolean;
+  isOptional?: boolean;
   /** 默认值 */
   defaultValue: any;
   /** 属性方法的索引顺序，可以用来指定文档输出顺序 */
@@ -35,6 +35,6 @@ export class DocumentParameter extends BaseDocField {
     this.description =
       (leadingComment ?? trailingComment)?.replace(/(^\/{2,}\s?)|(^\/\*{1,2}\s?)|(\s?\*\/$)/g, '') ??
       paramCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
-    this.type = new DocumentType(paramTypeNode, this.getComputedOptions(), paramCommentNode);
+    this.type = new DocumentType(paramTypeNode!, this.getComputedOptions(), paramCommentNode);
   }
 }

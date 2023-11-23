@@ -24,10 +24,11 @@ export class DocumentInterface extends BaseDocField {
     properties.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
+      if (!currentSymbol) return;
       if (DocumentMethod.isTarget(prop)) {
-        this.methods[propName] = new DocumentMethod(currentSymbol, { ...this.#options, parentSymbol: symbol, index });
+        this.methods[propName] = new DocumentMethod(currentSymbol!, { ...this.#options, parentSymbol: symbol, index });
       } else if (DocumentProp.isTarget(prop)) {
-        this.props[propName] = new DocumentProp(currentSymbol, { ...this.#options, parentSymbol: symbol, index });
+        this.props[propName] = new DocumentProp(currentSymbol!, { ...this.#options, parentSymbol: symbol, index });
       }
     });
   }

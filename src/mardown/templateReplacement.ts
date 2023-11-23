@@ -4,7 +4,7 @@ import DataSource from './DataSource';
 
 export type FillType = 'props' | 'methods' | 'staticProps' | 'staticMethods';
 
-const getHeadLevel = (level: GenMarkdownOptions['headLevel']) => '#######'.slice(-level);
+const getHeadLevel = (level: GenMarkdownOptions['headLevel'] = 0) => '#######'.slice(-level);
 
 const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: string } & GenMarkdownOptions) => {
   const headMark = config?.headMark ?? '';

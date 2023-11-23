@@ -1,8 +1,9 @@
-import { Node, Symbol, ts } from 'ts-morph';
+import { EnumDeclaration, Node, Symbol, ts } from 'ts-morph';
 import { BaseDocField, DocumentEnumMember, DocumentOptions } from '../helper';
 
 export class DocumentEnum extends BaseDocField {
-  members: DocumentEnumMember[];
+  /** 枚举成员 */
+  members?: DocumentEnumMember[];
 
   constructor(symbol: Symbol, options: DocumentOptions) {
     options.parentSymbol ??= symbol;
@@ -17,8 +18,8 @@ export class DocumentEnum extends BaseDocField {
 
   #assign(symbol: Symbol) {
     const node = BaseDocField.getCompatAncestorNode(symbol)?.asKind(ts.SyntaxKind.EnumDeclaration);
-    const members = node.getMembers();
-    this.members = members.map((it, index) => new DocumentEnumMember(it.getSymbol(), { ...this.#options, index }));
+    const members = (node as EnumDeclaration)?.getMembers?.();
+    this.members = members?.map((it, index) => new DocumentEnumMember(it.getSymbol()!, { ...this.#options, index }));
   }
 
   static isTarget(node: Node) {

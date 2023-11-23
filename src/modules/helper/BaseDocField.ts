@@ -53,14 +53,7 @@ export class BaseDocField {
     end: [number, number];
   };
   /** 全部 `JSDoc标签` */
-  jsDocTags: {
-    /** 标签名称 */
-    name: string;
-    /** 标签内容 */
-    text: string;
-    /** 全文本 */
-    fullText: string;
-  }[] = [];
+  jsDocTags: DocumentJSDocTag[] = [];
 
   constructor(symbol: Symbol, options: DocumentOptions) {
     this.symbol = symbol;

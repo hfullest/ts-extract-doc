@@ -1,11 +1,19 @@
-import { Symbol, ts, Node, FunctionDeclaration, FunctionExpression, ArrowFunction } from 'ts-morph';
+import {
+  Symbol,
+  ts,
+  Node,
+  FunctionDeclaration,
+  FunctionExpression,
+  ArrowFunction,
+  VariableDeclaration,
+} from 'ts-morph';
 import { BaseDocField, DocumentReturn, DocumentParameter, DocumentOptions } from '../helper';
 
 export class DocumentFunction extends BaseDocField {
   /** 参数 */
-  parameters: DocumentParameter[];
+  parameters?: DocumentParameter[];
   /** 方法返回 */
-  returns: DocumentReturn;
+  returns?: DocumentReturn;
 
   constructor(symbol: Symbol, options: DocumentOptions) {
     options.parentSymbol ??= symbol;
@@ -21,17 +29,17 @@ export class DocumentFunction extends BaseDocField {
   #assign(symbol: Symbol) {
     const node = symbol?.getDeclarations()[0];
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
-    const parametersNode = functionTypeNode?.getParameters();
+    const parametersNode = (functionTypeNode as FunctionDeclaration)?.getParameters();
     this.parameters = parametersNode?.map(
       (parameter, index) =>
-        new DocumentParameter(parameter.getSymbol(), {
+        new DocumentParameter(parameter.getSymbol()!, {
           ...this.#options,
           parentSymbol: symbol,
           rootSymbol: this.rootSymbol,
           index,
         })
     );
-    const returnTypeNode = functionTypeNode?.getReturnTypeNode(); // 如果指定了函数返回类型
+    const returnTypeNode = (functionTypeNode as FunctionDeclaration)?.getReturnTypeNode(); // 如果指定了函数返回类型
     const returnType = returnTypeNode?.getType();
     const returnSubstitionType = functionTypeNode?.getType()?.getCallSignatures()[0]?.getReturnType();
     const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
@@ -69,8 +77,12 @@ export class DocumentFunction extends BaseDocField {
   static isTarget(node: Node): node is FunctionDeclaration | FunctionExpression | ArrowFunction {
     if (Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) || Node.isArrowFunction(node)) return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
-    const functionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.FunctionExpression);
-    const arrowFunctionInitializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ArrowFunction);
+    const functionInitializer = (variableDeclaration as VariableDeclaration)?.getInitializerIfKind(
+      ts.SyntaxKind.FunctionExpression
+    );
+    const arrowFunctionInitializer = (variableDeclaration as VariableDeclaration)?.getInitializerIfKind(
+      ts.SyntaxKind.ArrowFunction
+    );
     return Node.isFunctionExpression(functionInitializer) || Node.isArrowFunction(arrowFunctionInitializer);
   }
 }

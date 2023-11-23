@@ -1,4 +1,4 @@
-import { ClassDeclaration, ClassExpression, Node, Symbol, ts } from 'ts-morph';
+import { ClassDeclaration, ClassExpression, Node, Symbol, VariableDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentMethod, DocumentOptions, DocumentProp } from '../helper';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
 
@@ -47,7 +47,7 @@ export class DocumentClass extends BaseDocField {
       if (DocumentMethod.isTarget(prop)) {
         const methodDoc = new DocumentMethod(currentSymbol, { ...options, index });
         if (this.#isIgnoreField(methodDoc)) return;
-        if (methodDoc.modifiers & ts.ModifierFlags.Static) {
+        if ((methodDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
           this.staticMethods[propName] = methodDoc;
         } else {
           this.methods[propName] = methodDoc;
@@ -55,7 +55,7 @@ export class DocumentClass extends BaseDocField {
       } else if (DocumentProp.isTarget(prop)) {
         const propDoc = new DocumentProp(currentSymbol, { ...options, index });
         if (this.#isIgnoreField(propDoc)) return;
-        if (propDoc.modifiers & ts.ModifierFlags.Static) {
+        if ((propDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
           this.staticProps[propName] = propDoc;
         } else {
           this.props[propName] = propDoc;
@@ -68,7 +68,7 @@ export class DocumentClass extends BaseDocField {
   #isIgnoreField(doc: DocumentProp | DocumentMethod): boolean {
     if (!!doc.tags?.find((tg) => tg.name === JSDocTagEnum.public)) return false; // 手动指定 @public 直接跳过
     // 跳过私有属性方法
-    if (doc.modifiers & (ts.ModifierFlags.Private | ts.ModifierFlags.Protected)) return true;
+    if ((doc.modifiers ?? 0) & (ts.ModifierFlags.Private | ts.ModifierFlags.Protected)) return true;
     const tagIgnores = [
       JSDocTagEnum.inner, // @inner
       JSDocTagEnum.private, // @private
@@ -80,7 +80,9 @@ export class DocumentClass extends BaseDocField {
   static isTarget(node: Node): node is ClassDeclaration | ClassExpression {
     if (Node.isClassDeclaration(node)) return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
-    const initializer = variableDeclaration?.getInitializerIfKind(ts.SyntaxKind.ClassExpression);
+    const initializer = (variableDeclaration as VariableDeclaration)?.getInitializerIfKind(
+      ts.SyntaxKind.ClassExpression
+    );
     return Node.isClassExpression(initializer);
   }
 }

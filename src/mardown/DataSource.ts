@@ -2,24 +2,24 @@ import { DocumentClass, DocumentFunction, DocumentInterface, DocumentMethod, Doc
 
 export default class DataSource {
   /** 字段名称 */
-  name: string;
+  name!: string;
   /** 字段描述 */
-  description: string;
+  description?: string;
   /** 类型 */
-  type: string;
+  type?: string;
   /** 是否可选 */
-  isOptional: boolean;
+  isOptional?: boolean;
   /** 默认值 */
-  defaultValue: string;
+  defaultValue?: string;
   /** 版本号 */
-  version: string;
+  version?: string;
   /** 是否废弃，字符串表示废弃描述 */
-  deprecated: boolean | string;
+  deprecated?: boolean | string;
   /** 文档类型 */
-  kind: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
+  kind!: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
 
   constructor(doc: DocumentProp | DocumentMethod) {
-    this.name = doc?.name;
+    this.name = doc?.name!;
     this.description = doc.description;
     this.defaultValue = doc?.defaultValue;
     this.isOptional = doc?.isOptional;

@@ -1,4 +1,4 @@
-import { Node, Symbol, TypeAliasDeclaration, ts } from 'ts-morph';
+import { Node, Symbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
 import { DocumentProp, BaseDocField, DocumentMethod, DocumentOptions } from '../helper';
 
 // @ts-ignore
@@ -25,7 +25,7 @@ export class DocumentObject extends BaseDocField {
       objectDeclaration?.asKind(ts.SyntaxKind.TypeLiteral) ?? // 兼容
       objectDeclaration?.asKind(ts.SyntaxKind.ObjectLiteralExpression) ??
       objectDeclaration?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral);
-    const properties = node?.getProperties();
+    const properties = (node as TypeLiteralNode)?.getProperties();
     properties?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
@@ -35,9 +35,9 @@ export class DocumentObject extends BaseDocField {
         index,
       };
       if (DocumentMethod.isTarget(prop)) {
-        this.methods[propName] = new DocumentMethod(currentSymbol, options);
+        this.methods[propName] = new DocumentMethod(currentSymbol!, options);
       } else if (DocumentProp.isTarget(prop)) {
-        this.props[propName] = new DocumentProp(currentSymbol, options);
+        this.props[propName] = new DocumentProp(currentSymbol!, options);
       }
     });
   }

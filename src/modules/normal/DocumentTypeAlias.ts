@@ -15,7 +15,7 @@ export class DocumentTypeAlias extends BaseDocField {
 
   #assign(symbol: Symbol) {
     const node = BaseDocField.getCompatAncestorNode(symbol) as TypeAliasDeclaration;
-    this.type = new DocumentType(node?.getTypeNode(), this.#options); // 类型别名第一层不增加深度
+    this.type = new DocumentType(node?.getTypeNode()!, this.#options); // 类型别名第一层不增加深度
   }
 
   static isTarget(node: Node): node is TypeAliasDeclaration {
