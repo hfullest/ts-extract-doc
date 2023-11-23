@@ -25,7 +25,7 @@ export class DocumentFunctionComponent extends DocumentFunction {
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol);
     const propsNode = functionTypeNode?.getParameters()?.[0];
     const typeNode = propsNode?.getTypeNode?.();
-    if(!typeNode) return;
+    if (!typeNode) return;
     const doc = new DocumentType(typeNode, this.#options);
     const value = doc?.value as DocumentObject;
     this.props = value?.props;
@@ -46,10 +46,7 @@ export class DocumentFunctionComponent extends DocumentFunction {
     }
     const returnTypeNode = functionTypeNode?.getReturnTypeNode(); // 如果指定了函数返回类型
     const returnType = returnTypeNode?.getType();
-    const returnSubstitionType = functionTypeNode
-      ?.getType()
-      ?.getCallSignatures()[0]
-      ?.compilerSignature?.getReturnType();
+    const returnSubstitionType = functionTypeNode?.getType()?.getCallSignatures()[0]?.getReturnType();
     const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
     if (
       /^(React\.)?((\w*?)Element|ReactNode)\b/.test(returnType?.getText()) ||

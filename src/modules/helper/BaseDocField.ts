@@ -77,14 +77,14 @@ export class BaseDocField {
     const ancestorNode = BaseDocField.getCompatAncestorNode<ClassDeclaration>(symbol);
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
-    this.fullText = jsDoc?.getFullText?.() ?? '';
-    this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '') ?? '';
+    this.fullText = jsDoc?.getFullText?.();
+    this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
     const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);
-    this.filePath = jsDoc?.getSourceFile().getFilePath() ?? node?.getSourceFile()?.getFilePath();
+    this.filePath = jsDoc?.getSourceFile?.().getFilePath?.() ?? node?.getSourceFile?.()?.getFilePath?.();
     this.pos = {
-      start: [node?.getStartLineNumber(), node?.getStartLinePos()],
-      end: [node?.getEndLineNumber(), node?.getEnd()], // TODO：确认结束位置
+      start: [node?.getStartLineNumber?.(), node?.getStartLinePos?.()],
+      end: [node?.getEndLineNumber?.(), node?.getEnd?.()], // TODO：确认结束位置
     };
     // this.type = new DocumentType((node as TypeAliasDeclaration)?.getTypeNode?.() ?? node?.getType()); // 由于递归解析造成不必要性能浪费，需要的位置在自行解析类型
   }
@@ -132,11 +132,14 @@ export class BaseDocField {
    */
   protected getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
     symbol ??= this.parentSymbol;
-    const parentNode = symbol?.getValueDeclaration() ?? symbol?.getDeclarations()[0];
-    const ancestorNode = Node.isVariableDeclaration(parentNode)
-      ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
-      : parentNode;
-    return ancestorNode as T | VariableStatement;
+    const parentNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations()[0];
+    try {
+      const ancestorNode = Node.isVariableDeclaration(parentNode)
+        ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
+        : parentNode;
+      return ancestorNode as T | VariableStatement;
+    } catch (e) {}
+    return parentNode as T;
   }
 
   /** 计算并获取当前等级+n的配置 */
@@ -158,10 +161,13 @@ export class BaseDocField {
   }
 
   static getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
-    const parentNode = symbol?.getValueDeclaration() ?? symbol?.getDeclarations()[0];
-    const ancestorNode = Node.isVariableDeclaration(parentNode)
-      ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
-      : parentNode;
-    return ancestorNode as T | VariableStatement;
+    const parentNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
+    try {
+      const ancestorNode = Node.isVariableDeclaration(parentNode)
+        ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
+        : parentNode;
+      return ancestorNode as T | VariableStatement;
+    } catch (e) {}
+    return parentNode as T;
   }
 }

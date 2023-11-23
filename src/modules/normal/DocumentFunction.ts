@@ -31,16 +31,18 @@ export class DocumentFunction extends BaseDocField {
           index,
         })
     );
-    const returnTypeNode = functionTypeNode.getReturnTypeNode();
-    const returnSubstitionType = functionTypeNode
-      ?.getType()
-      ?.getCallSignatures()[0]
-      ?.compilerSignature?.getReturnType();
-    this.returns = new DocumentReturn(returnTypeNode?.getSymbol(), {
-      ...this.#options,
-      parentSymbol: symbol,
-      rootSymbol: this.rootSymbol,
-    });
+    const returnTypeNode = functionTypeNode?.getReturnTypeNode(); // 如果指定了函数返回类型
+    const returnType = returnTypeNode?.getType();
+    const returnSubstitionType = functionTypeNode?.getType()?.getCallSignatures()[0]?.getReturnType();
+    const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
+    const returnSymbol = returnTypeNode?.getSymbol() ?? returnType?.getSymbol() ?? returnSubstitionSymbol;
+    if (returnSymbol) {
+      this.returns = new DocumentReturn(returnSymbol, {
+        ...this.#options,
+        parentSymbol: symbol,
+        rootSymbol: this.rootSymbol,
+      });
+    }
   }
 
   /** 根据节点获取子级函数类型节点的通用方法 */

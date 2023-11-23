@@ -1,4 +1,4 @@
-import { FunctionDeclaration, JSDocReturnTag, Node, ReturnStatement, Symbol } from 'ts-morph';
+import { FunctionDeclaration, JSDocReturnTag, Node, Symbol, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentType } from './DocumentType';
@@ -9,17 +9,21 @@ export class DocumentReturn extends BaseDocField {
     options.rootSymbol ??= options?.parentSymbol;
     super(symbol, options);
 
+    this.#options = options;
+
     this.#assign(symbol);
   }
 
+  #options = {} as DocumentOptions;
+
   #assign(symbol: Symbol): void {
-    const returns = symbol?.getDeclarations()[0] as ReturnStatement;
     const parentNode = this.getCompatAncestorNode<FunctionDeclaration>(this.parentSymbol);
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(parentNode);
     const returnTypeNode = functionTypeNode?.getReturnTypeNode();
     const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node as JSDocReturnTag;
-
-    this.type = new DocumentType(returnTypeNode, this.getComputedOptions(), returnCommentNode);
+    const returnSubstitionType = functionTypeNode?.getType()?.getCallSignatures()[0]?.getReturnType();
+    const returnSubstitionNode = returnSubstitionType?.getSymbol()?.getDeclarations?.()[0] as Node<ts.TypeNode>;
+    this.type = new DocumentType(returnTypeNode ?? returnSubstitionNode, this.#options, returnCommentNode);
     this.description = returnCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
   }
 }

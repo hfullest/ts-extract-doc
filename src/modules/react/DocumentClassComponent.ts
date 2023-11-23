@@ -85,7 +85,7 @@ export class DocumentClassComponent extends BaseDocField {
       const renderMethods = node?.getMethod?.('render');
       const returnTypeNode = renderMethods?.getReturnTypeNode(); // 如果指定了函数返回类型
       const returnType = returnTypeNode?.getType();
-      const returnSubstitionType = renderMethods?.getType()?.getCallSignatures()[0]?.compilerSignature?.getReturnType();
+      const returnSubstitionType = renderMethods?.getType()?.getCallSignatures()[0]?.getReturnType();
       const returnSubstitionSymbol = returnSubstitionType?.getSymbol();
       if (
         /^(React\.)?((\w*?)Element|ReactNode)\b/.test(returnType?.getText()) ||

@@ -110,9 +110,9 @@ export class DocumentType {
 
   #assign(node: Type | Node<ts.TypeNode>, jsDocNode?: JSDocParameterTag | JSDocReturnTag) {
     this.text =
-      node?.getText()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, '') ?? // 去除注释
-      jsDocNode?.getTypeExpression()?.getText() ??
-      jsDocNode?.getType()?.getText();
+      node?.getText?.()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, '') ?? // 去除注释
+      jsDocNode?.getTypeExpression?.()?.getText?.() ??
+      jsDocNode?.getType?.()?.getText?.();
     if (Node.isNode(node)) {
       this.fullText = node?.getFullText();
       this.typeNode = node;
@@ -141,13 +141,6 @@ export class DocumentType {
 
     this.value = this.info.value;
   }
-
-  // /** 根据指定类型获取相应值 */
-  // getValueByKind<T extends DocumentTypeInfoType['kind']>(
-  //   kind: T
-  // ): { [K in DocumentTypeInfoType['kind'] extends T ? K : never]: DocumentTypeInfoType['value'] } {
-  //   return this.info.value;
-  // }
 
   #isBasicType(type: Type) {
     return (
@@ -229,7 +222,7 @@ export class DocumentType {
   #handleTuple(type: Type<ts.TupleType>) {
     this.kind = 'Tuple';
     const tupleTypes = type?.getTupleElements();
-    const docs = tupleTypes?.map((tuple) => this.#handleParseType(tuple)) ?? [];
+    const docs = (tupleTypes?.map((tuple) => this.#handleParseType(tuple)) ?? []) as (Document|DocumentType)[];
     this.info = {
       kind: 'Tuple',
       parsedValue: docs,
