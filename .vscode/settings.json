@@ -1,0 +1,6 @@
+{
+    "editor.inlineSuggest.showToolbar": "onHover",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "always"
+    }
+}
