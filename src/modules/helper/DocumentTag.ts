@@ -24,7 +24,7 @@ export class DocumentJSDocTag {
   fullText?: string;
 
   constructor(tag: JSDocTag<ts.JSDocTag>) {
-    const name = tag.getTagName();
+    const name = tag.getTagName() as keyof typeof JSDocTagEnum;
     if (JSDocTagEnum[name] === void 0) return;
     this.name = name as keyof typeof JSDocTagEnum;
     this.text = tag?.getCommentText();
