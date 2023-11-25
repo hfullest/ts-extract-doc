@@ -5,35 +5,34 @@
     "lib": [
       "ESNext",
     ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "declaration": true,
     "module": "ESNext",
     "skipLibCheck": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    // "allowImportingTsExtensions": true,
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
     /* Linting */
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
     "importHelpers": true,
+    // Output
+    "outDir": "./dist/es",
+    "rootDir": "./src",
+    "jsx": "react",
+    "jsxFactory": "JSX.createElement",
+    "jsxFragmentFactory": "JSX.Fragment",
   },
   "include": [
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "dist",
-    "src/react-docgen-typescript"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+    "**/*.(spec|test).ts(x)?",
   ],
   "ts-node": {
     "esm": true

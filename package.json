@@ -5,44 +5,31 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c --watch",
-    "try": "rollup -c && node ./dist/index.umd.js",
+    "build": "npm run clean && tsc",
+    "tsc": "tsc",
+    "dev": "tsc -c",
+    "clean": "rimraf dist",
+    "try": "rollup -c",
     "try:example": "cd ./example/five && pnpm docs:dev",
     "try:watch": " nodemon --watch ./example  ./example/one/dist/index.cjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "lodash-es": "^4.17.21",
+    "ts-morph": "^20.0.0",
+    "typescript": "^5.0.2"
+  },
   "devDependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2",
-    "@babel/preset-react": "^7.22.15",
-    "@babel/preset-typescript": "^7.23.2",
-    "@rollup/plugin-alias": "^5.0.1",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-json": "^6.0.1",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-typescript": "^11.1.5",
     "@types/lodash-es": "^4.17.11",
     "@types/node": "^20.8.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "esbuild": "^0.19.5",
     "eslint": "^8.45.0",
     "eslint-define-config": "^1.24.1",
     "nodemon": "^3.0.1",
-    "rollup": "^4.1.4",
-    "rollup-plugin-dts": "^6.1.0",
-    "rollup-plugin-esbuild": "^6.1.0",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "ts-morph": "^20.0.0",
-    "typescript": "^5.0.2"
+    "rimraf": "^5.0.5"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "lodash-es": "^4.17.21",
-    "react": "^18.2.0"
-  }
+  "license": "ISC"
 }
