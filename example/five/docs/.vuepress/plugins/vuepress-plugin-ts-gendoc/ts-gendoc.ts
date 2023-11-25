@@ -7,7 +7,7 @@ import {
 import { MarkdownImportOptions } from "./vuepress-plugin-markdown-import";
 import { extractTsToMarkdown } from "../../../../../../src/index";
 import { writeFileSync } from "fs";
-import { parse } from "../../../../../../src/react-docgen-typescript/src/index";
+// import { parse } from "../../../../../../src/react-docgen-typescript/src/index";
 
 export default {
   "ts-gendoc": {
@@ -21,7 +21,7 @@ export default {
       const result = extractTsToMarkdown(path);
       writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
       debugger;
-      parse(path);
+      // parse(path);
 
       process.exit();
       /***************************************** */
