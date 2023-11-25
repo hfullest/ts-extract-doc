@@ -2,3 +2,11 @@ node_modules
 dist
 build
 .history
+
+*.tsbuildinfo
+*.log
+*.log.*
+*.log.bak
+*.log.bak.*
+
+*.error
