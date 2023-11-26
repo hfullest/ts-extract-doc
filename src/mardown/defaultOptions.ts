@@ -9,7 +9,8 @@ const defaultOptions: GenMarkdownOptions = {
       title: '名称',
       dataIndex: 'name',
       align: 'center',
-      render: (record) => `${record.name}${record.isOptional ? ` ~(可选)~` : ''} ${record?.deprecated ? `*~(已废弃)~*` : ''}`,
+      render: (record) =>
+        `${record.name}${record.isOptional ? ` ~(可选)~` : ''} ${record?.deprecated ? `*~(已废弃)~*` : ''}`,
     },
     { title: '说明', dataIndex: 'description', align: 'center' },
     { title: '类型', dataIndex: 'type', align: 'center' },
@@ -23,6 +24,15 @@ const defaultOptions: GenMarkdownOptions = {
     staticMethodHeadName: '静态方法',
     lineBreakDelimiter: ' ',
     whiteSpaceFill: '-',
+    escapeRules(text) {
+      // 处理包含`|`字符串文本，替换成`\|`进行转译
+      if (text.includes('|')) {
+        return text.replace(/([^`]*)(`[^`]*`)?([^`]*)/g, ($0, $1, $2, $3) => {
+          return `${$1?.replaceAll('|', `\\|`) ?? ''}${$2 ?? ''}${$3?.replaceAll('|', `\\|`) ?? ''}`;
+        });
+      }
+      return text;
+    },
   },
 };
 

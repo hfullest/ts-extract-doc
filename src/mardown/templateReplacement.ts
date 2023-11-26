@@ -47,7 +47,7 @@ const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: s
 const fillClassOrInterfaceTableByDoc = (
   doc: DocumentInterface | DocumentClass,
   type: FillType,
-  options: GenMarkdownOptions
+  options: GenMarkdownOptions,
 ): string => {
   const { columns = [] } = options ?? {};
   debugger;
@@ -77,10 +77,12 @@ const fillClassOrInterfaceTableByDoc = (
   const propsStr = propsDoc
     ?.map(([, doc], index) => {
       const dataSource = new DataSource(doc);
-      const fields = columns.map((col) => {
-        if (typeof col?.render === 'function') return col.render(dataSource, index, doc);
-        return dataSource[col?.dataIndex] ?? options?.table?.whiteSpaceFill ?? defaultSpace;
-      });
+      const fields = columns
+        .map((col) => {
+          if (typeof col?.render === 'function') return col.render(dataSource, index, doc);
+          return (dataSource[col?.dataIndex] ?? options?.table?.whiteSpaceFill ?? defaultSpace) as string;
+        })
+        .map((it) => options.table?.escapeRules?.(it) ?? it);
       if (!fields.length) return '';
       return `|${fields.join('|').replace(/\n/g, options?.table?.lineBreakDelimiter ?? defaultSpace)}|`;
     })
@@ -104,12 +106,12 @@ export const templateReplacement = (doc: Document, options: GenMarkdownOptions):
   const staticPropsTable = fillClassOrInterfaceTableByDoc(
     doc as DocumentInterface | DocumentClass,
     'staticProps',
-    options
+    options,
   );
   const staticMethodsTable = fillClassOrInterfaceTableByDoc(
     doc as DocumentInterface | DocumentClass,
     'staticMethods',
-    options
+    options,
   );
   const extra = extraDescription ? `${extraDescription}` : '';
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';

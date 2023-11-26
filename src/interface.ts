@@ -39,6 +39,7 @@ export interface OptionsColums {
   /** 自定义列渲染，输出应为`markdown`字符串 */
   render?: (record: DataSource, index: number, doc: DocumentProp | DocumentMethod) => string;
 }
+/** @expand */
 export interface GenMarkdownOptions {
   /** 默认标题等级 */
   headLevel?: 1 | 2 | 3 | 4 | 5 | 6 | number;
@@ -65,9 +66,12 @@ export interface GenMarkdownOptions {
     lineBreakDelimiter?: string;
     /** 表格空白位占位填充 默认值为空格 */
     whiteSpaceFill?: string;
+    /** 转译规则，有的字段包含markdown误识别语法，需要转译 */
+    escapeRules?: (text: string) => string;
   };
 }
 
+/** @expand */
 export interface ConfigOptions {
   /** markdown 相关的配置 */
   markdown?: GenMarkdownOptions;

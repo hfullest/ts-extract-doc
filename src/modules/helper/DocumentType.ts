@@ -110,7 +110,7 @@ export class DocumentType {
 
   #assign(node: Type | Node<ts.TypeNode>, jsDocNode?: JSDocParameterTag | JSDocReturnTag) {
     this.text =
-      node?.getText?.()?.replace(/(\n*\s*\/{2,}.*?\n{1,}\s*)|(\/\*{1,}.*?\*\/)/g, '') ?? // 去除注释
+      node?.getText?.()?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, '') ?? // 去除注释
       jsDocNode?.getTypeExpression?.()?.getText?.() ??
       jsDocNode?.getType?.()?.getText?.();
     if (Node.isNode(node)) {
