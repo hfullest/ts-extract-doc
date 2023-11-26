@@ -1,10 +1,10 @@
 import { JSDocParameterTag, JSDocReturnTag, Node, Type, ts } from 'ts-morph';
-import { Document } from '../../interface';
-import universalParse from '../../utils/universalParse';
 import { DocumentInterface, DocumentObject } from '../normal';
 import { DocumentProp } from './DocumentProp';
 import { DocumentMethod } from './DocumentMethod';
 import { DocumentOptions } from './BaseDocField';
+import { Document } from '../Document';
+import DocumentParser from '../Document';
 
 export interface TypeValues {
   Basic: string;
@@ -43,25 +43,25 @@ export namespace DocumentTypeInfo {
   export interface Union {
     kind: 'Union';
     /** 分别解析 */
-    parsedValue: (Document | DocumentType)[];
+    parsedValue: Document[];
     /** 最终处理的结果 */
-    value: (Document | DocumentType)[];
+    value: Document[];
   }
 
   export interface Tuple {
     kind: 'Tuple';
     /** 分别解析 */
-    parsedValue?: (Document | DocumentType)[];
+    parsedValue?: Document[];
     /** 最终处理的结果 */
-    value?: (Document | DocumentType)[];
+    value?: Document[];
   }
 
   export interface Array {
     kind: 'Array';
     /** 分别解析 */
-    parsedValue?: Document | DocumentType;
+    parsedValue?: Document;
     /** 最终处理的数组元素类型结果 */
-    value?: Document | DocumentType;
+    value?: Document;
   }
 
   export interface Enum {
@@ -100,7 +100,7 @@ export class DocumentType {
   constructor(
     node: Type | Node<ts.TypeNode>,
     options: DocumentOptions,
-    jsDocNode?: JSDocParameterTag | JSDocReturnTag
+    jsDocNode?: JSDocParameterTag | JSDocReturnTag,
   ) {
     this.#options = options;
     this.#assign(node, jsDocNode);
@@ -172,11 +172,14 @@ export class DocumentType {
       | DocumentObject
       | DocumentInterface
     )[];
-    const combineDoc = docs.reduce<DocumentTypeInfo.Intersection['value']>((pre, cur) => {
-      pre.props = { ...pre.props, ...cur?.props } as DocumentProp;
-      pre.methods = { ...pre.methods, ...cur?.methods } as DocumentMethod;
-      return pre;
-    }, {} as DocumentTypeInfo.Intersection['value']);
+    const combineDoc = docs.reduce<DocumentTypeInfo.Intersection['value']>(
+      (pre, cur) => {
+        pre.props = { ...pre.props, ...cur?.props } as DocumentProp;
+        pre.methods = { ...pre.methods, ...cur?.methods } as DocumentMethod;
+        return pre;
+      },
+      {} as DocumentTypeInfo.Intersection['value'],
+    );
     this.info = {
       kind: 'Intersection',
       parsedValue: docs,
@@ -222,7 +225,7 @@ export class DocumentType {
   #handleTuple(type: Type<ts.TupleType>) {
     this.kind = 'Tuple';
     const tupleTypes = type?.getTupleElements();
-    const docs = (tupleTypes?.map((tuple) => this.#handleParseType(tuple)) ?? []) as (Document|DocumentType)[];
+    const docs = (tupleTypes?.map((tuple) => this.#handleParseType(tuple)) ?? []) as Document[];
     this.info = {
       kind: 'Tuple',
       parsedValue: docs,
@@ -237,13 +240,10 @@ export class DocumentType {
   #handleParseType(type: Type) {
     if (!((this.#options.nestedLevel ?? 0) < (this.#options.maxNestedLevel ?? 0))) return; // 超过嵌套深度跳出递归
     const symbol = type?.getAliasSymbol?.() ?? type?.getSymbol?.();
-    return (
-      (symbol && universalParse(symbol)) ||
-      new DocumentType(type, {
-        ...this.#options,
-        nestedLevel: (this.#options.nestedLevel ?? 0) + 1,
-        maxNestedLevel: this.#options.maxNestedLevel,
-      }) // 未命中定义类型则使用兜底类型
-    );
+    return DocumentParser(symbol ?? type, {
+      ...this.#options,
+      nestedLevel: (this.#options.nestedLevel ?? 0) + 1,
+      maxNestedLevel: this.#options.maxNestedLevel,
+    });
   }
 }

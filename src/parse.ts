@@ -1,13 +1,12 @@
 import { Project, SourceFile, InterfaceDeclaration, Symbol } from 'ts-morph';
-import { Document, DocumentParseOptions } from './interface';
+import { DocumentParseOptions } from './interface';
 import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
-import universalParse from './utils/universalParse';
-import { defaultDocumentOptions } from './models';
+import { Document, DocumentParser, defaultDocumentOptions } from './models';
 
 export const parse = (
   filePathOrPaths: string | string[],
-  parserOpts: DocumentParseOptions = defaultDocumentOptions
+  parserOpts: DocumentParseOptions = defaultDocumentOptions,
 ): Document[][] => {
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
 
@@ -48,7 +47,7 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
       return aEndLine - bEndLine;
     });
   const docs = (
-    Array.from(outputSymbols ?? []).map((it) => universalParse(it as Symbol, parseOptions)) as Document[]
+    Array.from(outputSymbols ?? []).map((it) => DocumentParser(it as Symbol, parseOptions)) as Document[]
   ).filter(Boolean);
 
   return docs;

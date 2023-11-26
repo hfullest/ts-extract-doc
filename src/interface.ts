@@ -1,26 +1,6 @@
-import {
-  DocumentObject,
-  DocumentFunction,
-  DocumentClass,
-  DocumentTypeAlias,
-  DocumentInterface,
-  DocumentProp,
-  DocumentMethod,
-  DocumentFunctionComponent,
-  DocumentClassComponent,
-  DocumentEnum,
-} from './models';
+import { DocumentProp, DocumentMethod } from './models';
 import DataSource from './mardown/DataSource';
-
-export type Document =
-  | DocumentObject
-  | DocumentEnum
-  | DocumentTypeAlias
-  | DocumentInterface
-  | DocumentFunction
-  | DocumentClass
-  | DocumentFunctionComponent
-  | DocumentClassComponent;
+import { Document } from './models/Document';
 
 export interface DocumentParseOptions {
   /** 当前文档嵌套等级，默认`0` */
