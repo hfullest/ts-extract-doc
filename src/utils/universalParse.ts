@@ -10,7 +10,7 @@ import {
   DocumentEnum,
   defaultDocumentOptions,
   DocumentOptions,
-} from '../modules';
+} from '../models';
 
 /** 通用解析，能对所有类型(已定义类型)进行解析 */
 export default function universalParse(

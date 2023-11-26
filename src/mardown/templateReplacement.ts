@@ -1,5 +1,5 @@
 import { Document, GenMarkdownOptions } from '../interface';
-import { DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../modules';
+import { DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../models';
 import DataSource from './DataSource';
 
 export type FillType = 'props' | 'methods' | 'staticProps' | 'staticMethods';

@@ -2,7 +2,7 @@ import { parse } from './parse';
 import { ConfigOptions, DocumentParseOptions, GenMarkdownOptions } from './interface';
 import { defaultOptions, generateMarkdown } from './mardown';
 import { merge } from 'lodash-es';
-import { defaultDocumentOptions } from './modules';
+import { defaultDocumentOptions } from './models';
 
 export const parseSourceFile = (filePathOrPaths: string | string[], parseOptions?: DocumentParseOptions) => {
   return parse(filePathOrPaths, parseOptions);

@@ -3,7 +3,7 @@ import { Document, DocumentParseOptions } from './interface';
 import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
 import universalParse from './utils/universalParse';
-import { defaultDocumentOptions } from './modules';
+import { defaultDocumentOptions } from './models';
 
 export const parse = (
   filePathOrPaths: string | string[],

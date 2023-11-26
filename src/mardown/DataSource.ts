@@ -1,4 +1,4 @@
-import { DocumentClass, DocumentFunction, DocumentInterface, DocumentMethod, DocumentProp } from '../modules';
+import { DocumentClass, DocumentFunction, DocumentInterface, DocumentMethod, DocumentProp } from '../models';
 
 export default class DataSource {
   /** 字段名称 */

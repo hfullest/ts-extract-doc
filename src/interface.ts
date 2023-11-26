@@ -9,7 +9,7 @@ import {
   DocumentFunctionComponent,
   DocumentClassComponent,
   DocumentEnum,
-} from './modules';
+} from './models';
 import DataSource from './mardown/DataSource';
 
 export type Document =
