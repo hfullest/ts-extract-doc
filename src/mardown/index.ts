@@ -1,4 +1,5 @@
-import { Document, GenMarkdownOptions } from '../interface';
+import { GenMarkdownOptions } from '../interface';
+import { Document } from '../models';
 import defaultOptions from './defaultOptions';
 import { templateReplacement } from './templateReplacement';
 

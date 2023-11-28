@@ -2,7 +2,7 @@ import { JSDocParameterTag, JSDocReturnTag, Node, Type, ts } from 'ts-morph';
 import { DocumentInterface, DocumentObject } from '../normal';
 import { DocumentProp } from './DocumentProp';
 import { DocumentMethod } from './DocumentMethod';
-import { DocumentOptions } from './BaseDocField';
+import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { Document } from '../Document';
 import DocumentParser from '../Document';
 
@@ -80,6 +80,8 @@ export type DocumentTypeInfoType =
   | DocumentTypeInfo.Enum;
 
 export type DocumentTypeKind = DocumentTypeInfoType['kind'];
+
+export interface DocumentType extends BaseDocField { }
 
 export class DocumentType {
   /** 类型文本展示 */
@@ -233,9 +235,9 @@ export class DocumentType {
     };
   }
 
-  #handleAny(type: Type) {}
+  #handleAny(type: Type) { }
 
-  #handleUnknown(type: Type) {}
+  #handleUnknown(type: Type) { }
 
   #handleParseType(type: Type) {
     if (!((this.#options.nestedLevel ?? 0) < (this.#options.maxNestedLevel ?? 0))) return; // 超过嵌套深度跳出递归

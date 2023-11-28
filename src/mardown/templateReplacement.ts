@@ -1,5 +1,5 @@
-import { Document, GenMarkdownOptions } from '../interface';
-import { DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../models';
+import { GenMarkdownOptions } from '../interface';
+import { Document, DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../models';
 import DataSource from './DataSource';
 
 export type FillType = 'props' | 'methods' | 'staticProps' | 'staticMethods';
@@ -13,10 +13,10 @@ const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: s
     {
       header: string;
       member:
-        | DocumentClass['props']
-        | DocumentClass['methods']
-        | DocumentClass['staticProps']
-        | DocumentClass['staticMethods'];
+      | DocumentClass['props']
+      | DocumentClass['methods']
+      | DocumentClass['staticProps']
+      | DocumentClass['staticMethods'];
     }
   > = {
     props: {

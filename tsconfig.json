@@ -35,6 +35,7 @@
   ],
   "exclude": [
     "**/*.(spec|test).ts(x)?",
+    "**/__tests__/**/*"
   ],
   "ts-node": {
     "esm": true
