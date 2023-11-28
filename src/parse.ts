@@ -4,17 +4,18 @@ import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
 import { Document, DocumentParser, defaultDocumentOptions } from './models';
 
+const singletonProject = new Project();
+
 export const parse = (
   filePathOrPaths: string | string[],
   parserOpts: DocumentParseOptions = defaultDocumentOptions,
+  singleton = false,
 ): Document[][] => {
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
 
-  const project = new Project();
+  const project = singleton ? singletonProject : new Project();
 
-  // project.enableLogging();
-
-  project.addSourceFilesFromTsConfig(resolve(process.cwd(), 'tsconfig.json'));
+  project.addSourceFilesFromTsConfig(parserOpts?.tsConfigPath ?? resolve(process.cwd(), 'tsconfig.json'));
 
   project.addSourceFilesAtPaths(filePaths);
 
@@ -22,7 +23,7 @@ export const parse = (
 
   const filesDocs = sourceFiles
     .filter((file) => filePaths.includes(file.getFilePath()))
-    .map((it) => genDocuments(it, parserOpts));
+    .map((it) => genDocuments(it, { ...parserOpts, project }));
 
   return filesDocs;
 };

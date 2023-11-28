@@ -1,12 +1,17 @@
 import { DocumentProp, DocumentMethod } from './models';
 import DataSource from './mardown/DataSource';
 import { Document } from './models/Document';
+import { Project } from 'ts-morph';
 
 export interface DocumentParseOptions {
   /** 当前文档嵌套等级，默认`0` */
   nestedLevel?: number;
   /** 最大嵌套等级，默认`2` */
   maxNestedLevel?: number;
+  /** 可以自定义 `project` */
+  project?: Project;
+  /** `tsconfig.json路径` */
+  tsConfigPath?: string;
 }
 
 export interface OptionsColums {
