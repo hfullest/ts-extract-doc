@@ -1,5 +1,6 @@
 import { Node, Symbol, Type } from 'ts-morph';
 import {
+  DocumentArray,
   DocumentBasic,
   DocumentClass,
   DocumentEnum,
@@ -7,10 +8,11 @@ import {
   DocumentInterface,
   DocumentIntersection,
   DocumentObject,
+  DocumentTuple,
   DocumentUnion,
 } from './normal';
 import { DocumentClassComponent, DocumentFunctionComponent } from './react';
-import { DocumentOptions } from './helper';
+import { BaseDocField, DocumentOptions } from './helper';
 import defaultOptions from './defaultOptions';
 
 /** 文档模型处理 handler */
@@ -22,16 +24,21 @@ export const DOCUMENT_HANDLES = [
   DocumentClass,
   DocumentFunction,
   DocumentBasic,
-  DocumentObject,
   DocumentEnum,
+  DocumentArray,
+  DocumentTuple,
   DocumentIntersection,
   DocumentUnion,
+  DocumentObject,
 ];
 
 export type Document = InstanceType<(typeof DOCUMENT_HANDLES)[number]>;
 
 class DocumentHandle {
   constructor(symbolOrType: Symbol | Type, parseOptions: DocumentOptions = defaultOptions as DocumentOptions) {
+    if (!((parseOptions.nestedLevel ?? 0) < (parseOptions.maxNestedLevel ?? 0))) {
+      return {} as DocumentHandle; // 超过嵌套深度强制跳出递归，不进行构造对象
+    }
     this.#parseOptions = parseOptions;
     Object.assign(this, this.#handleType(symbolOrType));
   }
@@ -40,10 +47,7 @@ class DocumentHandle {
 
   #handleType(symbolOrType: Symbol | Type) {
     const parseOptions = this.#parseOptions;
-    const type = symbolOrType instanceof Type ? symbolOrType : null;
-    const symbol = symbolOrType instanceof Symbol ? symbolOrType : null;
-    const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
-
+    const { symbol, node, type } = BaseDocField.splitSymbolNodeOrType(symbolOrType);
     for (let handler of DOCUMENT_HANDLES) {
       if (handler.isTarget((node ?? type) as Node)) return new handler(symbol!, parseOptions);
     }
