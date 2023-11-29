@@ -63,7 +63,7 @@ type CompatButtonProps<N> = {
 };
 
 /** 测试UiButton 描述
- *
+ * @title
  *  */
 export const UiButton = <N extends boolean = false>(
   props1: {
