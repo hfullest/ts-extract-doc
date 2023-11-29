@@ -1,9 +1,9 @@
 import { GenMarkdownOptions } from '../interface';
 import { Document } from '../models';
-import defaultOptions from './defaultOptions';
+import defaultMarkdownOptions from './defaultOptions';
 import { templateReplacement } from './templateReplacement';
 
-export const generateMarkdown = (docsFiles: Document[][], options: GenMarkdownOptions = defaultOptions): string => {
+export const generateMarkdown = (docsFiles: Document[][], options: GenMarkdownOptions = defaultMarkdownOptions): string => {
   const documents: string[] = [];
   docsFiles.forEach((file) => {
     file.forEach((doc) => {
@@ -13,4 +13,4 @@ export const generateMarkdown = (docsFiles: Document[][], options: GenMarkdownOp
   return documents.join('\n');
 };
 
-export { defaultOptions };
+export { defaultMarkdownOptions };

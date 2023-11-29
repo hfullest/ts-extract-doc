@@ -1,7 +1,7 @@
 import { GenMarkdownOptions } from '../interface';
 
 /** 默认配置 */
-const defaultOptions: GenMarkdownOptions = {
+const defaultMarkdownOptions: GenMarkdownOptions = {
   headerRender: (doc, headerMark) => `${headerMark} ${doc.name}${doc.version ? ` ~(${doc.version})~` : ''}\n`,
   headLevel: 3,
   columns: [
@@ -36,4 +36,4 @@ const defaultOptions: GenMarkdownOptions = {
   },
 };
 
-export default defaultOptions;
+export default defaultMarkdownOptions;
