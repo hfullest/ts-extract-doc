@@ -2,17 +2,22 @@
   "name": "ts-extract-doc",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
   "type": "module",
+  "files": [
+    "package.json",
+    ".npmrc",
+    "README.md"
+  ],
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc --project .",
+    "build:cjs": "tsc -project ./tsconfig.cjs.json",
     "tsc": "tsc",
-    "dev": "node_modules/.bin/ts-node-cwd --esm --files ./src/index.ts",
-    "dev:test": "ts-node --project ./tsconfig.node.json -r tsconfig-paths/register ./src/index.ts",
     "clean": "rimraf dist",
-    "try": "rollup -c",
     "try:example": "cd ./example/five && pnpm docs:dev",
-    "try:watch": " nodemon --watch ./example  ./example/one/dist/index.cjs",
+    "readme": "node ./scripts/gen-readme.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -35,9 +40,13 @@
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0"
+    "tslib": "^2.6.2"
   },
-  "keywords": [],
+  "keywords": [
+    "ts",
+    "tsdoc",
+    "jsdoc"
+  ],
   "author": "",
   "license": "ISC"
 }

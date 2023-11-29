@@ -1,0 +1,12 @@
+{
+    "extends":["./tsconfig.json"],
+    "compilerOptions": {
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "outDir": "dist/lib",
+        "esModuleInterop": true,
+        "downlevelIteration": true,
+        "importHelpers": true,
+        "lib": ["ES5","ES6"]
+    }
+}
