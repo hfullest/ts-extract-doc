@@ -1,26 +1,34 @@
-import { Symbol, Type } from 'ts-morph';
+import { Node, Symbol, Type } from 'ts-morph';
 import {
+  DocumentBasic,
   DocumentClass,
   DocumentEnum,
   DocumentFunction,
   DocumentInterface,
+  DocumentIntersection,
   DocumentObject,
-  DocumentTypeAlias,
+  DocumentUnion,
 } from './normal';
 import { DocumentClassComponent, DocumentFunctionComponent } from './react';
-import { DocumentOptions, DocumentType } from './helper';
+import { DocumentOptions } from './helper';
 import defaultOptions from './defaultOptions';
 
-export type Document =
-  | DocumentObject
-  | DocumentEnum
-  | DocumentTypeAlias
-  | DocumentInterface
-  | DocumentFunction
-  | DocumentClass
-  | DocumentFunctionComponent
-  | DocumentClassComponent
-  | DocumentType;
+/** 文档模型处理 handler */
+export const DOCUMENT_HANDLES = [
+  // 顺序不可随意调换
+  DocumentFunctionComponent,
+  DocumentClassComponent,
+  DocumentInterface,
+  DocumentClass,
+  DocumentFunction,
+  DocumentBasic,
+  DocumentObject,
+  DocumentEnum,
+  DocumentIntersection,
+  DocumentUnion,
+];
+
+export type Document = InstanceType<(typeof DOCUMENT_HANDLES)[number]>;
 
 class DocumentHandle {
   constructor(symbolOrType: Symbol | Type, parseOptions: DocumentOptions = defaultOptions as DocumentOptions) {
@@ -32,18 +40,13 @@ class DocumentHandle {
 
   #handleType(symbolOrType: Symbol | Type) {
     const parseOptions = this.#parseOptions;
-    const type = (symbolOrType instanceof Symbol ? undefined : symbolOrType) as Type;
-    const symbol = (symbolOrType instanceof Symbol ? symbolOrType : undefined) as Symbol;
+    const type = symbolOrType instanceof Type ? symbolOrType : null;
+    const symbol = symbolOrType instanceof Symbol ? symbolOrType : null;
     const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
-    if (DocumentFunctionComponent.isTarget(node)) return new DocumentFunctionComponent(symbol, parseOptions);
-    if (DocumentClassComponent.isTarget(node)) return new DocumentClassComponent(symbol, parseOptions);
-    if (DocumentInterface.isTarget(node)) return new DocumentInterface(symbol, parseOptions);
-    if (DocumentClass.isTarget(node)) return new DocumentClass(symbol, parseOptions);
-    if (DocumentFunction.isTarget(node)) return new DocumentFunction(symbol, parseOptions);
-    if (DocumentObject.isTarget(node)) return new DocumentObject(symbol, parseOptions);
-    if (DocumentEnum.isTarget(node)) return new DocumentEnum(symbol, parseOptions);
-    if (DocumentTypeAlias.isTarget(node)) return new DocumentTypeAlias(symbol, parseOptions);
-    return new DocumentType(type, this.#parseOptions); // 兜底
+
+    for (let handler of DOCUMENT_HANDLES) {
+      if (handler.isTarget((node ?? type) as Node)) return new handler(symbol!, parseOptions);
+    }
   }
 }
 

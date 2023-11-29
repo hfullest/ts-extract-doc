@@ -1,8 +1,8 @@
-import { ClassDeclaration, JSDocTag, Node, Symbol, VariableStatement, ts } from 'ts-morph';
+import { ClassDeclaration, JSDocTag, Node, Symbol, Type, VariableStatement, ts } from 'ts-morph';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
-import { DocumentType } from './DocumentType';
 import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
+import { Document } from '..';
 
 export interface DocumentCarryInfo {
   /** 父级 symbol */
@@ -23,7 +23,7 @@ export class BaseDocField {
   /** 文档路径 */
   filePath: string | undefined;
   /** 类型描述 */
-  type?: DocumentType;
+  type?: Document | null;
   /** 名称 */
   name: string | undefined;
   /** 简单描述，取自注释`tag`标记之前的文本内容 */
@@ -59,6 +59,7 @@ export class BaseDocField {
     this.symbol = symbol;
     this.parentSymbol = options?.parentSymbol ?? symbol;
     this.rootSymbol = options?.rootSymbol ?? symbol;
+    if (!symbol) return;
     this.#assign(symbol);
     this.#options = options;
   }
@@ -79,7 +80,6 @@ export class BaseDocField {
       start: [node?.getStartLineNumber?.(), node?.getStartLinePos?.()],
       end: [node?.getEndLineNumber?.(), node?.getEnd?.()], // TODO：确认结束位置
     };
-    // this.type = new DocumentType((node as TypeAliasDeclaration)?.getTypeNode?.() ?? node?.getType()); // 由于递归解析造成不必要性能浪费，需要的位置在自行解析类型
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -153,6 +153,13 @@ export class BaseDocField {
     return (this.#options.maxNestedLevel ?? 0) + value;
   }
 
+  /** 获取兼容的父节点
+   *
+   * 由于 VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
+   * 这里对此获取父节点进行了兼容
+   *
+   * 可以指定父级symbol参数，也可以默认使用当前节点的父级symbol
+   */
   static getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
     const parentNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
     try {
@@ -162,5 +169,17 @@ export class BaseDocField {
       return ancestorNode as T | VariableStatement;
     } catch (e) {}
     return parentNode as T;
+  }
+
+  /** 分离节点 */
+  static splitSymbolNodeOrType(symbolOrNodeOrType: Symbol | Node | Type) {
+    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : null)!;
+    const originNode = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType : null;
+    const calNode = BaseDocField.getCompatAncestorNode(symbol!);
+    const node = originNode ?? calNode;
+    const originType = symbolOrNodeOrType instanceof Type ? symbolOrNodeOrType : null;
+    const calType = node?.getType?.();
+    const type = originType ?? calType;
+    return { symbol, node, type };
   }
 }
