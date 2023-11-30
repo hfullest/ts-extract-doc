@@ -1,5 +1,5 @@
-import { InterfaceDeclaration, Node, Symbol, TypeLiteralNode } from 'ts-morph';
-import { BaseDocField, DocumentProp, DocumentMethod, DocumentOptions } from '../helper';
+import { InterfaceDeclaration, Node, Symbol } from 'ts-morph';
+import { BaseDocField, DocumentProp, DocumentMethod, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 export class DocumentInterface extends BaseDocField {
   /** 属性 */
@@ -7,34 +7,43 @@ export class DocumentInterface extends BaseDocField {
   /** 方法 */
   methods: Record<string, DocumentMethod> = {};
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
+    super(symbolOrOther, options);
     this.#options = options;
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
   #options: DocumentOptions;
 
-  #assign(symbol: Symbol) {
-    const node = symbol?.getDeclarations()[0] as InterfaceDeclaration | TypeLiteralNode;
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { symbol, node } = BaseDocField.splitSymbolNodeOrType<Symbol, InterfaceDeclaration>(symbolOrOther);
     const properties = node?.getProperties();
-    properties.forEach((prop, index) => {
+    properties?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       if (!currentSymbol) return;
       if (DocumentMethod.isTarget(prop)) {
-        this.methods[propName] = new DocumentMethod(currentSymbol!, { ...this.#options, parentSymbol: symbol, index });
+        this.methods[propName] = new DocumentMethod(currentSymbol!, {
+          ...this.#options,
+          parentSymbol: symbol,
+          index,
+        });
       } else if (DocumentProp.isTarget(prop)) {
-        this.props[propName] = new DocumentProp(currentSymbol!, { ...this.#options, parentSymbol: symbol, index });
+        this.props[propName] = new DocumentProp(currentSymbol!, {
+          ...this.#options,
+          parentSymbol: symbol,
+          index,
+        });
       }
     });
   }
 
   /** 判断是否命中当前目标 */
-  static isTarget(nodeOrOther: Node): nodeOrOther is InterfaceDeclaration {
+  static isTarget(nodeOrOther: SymbolOrOtherType): nodeOrOther is InterfaceDeclaration {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     return Node.isInterfaceDeclaration(node);
   }

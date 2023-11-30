@@ -11,6 +11,8 @@ export interface DocumentCarryInfo {
   rootSymbol?: Symbol;
 }
 
+export type SymbolOrOtherType = Symbol | Node | Type;
+
 export interface DocumentOptions extends DocumentCarryInfo, DocumentParseOptions {}
 
 export class BaseDocField {
@@ -55,18 +57,19 @@ export class BaseDocField {
   /** 全部 `JSDoc标签` */
   jsDocTags: DocumentJSDocTag[] = [];
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
-    this.symbol = symbol;
-    this.parentSymbol = options?.parentSymbol ?? symbol;
-    this.rootSymbol = options?.rootSymbol ?? symbol;
-    if (!symbol) return;
-    this.#assign(symbol);
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    this.symbol = symbol!;
+    this.parentSymbol = options?.parentSymbol ?? symbol!;
+    this.rootSymbol = options?.rootSymbol ?? symbol!;
+    this.#assign(symbolOrOther);
     this.#options = options;
   }
 
   #options = {} as DocumentOptions;
 
-  #assign(symbol: Symbol) {
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
     const ancestorNode = BaseDocField.getCompatAncestorNode<ClassDeclaration>(symbol);
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
@@ -77,8 +80,8 @@ export class BaseDocField {
     this.#parseAndAssginTags(jsDocTags);
     this.filePath = jsDoc?.getSourceFile?.().getFilePath?.() ?? node?.getSourceFile?.()?.getFilePath?.();
     this.pos = {
-      start: [node?.getStartLineNumber?.(), node?.getStartLinePos?.()],
-      end: [node?.getEndLineNumber?.(), node?.getEnd?.()], // TODO：确认结束位置
+      start: [node?.getStartLineNumber?.()!, node?.getStartLinePos?.()!],
+      end: [node?.getEndLineNumber?.()!, node?.getEnd?.()!], // TODO：确认结束位置
     };
   }
 
@@ -171,15 +174,21 @@ export class BaseDocField {
     return parentNode as T;
   }
 
-  /** 分离节点 */
-  static splitSymbolNodeOrType(symbolOrNodeOrType: Symbol | Node | Type) {
-    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : null)!;
-    const originNode = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType : null;
-    const calNode = BaseDocField.getCompatAncestorNode(symbol!);
-    const node = originNode ?? calNode;
+  /** 分离节点，尽可能获取节点，如果`symbol`和`node`不存在，则或尝试从`type`获取`symbol`和`node` */
+  static splitSymbolNodeOrType<
+    S extends Symbol = Symbol,
+    N extends Node = Node<ts.Node>,
+    T extends Type = Type<ts.Type>,
+  >(symbolOrNodeOrType: SymbolOrOtherType | undefined | null): { symbol?: S; node?: N; type?: T } {
+    if (!symbolOrNodeOrType) return {};
     const originType = symbolOrNodeOrType instanceof Type ? symbolOrNodeOrType : null;
+    const typeSymbol = originType?.getAliasSymbol?.() ?? originType?.getSymbol?.();
+    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : typeSymbol)!;
+    const originNode = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType : null;
+    const calNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
+    const node = originNode ?? calNode;
     const calType = node?.getType?.();
     const type = originType ?? calType;
-    return { symbol, node, type };
+    return { symbol, node, type } as { symbol: S; node: N; type: T };
   }
 }

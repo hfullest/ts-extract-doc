@@ -8,7 +8,7 @@ import {
   TypeNode,
   ts,
 } from 'ts-morph';
-import { BaseDocField, DocumentOptions, DocumentType } from '../helper';
+import { BaseDocField, DocumentOptions, DocumentType, SymbolOrOtherType } from '../helper';
 import { DocumentClass, DocumentObject } from '../normal';
 import { JSDocCustomTagEnum } from '../../utils/constants';
 
@@ -17,20 +17,22 @@ export class DocumentClassComponent extends BaseDocField {
 
   methods: DocumentObject['methods'] = {};
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
+    super(symbolOrOther, options);
     this.#options = options;
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
   #options: DocumentOptions;
 
-  #assign(symbol: Symbol) {
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     const declarations = symbol?.getDeclarations(); // 可能有interface重载情况
-    if (!declarations.some((it) => DocumentClassComponent.isTarget(it))) return; // 至少有一个为类组件声明则继续，否则跳出
+    if (!declarations?.some((it) => DocumentClassComponent.isTarget(it))) return; // 至少有一个为类组件声明则继续，否则跳出
     declarations?.forEach((declaration) => {
       const node = Node.isVariableDeclaration(declaration)
         ? declaration.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
@@ -80,9 +82,10 @@ export class DocumentClassComponent extends BaseDocField {
     this.methods = Object.assign({}, this.methods, value?.methods);
   }
 
-  static isTarget(node: Node) {
-    node = BaseDocField.getCompatAncestorNode(node?.getSymbol());
-    if (!DocumentClass.isTarget(node)) return false;
+  static isTarget(symbolOrOther: SymbolOrOtherType) {
+    const { node: originNode } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    const node = BaseDocField.getCompatAncestorNode(originNode?.getSymbol());
+    if (!DocumentClass.isTarget(node!)) return false;
     const jsDocTags = node?.getJsDocs()?.at(-1)?.getTags();
     const isJsxElement = !!jsDocTags?.find((tag) => tag.getTagName() === JSDocCustomTagEnum.reactComponent);
     if (isJsxElement) return true; // 如果手动指定了标签注释，则直接跳过检查，当作组件进行处理

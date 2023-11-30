@@ -1,28 +1,30 @@
 import { EnumDeclaration, Node, Symbol, ts } from 'ts-morph';
-import { BaseDocField, DocumentEnumMember, DocumentOptions } from '../helper';
+import { BaseDocField, DocumentEnumMember, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 export class DocumentEnum extends BaseDocField {
   /** 枚举成员 */
   members?: DocumentEnumMember[];
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
+    super(symbolOrOther, options);
     this.#options = options;
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
   #options: DocumentOptions;
 
-  #assign(symbol: Symbol) {
-    const node = BaseDocField.getCompatAncestorNode(symbol)?.asKind(ts.SyntaxKind.EnumDeclaration);
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { node: enumDeclaration } = BaseDocField.splitSymbolNodeOrType<Symbol, EnumDeclaration>(symbolOrOther);
+    const node = enumDeclaration?.asKind(ts.SyntaxKind.EnumDeclaration);
     const members = (node as EnumDeclaration)?.getMembers?.();
     this.members = members?.map((it, index) => new DocumentEnumMember(it.getSymbol()!, { ...this.#options, index }));
   }
 
-  static isTarget(nodeOrOther: Node) {
+  static isTarget(nodeOrOther: SymbolOrOtherType) {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     return Node.isEnumDeclaration(node);
   }

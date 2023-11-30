@@ -1,5 +1,5 @@
 import { Node, Symbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
-import { DocumentProp, BaseDocField, DocumentMethod, DocumentOptions } from '../helper';
+import { DocumentProp, BaseDocField, DocumentMethod, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 // @ts-ignore
 export class DocumentObject extends BaseDocField {
@@ -8,19 +8,22 @@ export class DocumentObject extends BaseDocField {
   /** 方法 */
   methods: Record<string, DocumentMethod> = {};
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
+    super(symbolOrOther, options);
     this.#options = options;
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
   #options: DocumentOptions;
 
-  #assign(symbol: Symbol) {
-    const objectDeclaration = symbol?.getDeclarations()[0] as TypeAliasDeclaration;
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { node: objectDeclaration, symbol } = BaseDocField.splitSymbolNodeOrType<Symbol, TypeAliasDeclaration>(
+      symbolOrOther,
+    );
     const node =
       objectDeclaration?.asKind(ts.SyntaxKind.TypeLiteral) ?? // 兼容
       objectDeclaration?.asKind(ts.SyntaxKind.ObjectLiteralExpression) ??
@@ -42,8 +45,8 @@ export class DocumentObject extends BaseDocField {
     });
   }
 
-  static isTarget(node: Node) {
-    const { type } = BaseDocField.splitSymbolNodeOrType(node);
+  static isTarget(nodeOrOther: SymbolOrOtherType) {
+    const { type } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     return type?.isObject() && !type?.isArray() && !type?.isTuple() && !type?.isNullable();
   }
 }
