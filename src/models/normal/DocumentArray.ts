@@ -1,5 +1,6 @@
 import { Node, Symbol, Type, TypeAliasDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from '../helper';
+import { Document, DocumentParser } from '../';
 
 export class DocumentArray extends BaseDocField {
   /** 类型文本展示 */
@@ -8,8 +9,10 @@ export class DocumentArray extends BaseDocField {
   typeNode: Node<ts.TypeNode> | null = null;
   /** 当前类型`type`对象 */
   current?: Type | null = null;
-  /** 基本类型的类型值，比如`string`、`number` */
+  /** 类型值 */
   value!: string | undefined;
+  /** 数组元素类型 */
+  elementType!: Document | undefined;
 
   constructor(symbolOrType: Symbol | Type, options: DocumentOptions) {
     const symbol = symbolOrType instanceof Symbol ? symbolOrType : null;
@@ -25,11 +28,12 @@ export class DocumentArray extends BaseDocField {
 
   #assign(symbolOrType: Symbol | Type) {
     const { node, type } = BaseDocField.splitSymbolNodeOrType(symbolOrType);
-    const arrayType = type?.getArrayElementType();
+    const arrayType = type?.getArrayElementType()?.getTargetType?.();
     this.text = node?.getText?.()?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
     this.typeNode = (node as TypeAliasDeclaration)?.getTypeNode?.()!;
     this.current = type;
-    this.value = arrayType?.getText?.(); //TODO: 
+    this.elementType = DocumentParser(arrayType!, this.#options);
+    this.value = arrayType?.getText?.(); //TODO:
   }
 
   static isTarget(nodeOrType: Node | Type) {

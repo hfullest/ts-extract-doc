@@ -16,7 +16,7 @@ export class DocumentUnion extends BaseDocField {
   #assign(symbol: Symbol) {}
 
   static isTarget(typeOrNode: Type | Node) {
-    const type = typeOrNode instanceof Type ? typeOrNode : null;
+    const { type } = BaseDocField.splitSymbolNodeOrType(typeOrNode);
     return (
       type?.isNumber() ||
       type?.isNumberLiteral() ||

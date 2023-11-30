@@ -21,7 +21,7 @@ export class ReactClassComponentA extends React.Component {
 /** 2 */
 /** 3 */
 /** 4 */
-export type AAAAAA = string;
+export type AAAAAA = UiButtonProps<true>[];
 
 export enum BBBB {
   AA = '123',
@@ -42,7 +42,10 @@ export type TypeObjectLiteral = [{
   readonly b?: number;
 }, string]
 /** UiButton */
-export type UiButtonProps<N = false> = {} & CompatButtonProps<N>;
+export type UiButtonProps<N = false> = {} & MidUiButtonProps<N>;
+
+export type MidUiButtonProps<N=true> = MidUiButtonProps2<N>;
+export type MidUiButtonProps2<N=true> = CompatButtonProps<N>;
 
 /** @output */
 type CompatButtonProps<N> = {

@@ -37,7 +37,7 @@ export class DocumentFunction extends BaseDocField {
           parentSymbol: symbol,
           rootSymbol: this.rootSymbol,
           index,
-        })
+        }),
     );
     const returnTypeNode = (functionTypeNode as FunctionDeclaration)?.getReturnTypeNode(); // 如果指定了函数返回类型
     const returnType = returnTypeNode?.getType();
@@ -74,14 +74,15 @@ export class DocumentFunction extends BaseDocField {
     return functionTypeNode;
   }
 
-  static isTarget(node: Node): node is FunctionDeclaration | FunctionExpression | ArrowFunction {
+  static isTarget(nodeOrOther: Node): nodeOrOther is FunctionDeclaration | FunctionExpression | ArrowFunction {
+    const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     if (Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) || Node.isArrowFunction(node)) return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
     const functionInitializer = (variableDeclaration as VariableDeclaration)?.getInitializerIfKind(
-      ts.SyntaxKind.FunctionExpression
+      ts.SyntaxKind.FunctionExpression,
     );
     const arrowFunctionInitializer = (variableDeclaration as VariableDeclaration)?.getInitializerIfKind(
-      ts.SyntaxKind.ArrowFunction
+      ts.SyntaxKind.ArrowFunction,
     );
     return Node.isFunctionExpression(functionInitializer) || Node.isArrowFunction(arrowFunctionInitializer);
   }

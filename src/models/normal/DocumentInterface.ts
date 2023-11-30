@@ -34,7 +34,8 @@ export class DocumentInterface extends BaseDocField {
   }
 
   /** 判断是否命中当前目标 */
-  static isTarget(node: Node): node is InterfaceDeclaration {
+  static isTarget(nodeOrOther: Node): nodeOrOther is InterfaceDeclaration {
+    const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     return Node.isInterfaceDeclaration(node);
   }
 }
