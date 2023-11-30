@@ -77,11 +77,12 @@ export class DocumentClass extends BaseDocField {
     return tagIgnores.some((tg) => doc.tags?.find((t) => t.name === tg));
   }
 
-  static isTarget(node: Node): node is ClassDeclaration | ClassExpression {
+  static isTarget(nodeOrOther: Node): nodeOrOther is ClassDeclaration | ClassExpression {
+    const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     if (Node.isClassDeclaration(node)) return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
     const initializer = (variableDeclaration as VariableDeclaration)?.getInitializerIfKind(
-      ts.SyntaxKind.ClassExpression
+      ts.SyntaxKind.ClassExpression,
     );
     return Node.isClassExpression(initializer);
   }

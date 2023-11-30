@@ -43,7 +43,7 @@ export class DocumentObject extends BaseDocField {
   }
 
   static isTarget(node: Node) {
-    const type = node?.getType();
+    const { type } = BaseDocField.splitSymbolNodeOrType(node);
     return type?.isObject() && !type?.isArray() && !type?.isTuple() && !type?.isNullable();
   }
 }

@@ -22,7 +22,8 @@ export class DocumentEnum extends BaseDocField {
     this.members = members?.map((it, index) => new DocumentEnumMember(it.getSymbol()!, { ...this.#options, index }));
   }
 
-  static isTarget(node: Node) {
+  static isTarget(nodeOrOther: Node) {
+    const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     return Node.isEnumDeclaration(node);
   }
 }
