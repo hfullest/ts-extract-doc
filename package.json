@@ -19,11 +19,13 @@
     "clean": "rimraf dist",
     "try:example": "cd ./example/five && pnpm docs:dev",
     "readme": "node ./scripts/gen-readme.mjs",
-    "v:alpha": "npm version prerelease --preid=alpha",
-    "v:beta": "npm version prerelease --preid=beta",
-    "v:pre": "npm version prepatch",
-    "publish": "npm publish",
+    "v:alpha": "standard-version --prerelease alpha",
+    "v:beta": "standard-version --prerelease beta",
+    "v:pre": "standard-version prepatch",
+    "prerelease": "standard-version --prerelease",
     "release": "standard-version",
+    "pre-publish": "npm run build && npm run prerelase && git push git push --follow-tags origin HEAD && npm publish --tag prerelease",
+    "publish": "pnpm run build && npm run release && git push git push --follow-tags origin HEAD && npm publish --tag release",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
