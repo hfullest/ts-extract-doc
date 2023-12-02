@@ -97,6 +97,7 @@ export class BaseDocField {
 
   #handleOther() {
     const calculateTag = this.tags?.find((tag) => tag.name === JSDocCustomTagEnum.calculate);
+    const noCalculateTag = this.tags?.find((tag) => tag.name === JSDocCustomTagEnum.noCalculate);
     if (calculateTag) {
       const level = Number(calculateTag.text) || -1;
       if (level < 0) {
@@ -105,6 +106,10 @@ export class BaseDocField {
         this.$options.nestedLevel = (this.$options.nestedLevel ?? 0) + level;
       }
       this.$options.$typeCalculate = true;
+    }
+    if (noCalculateTag) {
+      this.$options.$typeCalculate = false;
+      this.$options.maxNestedLevel = Number.MIN_VALUE;
     }
   }
 
@@ -186,7 +191,7 @@ export class BaseDocField {
   }
   /** 计算并获取最大嵌套等级数 */
   protected getMaxNestedLevel() {
-    const targetTag = this.tags?.find((t) => t.name === JSDocCustomTagEnum.expand);
+    const targetTag = this.tags?.find((t) => t.name === JSDocCustomTagEnum.calculate);
     if (!targetTag) return this.$options.maxNestedLevel;
     const maxNestedLevel = targetTag?.text;
     const value = maxNestedLevel?.toString().trim() === '0' ? 0 : 1;
