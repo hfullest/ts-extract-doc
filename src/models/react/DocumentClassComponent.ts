@@ -8,9 +8,10 @@ import {
   TypeNode,
   ts,
 } from 'ts-morph';
-import { BaseDocField, DocumentOptions, DocumentType, SymbolOrOtherType } from '../helper';
+import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { DocumentClass, DocumentObject } from '../normal';
 import { JSDocCustomTagEnum } from '../../utils/constants';
+import { DocumentParser } from '../index';
 
 export class DocumentClassComponent extends BaseDocField {
   props: DocumentObject['props'] = {};
@@ -76,10 +77,9 @@ export class DocumentClassComponent extends BaseDocField {
       typeOrTypeNode = (interfaceNode as InterfaceDeclaration)?.getProperty('props')?.getTypeNode(); // 类组件接口重载声明必须为 props 例如： interface Component { props:{a:string} }
     }
     if (!typeOrTypeNode) return;
-    const doc = new DocumentType(typeOrTypeNode, this.#options);
-    const value = doc?.value as DocumentObject;
-    this.props = Object.assign({}, this.props, value?.props);
-    this.methods = Object.assign({}, this.methods, value?.methods);
+    const doc = DocumentParser<DocumentObject>(typeOrTypeNode, this.#options);
+    this.props = doc.props;
+    this.methods = doc.methods;
   }
 
   static isTarget(symbolOrOther: SymbolOrOtherType) {

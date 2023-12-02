@@ -1,6 +1,6 @@
 import { JSDocParameterTag, Node, ParameterDeclaration, Symbol } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
-import { DocumentType } from './DocumentType';
+import { DocumentParser } from '../index';
 
 export class DocumentParameter extends BaseDocField {
   /** 是否可选  */
@@ -35,6 +35,6 @@ export class DocumentParameter extends BaseDocField {
     this.description =
       (leadingComment ?? trailingComment)?.replace(/(^\/{2,}\s?)|(^\/\*{1,2}\s?)|(\s?\*\/$)/g, '') ??
       paramCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
-    this.type = new DocumentType(paramTypeNode!, this.getComputedOptions(), paramCommentNode);
+    this.type = DocumentParser(paramTypeNode!, this.getComputedOptions());
   }
 }

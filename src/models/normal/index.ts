@@ -8,4 +8,3 @@ export * from './DocumentIntersection';
 export * from './DocumentUnion';
 export * from './DocumentArray';
 export * from './DocumentTuple';
-// export * from './DocumentTypeAlias';

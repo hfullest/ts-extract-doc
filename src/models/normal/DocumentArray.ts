@@ -37,7 +37,7 @@ export class DocumentArray extends BaseDocField {
     this.value = typeNode?.getText?.();
   }
 
-  static isTarget(nodeOrType: Node | Type) {
+  static isTarget(nodeOrType: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(nodeOrType);
     return type?.isArray();
   }

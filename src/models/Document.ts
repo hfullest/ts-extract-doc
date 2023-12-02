@@ -57,7 +57,9 @@ class DocumentHandle {
 }
 
 /** 文档通用解析 */
-export default function DocumentParser(...args: ConstructorParameters<typeof DocumentHandle>): Document {
+export default function DocumentParser<D extends Document = Document>(
+  ...args: ConstructorParameters<typeof DocumentHandle>
+): D {
   const document = new DocumentHandle(...args);
-  return document as unknown as Document;
+  return document as unknown as D;
 }

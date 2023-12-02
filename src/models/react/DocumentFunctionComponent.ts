@@ -1,8 +1,9 @@
-import { FunctionDeclaration, Node, Symbol, VariableStatement, ts } from 'ts-morph';
+import { FunctionDeclaration, VariableStatement, ts } from 'ts-morph';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { JSDocCustomTagEnum } from '../../utils/constants';
-import { BaseDocField, DocumentOptions, DocumentType, SymbolOrOtherType } from '../helper';
+import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { DocumentObject } from '../normal';
+import { DocumentParser } from '../index';
 
 // @ts-ignore
 export class DocumentFunctionComponent extends DocumentFunction {
@@ -28,10 +29,9 @@ export class DocumentFunctionComponent extends DocumentFunction {
     const propsNode = (functionTypeNode as FunctionDeclaration)?.getParameters()?.[0];
     const typeNode = propsNode?.getTypeNode?.();
     if (!typeNode) return;
-    const doc = new DocumentType(typeNode, this.#options);
-    const value = doc?.value as DocumentObject;
-    this.props = value?.props;
-    this.methods = value?.methods;
+    const doc = DocumentParser<DocumentObject>(typeNode, this.#options);
+    this.props = doc?.props;
+    this.methods = doc?.methods;
   }
 
   static isTarget(nodeOrOther: SymbolOrOtherType) {

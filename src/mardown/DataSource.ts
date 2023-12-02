@@ -23,7 +23,7 @@ export default class DataSource {
     this.description = doc.description;
     this.defaultValue = doc?.defaultValue;
     this.isOptional = doc?.isOptional;
-    this.type = doc?.type?.text;
+    this.type = doc.displayType;
     this.version = doc?.version;
     this.deprecated = doc?.deprecated;
     if (doc instanceof DocumentFunction) this.kind = 'Function';

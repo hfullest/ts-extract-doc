@@ -1,4 +1,4 @@
-import { ClassDeclaration, JSDocTag, Node, Symbol, Type, VariableStatement, ts } from 'ts-morph';
+import { ClassDeclaration, JSDocTag, Node, PropertyDeclaration, Symbol, Type, VariableStatement, ts } from 'ts-morph';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
 import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
@@ -32,6 +32,8 @@ export class BaseDocField {
   description?: string;
   /** 全文本 */
   fullText?: string;
+  /** 用来展示的类型文本 */
+  displayType: string = 'unknown';
   /** 全部的注释标签，包括`JSDoc标签`和自定义标签
    *
    * 如需仅查看`JSDoc标签`，可以参考`jsDocTags`属性
@@ -75,6 +77,11 @@ export class BaseDocField {
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
+    this.displayType =
+      (node as PropertyDeclaration)
+        ?.getTypeNode?.()
+        ?.getText?.()
+        ?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, '') ?? this.displayType; // 去除注释
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
     const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);

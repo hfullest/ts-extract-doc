@@ -1,31 +1,23 @@
 import { Node, Symbol, Type } from 'ts-morph';
-import { BaseDocField, DocumentOptions } from '../helper';
+import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 export class DocumentUnion extends BaseDocField {
-  constructor(symbol: Symbol, options: DocumentOptions) {
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
+    super(symbolOrOther, options);
     this.#options = options;
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
   #options: DocumentOptions;
 
-  #assign(symbol: Symbol) {}
+  #assign(symbolOrOther: SymbolOrOtherType) {}
 
-  static isTarget(typeOrNode: Type | Node) {
+  static isTarget(typeOrNode: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(typeOrNode);
-    return (
-      type?.isNumber() ||
-      type?.isNumberLiteral() ||
-      type?.isBoolean() ||
-      type?.isBooleanLiteral() ||
-      type?.isString() ||
-      type?.isStringLiteral() ||
-      type?.isTemplateLiteral() ||
-      type?.isNullable()
-    );
+    return type?.isUnion();
   }
 }
