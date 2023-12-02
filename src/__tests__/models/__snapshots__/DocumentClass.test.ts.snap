@@ -29,7 +29,7 @@ exports[`DocumentClass 快照 1`] = `
 
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
-|eeeStaticMethod |这个是静态方法|unknown|(a: number, b?: string) => {     return 456;   }|-|
+|eeeStaticMethod |这个是静态方法|-|(a: number, b?: string) => {     return 456;   }|-|
 
 "
 `;
