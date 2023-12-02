@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentClass 快照 1`] = `
+"### ExampleClass
+
+这个是对ExampleClass类的描述
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|a |a属性|string|'124'|-|
+|button ~(可选)~ |\`button\`描述  button的==内容==区|UiButtonProps|-|3.2.15|
+|dddPublic |测试公共方法|number|12|-|
+
+#### 方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|bb |接口函数定义|(p1: string ,      p2?: number,   ) => string|() => ''|-|
+
+#### 静态属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|fffStaticProp |-|boolean|true|-|
+
+#### 静态方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|eeeStaticMethod |这个是静态方法|unknown|(a: number, b?: string) => {     return 456;   }|-|
+
+"
+`;
