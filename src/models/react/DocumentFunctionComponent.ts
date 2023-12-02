@@ -16,12 +16,9 @@ export class DocumentFunctionComponent extends DocumentFunction {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbolOrOther, options);
-    this.#options = options;
 
     this.#assign(symbolOrOther);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbolOrOther: SymbolOrOtherType) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -29,7 +26,7 @@ export class DocumentFunctionComponent extends DocumentFunction {
     const propsNode = (functionTypeNode as FunctionDeclaration)?.getParameters()?.[0];
     const typeNode = propsNode?.getTypeNode?.();
     if (!typeNode) return;
-    const doc = DocumentParser<DocumentObject>(typeNode, this.#options);
+    const doc = DocumentParser<DocumentObject>(typeNode, this.$options);
     this.props = doc?.props;
     this.methods = doc?.methods;
   }

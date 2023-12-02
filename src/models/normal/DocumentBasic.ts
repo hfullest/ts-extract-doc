@@ -16,12 +16,9 @@ export class DocumentBasic extends BaseDocField {
     options.parentSymbol ??= symbol!;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbolOrType, options);
-    this.#options = options;
 
     this.#assign(symbolOrType);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbolOrType: SymbolOrOtherType) {
     const { node, type } = BaseDocField.splitSymbolNodeOrType(symbolOrType);

@@ -20,26 +20,23 @@ export class DocumentClass extends BaseDocField {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbolOrOther, options);
-    this.#options = options;
 
     this.#assign(symbolOrOther);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbolOrOther: SymbolOrOtherType): void {
     const { symbol, node } = BaseDocField.splitSymbolNodeOrType<Symbol, ClassDeclaration>(symbolOrOther);
     if (!DocumentClass.isTarget(symbolOrOther)) return;
     const constructorDeclaration = node?.getConstructors?.()[0];
     if (Node.isConstructorDeclaration(constructorDeclaration)) {
-      this.constructors = new DocumentMethod(constructorDeclaration?.getSymbol()!, this.#options);
+      this.constructors = new DocumentMethod(constructorDeclaration?.getSymbol()!, this.$options);
     }
     const properties = node?.getProperties();
     properties?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       const options: DocumentOptions = {
-        ...this.#options,
+        ...this.$options,
         parentSymbol: symbol,
         nestedLevel: this.getNestedLevel(),
         maxNestedLevel: this.getMaxNestedLevel(),

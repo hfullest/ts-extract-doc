@@ -12,12 +12,9 @@ export class DocumentInterface extends BaseDocField {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbolOrOther, options);
-    this.#options = options;
 
     this.#assign(symbolOrOther);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbolOrOther: SymbolOrOtherType) {
     const { symbol, node } = BaseDocField.splitSymbolNodeOrType<Symbol, InterfaceDeclaration>(symbolOrOther);
@@ -28,13 +25,13 @@ export class DocumentInterface extends BaseDocField {
       if (!currentSymbol) return;
       if (DocumentMethod.isTarget(prop)) {
         this.methods[propName] = new DocumentMethod(currentSymbol!, {
-          ...this.#options,
+          ...this.$options,
           parentSymbol: symbol,
           index,
         });
       } else if (DocumentProp.isTarget(prop)) {
         this.props[propName] = new DocumentProp(currentSymbol!, {
-          ...this.#options,
+          ...this.$options,
           parentSymbol: symbol,
           index,
         });

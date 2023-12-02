@@ -23,12 +23,9 @@ export class DocumentClassComponent extends BaseDocField {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbolOrOther, options);
-    this.#options = options;
 
     this.#assign(symbolOrOther);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbolOrOther: SymbolOrOtherType) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -77,7 +74,7 @@ export class DocumentClassComponent extends BaseDocField {
       typeOrTypeNode = (interfaceNode as InterfaceDeclaration)?.getProperty('props')?.getTypeNode(); // 类组件接口重载声明必须为 props 例如： interface Component { props:{a:string} }
     }
     if (!typeOrTypeNode) return;
-    const doc = DocumentParser<DocumentObject>(typeOrTypeNode, this.#options);
+    const doc = DocumentParser<DocumentObject>(typeOrTypeNode, this.$options);
     this.props = doc.props;
     this.methods = doc.methods;
   }

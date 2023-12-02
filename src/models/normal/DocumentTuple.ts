@@ -7,12 +7,9 @@ export class DocumentTuple extends BaseDocField {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbolOrOther, options);
-    this.#options = options;
 
     this.#assign(symbolOrOther);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbolOrOther: SymbolOrOtherType) {}
 

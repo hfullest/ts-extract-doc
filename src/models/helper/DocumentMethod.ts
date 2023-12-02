@@ -21,13 +21,10 @@ export class DocumentMethod extends DocumentFunction {
     options.parentSymbol ??= symbol;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbol, options);
-    this.#options = options;
     this.index = options?.index ?? 0;
 
     this.#assign(symbol);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbol: Symbol): void {
     const node = symbol?.getDeclarations()[0];
@@ -38,7 +35,7 @@ export class DocumentMethod extends DocumentFunction {
     this.modifiers = (node?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
     const defaultTagNode = this.tags?.find((t) => /^default(Value)?/.test(t.name))?.node;
     this.defaultValue = node.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
-    this.type = DocumentParser(typeNode!, { ...this.#options, nestedLevel: this.#options.nestedLevel! + 1 });
+    this.type = DocumentParser(typeNode!, { ...this.$options, nestedLevel: this.$options.nestedLevel! + 1 });
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {

@@ -65,10 +65,11 @@ export class BaseDocField {
     this.parentSymbol = options?.parentSymbol ?? symbol!;
     this.rootSymbol = options?.rootSymbol ?? symbol!;
     this.#assign(symbolOrOther);
-    this.#options = options;
+    this.$options = options;
   }
 
-  #options = {} as DocumentOptions;
+  /** 选项配置信息 */
+  protected $options = {} as DocumentOptions;
 
   #assign(symbolOrOther: SymbolOrOtherType) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -90,6 +91,19 @@ export class BaseDocField {
       start: [node?.getStartLineNumber?.()!, node?.getStartLinePos?.()!],
       end: [node?.getEndLineNumber?.()!, node?.getEnd?.()!], // TODO：确认结束位置
     };
+    this.#handleOther();
+  }
+
+  #handleOther() {
+    const calculateTag = this.tags?.find((tag) => tag.name === JSDocCustomTagEnum.calculate);
+    if (calculateTag) {
+      const level = Number(calculateTag.text) ?? -1;
+      if (level < 0) {
+        this.$options.maxNestedLevel = Number.MAX_VALUE;
+      } else {
+        this.$options.nestedLevel = (this.$options.nestedLevel ?? 0) + level;
+      }
+    }
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -147,20 +161,20 @@ export class BaseDocField {
 
   /** 计算并获取当前等级+n的配置 */
   protected getComputedOptions(n: number = 1): DocumentOptions {
-    return { ...this.#options, nestedLevel: this.getNestedLevel(n), maxNestedLevel: this.getMaxNestedLevel() };
+    return { ...this.$options, nestedLevel: this.getNestedLevel(n), maxNestedLevel: this.getMaxNestedLevel() };
   }
 
   /** 计算并获取当前等级`+n`的等级数，默认`+1` */
   protected getNestedLevel(n: number = 1) {
-    return Number((this.#options.nestedLevel ?? 0) + n) ?? 1;
+    return Number((this.$options.nestedLevel ?? 0) + n) ?? 1;
   }
   /** 计算并获取最大嵌套等级数 */
   protected getMaxNestedLevel() {
     const targetTag = this.tags?.find((t) => t.name === JSDocCustomTagEnum.expand);
-    if (!targetTag) return this.#options.maxNestedLevel;
+    if (!targetTag) return this.$options.maxNestedLevel;
     const maxNestedLevel = targetTag?.text;
     const value = maxNestedLevel?.toString().trim() === '0' ? 0 : 1;
-    return (this.#options.maxNestedLevel ?? 0) + value;
+    return (this.$options.maxNestedLevel ?? 0) + value;
   }
 
   /** 获取兼容的父节点

@@ -9,12 +9,8 @@ export class DocumentReturn extends BaseDocField {
     options.rootSymbol ??= options?.parentSymbol;
     super(symbol, options);
 
-    this.#options = options;
-
     this.#assign(symbol);
   }
-
-  #options = {} as DocumentOptions;
 
   #assign(symbol: Symbol): void {
     const parentNode = this.getCompatAncestorNode<FunctionDeclaration>(this.parentSymbol);
@@ -23,7 +19,7 @@ export class DocumentReturn extends BaseDocField {
     const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node as JSDocReturnTag;
     const returnSubstitionType = functionTypeNode?.getType()?.getCallSignatures()[0]?.getReturnType();
     const returnSubstitionNode = returnSubstitionType?.getSymbol()?.getDeclarations?.()[0] as Node<ts.TypeNode>;
-    this.type = DocumentParser(returnTypeNode ?? returnSubstitionNode, this.#options);
+    this.type = DocumentParser(returnTypeNode ?? returnSubstitionNode, this.$options);
     this.description = returnCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
   }
 }

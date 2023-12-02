@@ -19,12 +19,9 @@ export class DocumentArray extends BaseDocField {
     options.parentSymbol ??= symbol!;
     options.rootSymbol ??= options?.parentSymbol;
     super(symbolOrType!, options);
-    this.#options = options;
 
     this.#assign(symbolOrType);
   }
-
-  #options: DocumentOptions;
 
   #assign(symbolOrType: SymbolOrOtherType) {
     const { node, type } = BaseDocField.splitSymbolNodeOrType<Symbol, TypeAliasDeclaration>(symbolOrType);
@@ -33,7 +30,7 @@ export class DocumentArray extends BaseDocField {
     this.text = node?.getText?.()?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
     this.typeNode = typeNode!;
     this.current = type;
-    this.elementType = DocumentParser(arrayType!, this.#options);
+    this.elementType = DocumentParser(arrayType!, this.$options);
     this.value = typeNode?.getText?.();
   }
 

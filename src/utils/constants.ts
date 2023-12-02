@@ -90,7 +90,7 @@ export enum JSDocTagEnum {
 
 /** 自定义`JSDoc`标签 */
 export enum JSDocCustomTagEnum {
-  /** 手动指定文档输出 使用`@doc-output` */
+  /** 手动指定文档输出 使用`@output` */
   'output' = 'output',
   /** 手动指定为`react`组件 */
   'reactComponent' = 'reactComponent',
@@ -100,4 +100,6 @@ export enum JSDocCustomTagEnum {
   'annoteStart' = 'annoteStart',
   /** `jsDoc`内注释结束标签，由于注释内注释需要转译等操作，编写成本较高，因此提供标签注释，配合`@annoteStart`一起使用 */
   'annoteEnd' = 'annoteEnd',
+  /** 尝试合并计算类型属性，如果失败则回退到最近的一次深度类型，可以手动指定计算深度，默认`-1`，递归计算所有深度 */
+  'calculate' = 'calculate',
 }

@@ -1,4 +1,3 @@
-import { Node, Symbol, Type } from 'ts-morph';
 import {
   DocumentArray,
   DocumentBasic,
@@ -12,7 +11,7 @@ import {
   DocumentUnion,
 } from './normal';
 import { DocumentClassComponent, DocumentFunctionComponent } from './react';
-import { BaseDocField, DocumentOptions, SymbolOrOtherType } from './helper';
+import { DocumentOptions, SymbolOrOtherType } from './helper';
 import defaultOptions from './defaultOptions';
 
 /** 文档模型处理 handler */
@@ -40,7 +39,7 @@ class DocumentHandle {
     parseOptions: DocumentOptions = defaultOptions as DocumentOptions,
   ) {
     if (!((parseOptions.nestedLevel ?? 0) < (parseOptions.maxNestedLevel ?? 0))) {
-      return {} as DocumentHandle; // 超过嵌套深度强制跳出递归，不进行构造对象
+      return; // 超过嵌套深度强制跳出递归，不进行构造对象
     }
     this.#parseOptions = parseOptions;
     Object.assign(this, this.#handleType(symbolOrNodeOrType));
