@@ -69,8 +69,8 @@ export class BaseDocField {
     this.symbol = symbol!;
     this.parentSymbol = options?.$parentSymbol ?? symbol!;
     this.rootSymbol = options?.$rootSymbol ?? symbol!;
-    this.#assign(symbolOrOther);
     this.$options = options;
+    this.#assign(symbolOrOther);
   }
 
   /** 选项配置信息 */
@@ -83,10 +83,7 @@ export class BaseDocField {
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
-    this.displayType = (node as PropertyDeclaration)
-      ?.getTypeNode?.()
-      ?.getText?.()
-      ?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
+    this.displayType = (node as PropertyDeclaration)?.getTypeNode?.()?.getText?.();
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
     const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);
@@ -101,7 +98,7 @@ export class BaseDocField {
   #handleOther() {
     const calculateTag = this.tags?.find((tag) => tag.name === JSDocCustomTagEnum.calculate);
     if (calculateTag) {
-      const level = Number(calculateTag.text) ?? -1;
+      const level = Number(calculateTag.text) || -1;
       if (level < 0) {
         this.$options.maxNestedLevel = Number.MAX_VALUE;
       } else {
@@ -143,6 +140,20 @@ export class BaseDocField {
     jsDocTags?.forEach((tag) => {
       this.jsDocTags.push(new DocumentJSDocTag(tag));
     });
+  }
+
+  /** 输出当前文档模型的文本表示 */
+  public toTypeString(options?: {
+    /** 移除注释 */
+    removeComment: boolean;
+  }) {
+    const { removeComment = true } = options ?? {};
+    if (removeComment) {
+      const pureText = this.displayType?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
+      const text = pureText?.replace(/(\n\s*){2,}/g, '$1'); // 移除连续多余的回车，最多保留一个回车
+      return text;
+    }
+    return this.displayType;
   }
 
   /** 获取兼容的父节点

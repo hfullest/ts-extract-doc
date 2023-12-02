@@ -40,6 +40,7 @@ export class DocumentObject extends BaseDocField {
         this.props[propName] = new DocumentProp(currentSymbol!, options);
       }
     });
+    this.displayType = node?.getText();
   }
 
   static isTarget(nodeOrOther: SymbolOrOtherType) {

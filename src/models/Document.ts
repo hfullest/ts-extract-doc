@@ -33,29 +33,16 @@ export const DOCUMENT_HANDLES = [
 
 export type Document = InstanceType<(typeof DOCUMENT_HANDLES)[number]>;
 
-class DocumentHandle {
-  constructor(symbolOrNodeOrType: SymbolOrOtherType, parseOptions = defaultOptions as DocumentOptions) {
-    if (!((parseOptions.nestedLevel ?? 0) < (parseOptions.maxNestedLevel ?? 0))) {
-      return; // 超过嵌套深度强制跳出递归，不进行构造对象
-    }
-    this.#parseOptions = Object.assign({}, parseOptions);
-    Object.assign(this, this.#handleType(symbolOrNodeOrType));
-  }
-
-  #parseOptions = {} as DocumentOptions;
-
-  #handleType(symbolOrNodeType: SymbolOrOtherType) {
-    for (let handler of DOCUMENT_HANDLES) {
-      if (!handler.isTarget(symbolOrNodeType)) continue;
-      return new handler(symbolOrNodeType, this.#parseOptions);
-    }
-  }
-}
-
 /** 文档通用解析 */
 export default function DocumentParser<D extends Document = Document>(
-  ...args: ConstructorParameters<typeof DocumentHandle>
+  symbolOrNodeOrType: SymbolOrOtherType,
+  parseOptions = defaultOptions as DocumentOptions,
 ): D {
-  const document = new DocumentHandle(...args);
-  return document as unknown as D;
+  const emptyDoc = {} as D;
+  if (!((parseOptions.nestedLevel ?? 0) < (parseOptions.maxNestedLevel ?? 0))) return emptyDoc; // 超过嵌套深度强制跳出递归，不进行构造对象
+  for (let handler of DOCUMENT_HANDLES) {
+    if (!handler.isTarget(symbolOrNodeOrType)) continue;
+    return new handler(symbolOrNodeOrType, { ...parseOptions }) as D;
+  }
+  return emptyDoc;
 }

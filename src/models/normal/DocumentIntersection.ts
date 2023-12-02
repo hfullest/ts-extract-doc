@@ -23,7 +23,6 @@ export class DocumentIntersection extends BaseDocField {
     const { node, type } = BaseDocField.splitSymbolNodeOrType<any, TypeAliasDeclaration, Type<ts.IntersectionType>>(
       symbolOrOther,
     );
-    debugger;
     const intersectionTypes = type?.getIntersectionTypes();
     const docs = intersectionTypes?.map((it) => DocumentParser<DocumentObject>(it, this.getComputedOptions()));
     this.intersections = docs ?? [];
