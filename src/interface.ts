@@ -9,7 +9,7 @@ export interface DocumentParseOptions {
   /** 最大嵌套等级，默认`2` */
   maxNestedLevel?: number;
   /** 可以自定义 `project` */
-  project?: Project;
+  project?: (singleton: boolean) => Project;
   /** `tsconfig.json路径` */
   tsConfigPath?: string;
   /** 解析策略
@@ -21,6 +21,10 @@ export interface DocumentParseOptions {
    * @default 'default'
    */
   strategy?: 'default' | 'export' | 'manual';
+  /** 是否使用单例模式，如果为`true`则使用单例`project`
+   * @default true
+   */
+  singleton?: boolean;
 }
 
 export interface OptionsColums {

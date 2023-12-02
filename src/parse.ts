@@ -9,11 +9,12 @@ const singletonProject = new Project();
 export const parse = (
   filePathOrPaths: string | string[],
   parserOpts: DocumentParseOptions = defaultDocumentOptions,
-  singleton = false,
 ): Document[][] => {
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
-
-  const project = singleton ? singletonProject : new Project();
+  const singleton = parserOpts?.singleton ?? true;
+  const customProject = parserOpts?.project;
+  const defaultProject = singleton ? singletonProject : new Project();
+  const project = typeof customProject === 'function' ? customProject(singleton) : defaultProject;
 
   project.addSourceFilesFromTsConfig(parserOpts?.tsConfigPath ?? resolve(process.cwd(), 'tsconfig.json'));
 
@@ -23,7 +24,7 @@ export const parse = (
 
   const filesDocs = sourceFiles
     .filter((file) => filePaths.includes(file.getFilePath()))
-    .map((it) => genDocuments(it, { ...parserOpts, project }));
+    .map((it) => genDocuments(it, parserOpts));
 
   return filesDocs;
 };
@@ -31,7 +32,7 @@ export const parse = (
 export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOptions): Document[] => {
   const localSymbols = file.getLocals();
   const strategy = {
-    default: parseOptions?.strategy === 'default' ?? true,
+    default: (parseOptions?.strategy ?? 'default') === 'default',
     export: parseOptions?.strategy === 'export',
     manual: parseOptions?.strategy === 'manual',
   };

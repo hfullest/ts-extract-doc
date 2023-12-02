@@ -9,8 +9,6 @@ export class DocumentArray extends BaseDocField {
   typeNode: Node<ts.TypeNode> | null = null;
   /** 当前类型`type`对象 */
   current?: Type | null = null;
-  /** 类型值 */
-  value!: string | undefined;
   /** 数组元素类型 */
   elementType!: Document | undefined;
 
@@ -31,7 +29,7 @@ export class DocumentArray extends BaseDocField {
     this.typeNode = typeNode!;
     this.current = type;
     this.elementType = DocumentParser(arrayType!, this.$options);
-    this.value = typeNode?.getText?.();
+    this.displayType = typeNode?.getText?.();
   }
 
   static isTarget(nodeOrType: SymbolOrOtherType) {

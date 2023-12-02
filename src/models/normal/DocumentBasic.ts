@@ -1,4 +1,4 @@
-import { Node, Symbol, Type, TypeAliasDeclaration, ts } from 'ts-morph';
+import { Node, Type, TypeAliasDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 export class DocumentBasic extends BaseDocField {
@@ -8,8 +8,6 @@ export class DocumentBasic extends BaseDocField {
   typeNode: Node<ts.TypeNode> | null = null;
   /** 当前类型`type`对象 */
   current?: Type | null = null;
-  /** 基本类型的类型值，比如`string`、`number` */
-  value!: string | undefined;
 
   constructor(symbolOrType: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrType);
@@ -25,7 +23,7 @@ export class DocumentBasic extends BaseDocField {
     this.text = node?.getText?.()?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
     this.typeNode = (node as TypeAliasDeclaration)?.getTypeNode?.()!;
     this.current = type;
-    this.value = type?.getText?.();
+    this.displayType = type?.getText?.();
   }
 
   static isTarget(nodeOrType: SymbolOrOtherType) {
