@@ -92,6 +92,8 @@ export enum JSDocTagEnum {
 export enum JSDocCustomTagEnum {
   /** 手动指定文档输出 使用`@output` */
   'output' = 'output',
+  /** 手动指定忽略文档输出 使用`@ignoreOutput` */
+  'ignoreOutput' = 'ignoreOutput',
   /** 手动指定为`react`组件 */
   'reactComponent' = 'reactComponent',
   /** 指定属性是否需要展开，可以指定展示深度，默认为`1`，该标签可用于属性类型为接口类型，需要继续展示该属性接口类型时指定 */
@@ -102,4 +104,6 @@ export enum JSDocCustomTagEnum {
   'annoteEnd' = 'annoteEnd',
   /** 尝试合并计算类型属性，如果失败则回退到最近的一次深度类型，可以手动指定计算深度，默认`-1`，递归计算所有深度 */
   'calculate' = 'calculate',
+  /** 指定文档摆放顺序，用来排序 */
+  'order' = 'order',
 }

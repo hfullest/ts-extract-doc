@@ -12,6 +12,15 @@ export interface DocumentParseOptions {
   project?: Project;
   /** `tsconfig.json路径` */
   tsConfigPath?: string;
+  /** 解析策略
+   *
+   * - `default` 默认解析全部`export`导出，同时可以通过标签手动指定其他导出`@output`或者忽略导出`@ignoreOutput`
+   * - `export` 只支持解析全部`export`导出
+   * - `manual` 只支持手动指定`export`导出
+   *
+   * @default 'default'
+   */
+  strategy?: 'default' | 'export' | 'manual';
 }
 
 export interface OptionsColums {

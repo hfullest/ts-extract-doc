@@ -30,13 +30,32 @@ export const parse = (
 
 export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOptions): Document[] => {
   const localSymbols = file.getLocals();
+  const strategy = {
+    default: parseOptions?.strategy === 'default' ?? true,
+    export: parseOptions?.strategy === 'export',
+    manual: parseOptions?.strategy === 'manual',
+  };
   debugger;
   const outputSymbols = localSymbols
     ?.map((symbol) => {
-      const node = (symbol.getValueDeclaration() ?? symbol.getDeclarations()[0]) as InterfaceDeclaration;
-      if (node?.isExported?.()) return symbol;
       const tags = symbol?.getJsDocTags();
-      if (tags?.some((tag) => tag.getName() === JSDocCustomTagEnum['output'])) return symbol;
+      const tagsModel = tags.reduce(
+        (res, tag) => {
+          if (tag.getName() === JSDocCustomTagEnum['ignoreOutput']) res.ignoreOutput = true;
+          else if (tag.getName() === JSDocCustomTagEnum['output']) res.output = true;
+          return res;
+        },
+        { ignoreOutput: false, output: false },
+      );
+      if (strategy.manual || strategy.default) {
+        if (tagsModel.ignoreOutput) return;
+        if (tagsModel.output) return symbol;
+      }
+      if (strategy.export || strategy.default) {
+        const node = (symbol.getValueDeclaration() ?? symbol.getDeclarations()[0]) as InterfaceDeclaration;
+        if (node?.isExported?.()) return symbol;
+      }
+      return;
     })
     .filter(Boolean)
     ?.sort((aSym, bSym) => {
