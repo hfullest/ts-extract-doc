@@ -1,11 +1,14 @@
-import { Node, Symbol, Type, ts } from 'ts-morph';
+import { Type, TypeAliasDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
-import { IntersectionType } from 'typescript';
-import { Document, DocumentParser } from '..';
+import { Document, DocumentObject, DocumentParser } from '../index';
 
 export class DocumentIntersection extends BaseDocField {
   /** 保存相交类型原解析文档模型 */
   intersections: Document[] = [];
+  /** 属性 */
+  props: DocumentObject['props'] = {};
+  /** 方法 */
+  methods: DocumentObject['methods'] = {};
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -17,10 +20,23 @@ export class DocumentIntersection extends BaseDocField {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType) {
-    const { type } = BaseDocField.splitSymbolNodeOrType<any, any, Type<ts.IntersectionType>>(symbolOrOther);
+    const { node, type } = BaseDocField.splitSymbolNodeOrType<any, TypeAliasDeclaration, Type<ts.IntersectionType>>(
+      symbolOrOther,
+    );
+    debugger;
     const intersectionTypes = type?.getIntersectionTypes();
-    const docs = intersectionTypes?.map((it) => DocumentParser(it, this.getComputedOptions()));
+    const docs = intersectionTypes?.map((it) => DocumentParser<DocumentObject>(it, this.getComputedOptions()));
     this.intersections = docs ?? [];
+    this.displayType = node?.getTypeNode?.()?.getText?.();
+    if (this.$options.$typeCalculate) {
+      const displayTypes: string[] = [];
+      docs?.forEach((doc) => {
+        this.props = Object.assign({}, this.props, doc?.props);
+        this.methods = Object.assign({}, this.methods, doc?.methods);
+        displayTypes.push(doc?.displayType!);
+      });
+      this.displayType = displayTypes.filter(Boolean).join('&');
+    }
   }
 
   static isTarget(typeOrNode: SymbolOrOtherType) {

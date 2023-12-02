@@ -50,7 +50,6 @@ const fillClassOrInterfaceTableByDoc = (
   options: GenMarkdownOptions,
 ): string => {
   const { columns = [] } = options ?? {};
-  debugger;
   const headMark = getHeadLevel((options?.headLevel ?? 0) + 1);
   const target = getTargetInfo(type, doc as DocumentClass, { ...options, headMark });
   const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(target?.member ?? {});

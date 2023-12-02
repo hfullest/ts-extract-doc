@@ -1,6 +1,6 @@
 import { GenMarkdownOptions } from '../interface';
 
-/** 默认配置 */
+/** `markdown`默认配置 */
 const defaultMarkdownOptions: GenMarkdownOptions = {
   headerRender: (doc, headerMark) => `${headerMark} ${doc.name}${doc.version ? ` ~(${doc.version})~` : ''}\n`,
   headLevel: 3,

@@ -1,8 +1,11 @@
 import { DocumentParseOptions } from '../interface';
 
-export default {
+/** 文档解析默认配置 */
+const documentParseOptions: DocumentParseOptions = {
   nestedLevel: 0,
   maxNestedLevel: 2,
   strategy: 'default',
   singleton: true,
-} as DocumentParseOptions;
+};
+
+export default documentParseOptions;

@@ -13,7 +13,7 @@ export class DocumentCarryInfo {
   /** 顶级 symbol */
   $rootSymbol?: Symbol;
   /** 是否计算类型 */
-  $typeCalculate?: boolean;
+  $typeCalculate?: boolean = false;
 }
 
 export type SymbolOrOtherType = Symbol | Node | Type;
