@@ -9,8 +9,8 @@ export class DocumentInterface extends BaseDocField {
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbolOrOther, options);
 
     this.#assign(symbolOrOther);
@@ -26,13 +26,13 @@ export class DocumentInterface extends BaseDocField {
       if (DocumentMethod.isTarget(prop)) {
         this.methods[propName] = new DocumentMethod(currentSymbol!, {
           ...this.$options,
-          parentSymbol: symbol,
+          $parentSymbol: symbol,
           index,
         });
       } else if (DocumentProp.isTarget(prop)) {
         this.props[propName] = new DocumentProp(currentSymbol!, {
           ...this.$options,
-          parentSymbol: symbol,
+          $parentSymbol: symbol,
           index,
         });
       }

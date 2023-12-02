@@ -10,8 +10,8 @@ export class DocumentEnumMember extends BaseDocField {
   index: number = 0;
 
   constructor(symbol: Symbol, options: DocumentOptions & { index?: number }) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbol, options);
 
     this.index = options?.index ?? 0;

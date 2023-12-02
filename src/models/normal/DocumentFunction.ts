@@ -17,8 +17,8 @@ export class DocumentFunction extends BaseDocField {
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbolOrOther, options);
 
     this.#assign(symbolOrOther);
@@ -32,8 +32,8 @@ export class DocumentFunction extends BaseDocField {
       (parameter, index) =>
         new DocumentParameter(parameter.getSymbol()!, {
           ...this.$options,
-          parentSymbol: symbol,
-          rootSymbol: this.rootSymbol,
+          $parentSymbol: symbol,
+          $rootSymbol: this.rootSymbol,
           index,
         }),
     );
@@ -45,8 +45,8 @@ export class DocumentFunction extends BaseDocField {
     if (returnSymbol) {
       this.returns = new DocumentReturn(returnSymbol, {
         ...this.$options,
-        parentSymbol: symbol,
-        rootSymbol: this.rootSymbol,
+        $parentSymbol: symbol,
+        $rootSymbol: this.rootSymbol,
       });
     }
   }

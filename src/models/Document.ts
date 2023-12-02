@@ -34,14 +34,11 @@ export const DOCUMENT_HANDLES = [
 export type Document = InstanceType<(typeof DOCUMENT_HANDLES)[number]>;
 
 class DocumentHandle {
-  constructor(
-    symbolOrNodeOrType: SymbolOrOtherType,
-    parseOptions: DocumentOptions = defaultOptions as DocumentOptions,
-  ) {
+  constructor(symbolOrNodeOrType: SymbolOrOtherType, parseOptions = defaultOptions as DocumentOptions) {
     if (!((parseOptions.nestedLevel ?? 0) < (parseOptions.maxNestedLevel ?? 0))) {
       return; // 超过嵌套深度强制跳出递归，不进行构造对象
     }
-    this.#parseOptions = parseOptions;
+    this.#parseOptions = Object.assign({}, parseOptions);
     Object.assign(this, this.#handleType(symbolOrNodeOrType));
   }
 

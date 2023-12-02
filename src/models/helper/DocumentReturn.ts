@@ -5,8 +5,8 @@ import { DocumentParser } from '../index';
 
 export class DocumentReturn extends BaseDocField {
   constructor(symbol: Symbol, options: DocumentOptions) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbol, options);
 
     this.#assign(symbol);

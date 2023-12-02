@@ -2,7 +2,7 @@ import { Project, SourceFile, InterfaceDeclaration, Symbol } from 'ts-morph';
 import { DocumentParseOptions } from './interface';
 import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
-import { Document, DocumentParser, defaultDocumentOptions } from './models';
+import { Document, DocumentCarryInfo, DocumentParser, defaultDocumentOptions } from './models';
 
 const singletonProject = new Project();
 
@@ -68,7 +68,9 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
       return aEndLine - bEndLine;
     });
   const docs = (
-    Array.from(outputSymbols ?? []).map((it) => DocumentParser(it as Symbol, parseOptions)) as Document[]
+    Array.from(outputSymbols ?? []).map((it) =>
+      DocumentParser(it as Symbol, Object.assign({}, parseOptions, new DocumentCarryInfo())),
+    ) as Document[]
   ).filter(Boolean);
 
   return docs;

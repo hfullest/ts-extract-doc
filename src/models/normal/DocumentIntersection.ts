@@ -9,8 +9,8 @@ export class DocumentIntersection extends BaseDocField {
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbolOrOther, options);
 
     this.#assign(symbolOrOther);

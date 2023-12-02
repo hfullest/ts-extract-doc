@@ -10,8 +10,8 @@ export class DocumentObject extends BaseDocField {
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbolOrOther, options);
 
     this.#assign(symbolOrOther);
@@ -31,7 +31,7 @@ export class DocumentObject extends BaseDocField {
       const currentSymbol = prop?.getSymbol();
       const options: DocumentOptions & { index: number } = {
         ...this.getComputedOptions(),
-        parentSymbol: symbol,
+        $parentSymbol: symbol,
         index,
       };
       if (DocumentMethod.isTarget(prop)) {

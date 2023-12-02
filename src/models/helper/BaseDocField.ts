@@ -2,13 +2,18 @@ import { ClassDeclaration, JSDocTag, Node, PropertyDeclaration, Symbol, Type, Va
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
 import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
-import { Document } from '..';
+import { Document } from '../index';
 
-export interface DocumentCarryInfo {
+/** 内部传递属性，不对外公开
+ * @inner
+ */
+export class DocumentCarryInfo {
   /** 父级 symbol */
-  parentSymbol?: Symbol;
+  $parentSymbol?: Symbol;
   /** 顶级 symbol */
-  rootSymbol?: Symbol;
+  $rootSymbol?: Symbol;
+  /** 是否计算类型 */
+  $typeCalculate?: boolean;
 }
 
 export type SymbolOrOtherType = Symbol | Node | Type;
@@ -62,8 +67,8 @@ export class BaseDocField {
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     this.symbol = symbol!;
-    this.parentSymbol = options?.parentSymbol ?? symbol!;
-    this.rootSymbol = options?.rootSymbol ?? symbol!;
+    this.parentSymbol = options?.$parentSymbol ?? symbol!;
+    this.rootSymbol = options?.$rootSymbol ?? symbol!;
     this.#assign(symbolOrOther);
     this.$options = options;
   }
@@ -102,6 +107,7 @@ export class BaseDocField {
       } else {
         this.$options.nestedLevel = (this.$options.nestedLevel ?? 0) + level;
       }
+      this.$options.$typeCalculate = true;
     }
   }
 

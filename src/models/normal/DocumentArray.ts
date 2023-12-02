@@ -14,8 +14,8 @@ export class DocumentArray extends BaseDocField {
 
   constructor(symbolOrType: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrType);
-    options.parentSymbol ??= symbol!;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol!;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbolOrType!, options);
 
     this.#assign(symbolOrType);

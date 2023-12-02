@@ -17,8 +17,8 @@ export class DocumentClass extends BaseDocField {
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbolOrOther, options);
 
     this.#assign(symbolOrOther);
@@ -37,7 +37,7 @@ export class DocumentClass extends BaseDocField {
       const currentSymbol = prop?.getSymbol();
       const options: DocumentOptions = {
         ...this.$options,
-        parentSymbol: symbol,
+        $parentSymbol: symbol,
         nestedLevel: this.getNestedLevel(),
         maxNestedLevel: this.getMaxNestedLevel(),
       };
