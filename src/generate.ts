@@ -1,5 +1,5 @@
 import { parse } from './parse';
-import { ConfigOptions, DocumentParseOptions, GenMarkdownOptions } from './interface';
+import { ConfigOptions, DocumentParseOptions, MarkdownOptions } from './interface';
 import { defaultMarkdownOptions, generateMarkdown } from './mardown';
 import { defaultDocumentOptions } from './models';
 
@@ -10,7 +10,7 @@ export const genrateDocument = (filePathOrPaths: string | string[], parseOptions
 
 /** 从ts文件中提取文档到`markdown`，支持`type`、`interface`、`enum`、`react组件`、`函数`、`类`等 */
 export const extractTsToMarkdown = (filePathOrPaths: string | string[], config?: ConfigOptions) => {
-  const mergeMarkdownOptions: GenMarkdownOptions = Object.assign({}, defaultMarkdownOptions, config?.markdown);
+  const mergeMarkdownOptions: MarkdownOptions = Object.assign({}, defaultMarkdownOptions, config?.markdown);
   const mergeDocumentOptions: DocumentParseOptions = Object.assign(
     {},
     defaultDocumentOptions,

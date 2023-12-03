@@ -1,7 +1,8 @@
-import { GenMarkdownOptions } from '../interface';
+import { MarkdownOptions } from '../../../interface';
 
-/** `markdown`默认配置 */
-const defaultMarkdownOptions: GenMarkdownOptions = {
+/** `markdown`默认`default`模版配置 */
+const defaultMarkdownOptions: MarkdownOptions = {
+  template: 'default',
   headerRender: (doc, headerMark) => `${headerMark} ${doc.name}${doc.version ? ` ~(${doc.version})~` : ''}\n`,
   headLevel: 3,
   columns: [
@@ -36,4 +37,9 @@ const defaultMarkdownOptions: GenMarkdownOptions = {
   },
 };
 
-export default defaultMarkdownOptions;
+/** `markdown`默认`beauty`模版配置 */
+const beautyMarkdownOptions: MarkdownOptions = {
+  template: 'beauty',
+};
+
+export { defaultMarkdownOptions, beautyMarkdownOptions };
