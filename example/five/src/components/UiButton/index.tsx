@@ -3,6 +3,10 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 
 
 
+/**
+ * @version 2.5.16-alpha.0
+ * @id ReactClassComponentA-Test
+ */
 export class ReactClassComponentA extends React.Component {
   static defaultProps = { c: { c1: 'aaa' },e:'sdkfdsfs' };
   render(): React.ReactNode {
@@ -59,7 +63,7 @@ type CompatButtonProps<N> = {
    * 哈哈哈这里可以是markdown
    *
    *  */
-  ant?: never;
+  ant?: UiButtonProps<N>;
 
   /** 测试嵌套 */
   compat: TypeObjectLiteral;
@@ -80,7 +84,7 @@ export const UiButton = <N extends boolean = false>(
      * 哈哈哈这里可以是markdown
      *
      *  */
-    ant?: never;
+    ant?: UiButtonProps<N>;
   } & {
     /** a属性测试 */
     a: string;
