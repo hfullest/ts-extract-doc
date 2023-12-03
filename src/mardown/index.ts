@@ -1,7 +1,6 @@
 import { MarkdownOptions } from '../interface';
 import { Document } from '../models';
-import { defaultMarkdownOptions } from './templates';
-import { render } from './templates';
+import { beautyMarkdownOptions, defaultMarkdownOptions, render } from './templates';
 
 /** 根据文档模型生成`markdown `*/
 export const generateMarkdown = (
@@ -17,4 +16,4 @@ export const generateMarkdown = (
   return documents.join('\n');
 };
 
-export { defaultMarkdownOptions };
+export { defaultMarkdownOptions, beautyMarkdownOptions };

@@ -1,6 +1,7 @@
 import { Document } from './models/Document';
 import { Project } from 'ts-morph';
 import { TemplateDefault } from './mardown/templates/default';
+import { TemplateBeauty } from './mardown/templates/beauty';
 
 export interface DocumentParseOptions {
   /** 当前文档嵌套等级，默认`0` */
@@ -32,7 +33,7 @@ export interface TemplateCustom {
 }
 
 /** @expand */
-export type MarkdownOptions = TemplateDefault | TemplateCustom;
+export type MarkdownOptions = TemplateCustom | TemplateDefault | TemplateBeauty;
 
 /** @expand */
 export interface ConfigOptions {

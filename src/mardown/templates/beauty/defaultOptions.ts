@@ -1,8 +1,8 @@
-import { MarkdownOptions } from '../../../interface';
+import { TemplateBeauty } from './interface';
 
-/** `markdown`默认`default`模版配置 */
-const defaultMarkdownOptions: MarkdownOptions = {
-  template: 'default',
+/** `markdown`默认`beauty`模版配置 */
+const beautyMarkdownOptions: TemplateBeauty = {
+  template: 'beauty',
   headerRender: (doc, headerMark) => `${headerMark} ${doc.name}${doc.version ? ` ~(${doc.version})~` : ''}\n`,
   headLevel: 3,
   columns: [
@@ -37,9 +37,4 @@ const defaultMarkdownOptions: MarkdownOptions = {
   },
 };
 
-/** `markdown`默认`beauty`模版配置 */
-const beautyMarkdownOptions: MarkdownOptions = {
-  template: 'beauty',
-};
-
-export { defaultMarkdownOptions, beautyMarkdownOptions };
+export { beautyMarkdownOptions };
