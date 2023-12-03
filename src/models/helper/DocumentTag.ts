@@ -2,7 +2,7 @@ import { JSDocTag, Node, ts } from 'ts-morph';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
 
 export class DocumentTag {
-  name!: keyof typeof JSDocTagEnum | keyof typeof JSDocCustomTagEnum;
+  name!: JSDocTagEnum | JSDocCustomTagEnum | `${JSDocCustomTagEnum}` | `${JSDocTagEnum}`;
   text?: string;
   node?: JSDocTag;
   parent?: Node;

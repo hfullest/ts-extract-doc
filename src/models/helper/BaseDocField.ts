@@ -39,6 +39,10 @@ export class BaseDocField {
   fullText?: string;
   /** 用来展示的类型文本 */
   displayType: string | undefined;
+  /** 内容摆放顺序 */
+  order: number = 0;
+  /** 路径位置，包含路径和行号 `/path/to/somewhere:18` */
+  location: string | undefined;
   /** 全部的注释标签，包括`JSDoc标签`和自定义标签
    *
    * 如需仅查看`JSDoc标签`，可以参考`jsDocTags`属性
@@ -92,14 +96,17 @@ export class BaseDocField {
       start: [node?.getStartLineNumber?.()!, node?.getStartLinePos?.()!],
       end: [node?.getEndLineNumber?.()!, node?.getEnd?.()!], // TODO：确认结束位置
     };
+    this.location = [this.filePath, node?.getStartLineNumber?.()!].filter(Boolean).join(':');
+
     this.#handleOther();
   }
 
   #handleOther() {
-    const calculateTag = this.tags?.find((tag) => tag.name === JSDocCustomTagEnum.calculate);
-    const noCalculateTag = this.tags?.find((tag) => tag.name === JSDocCustomTagEnum.noCalculate);
-    if (calculateTag) {
-      const level = Number(calculateTag.text) || -1;
+    const tagsMap = new Map(this.tags.map((tag) => [tag.name, tag]) ?? []);
+
+    // 类型计算处理
+    if (tagsMap.has(JSDocCustomTagEnum.calculate)) {
+      const level = Number(tagsMap.get(JSDocCustomTagEnum.calculate)?.text) || -1;
       if (level < 0) {
         this.$options.maxNestedLevel = Number.MAX_VALUE;
       } else {
@@ -107,10 +114,15 @@ export class BaseDocField {
       }
       this.$options.$typeCalculate = true;
     }
-    if (noCalculateTag) {
+
+    // 禁用类型计算处理
+    if (tagsMap.has(JSDocCustomTagEnum.noCalculate)) {
       this.$options.$typeCalculate = false;
       this.$options.maxNestedLevel = Number.MIN_VALUE;
     }
+
+    // 摆放顺序
+    this.order = Number(tagsMap.get(JSDocCustomTagEnum.order)) ?? this.order;
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -119,20 +131,20 @@ export class BaseDocField {
     this.tags = jsDocTags?.map((tag) => new DocumentTag(tag));
 
     this.tags?.forEach((tag) => {
-      switch (tag.name as keyof typeof JSDocTagEnum | keyof typeof JSDocCustomTagEnum) {
-        case 'description':
+      switch (tag.name) {
+        case JSDocTagEnum.description:
           this.extraDescription = tag.text?.replace(/(^\n)|(\n$)/g, '');
           break;
-        case 'example':
+        case JSDocTagEnum.example:
           this.example = tag.text;
           break;
-        case 'version':
+        case JSDocTagEnum.version:
           this.version = tag.text;
           break;
-        case 'since':
+        case JSDocTagEnum.since:
           this.since = tag.text;
           break;
-        case 'deprecated':
+        case JSDocTagEnum.deprecated:
           this.deprecated = !!tag.text ? tag.text : true; // 如果有描述使用描述，无描述则赋值true
           break;
         default:
