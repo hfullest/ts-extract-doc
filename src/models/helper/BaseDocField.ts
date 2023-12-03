@@ -41,6 +41,8 @@ export class BaseDocField {
   displayType: string | undefined;
   /** 内容摆放顺序 */
   order: number = 0;
+  /** 当前文档 id，方便用来定位，比如`<h3 id='someId'></h3>` */
+  id?: string;
   /** 路径位置，包含路径和行号 `/path/to/somewhere:18` */
   location: string | undefined;
   /** 全部的注释标签，包括`JSDoc标签`和自定义标签
@@ -122,7 +124,10 @@ export class BaseDocField {
     }
 
     // 摆放顺序
-    this.order = Number(tagsMap.get(JSDocCustomTagEnum.order)) ?? this.order;
+    this.order = Number(tagsMap.get(JSDocCustomTagEnum.order)?.text) || this.order;
+
+    // id
+    this.id = String(tagsMap.get(JSDocCustomTagEnum.id)?.text ?? this.$options?.idGenerator?.(this.name!) ?? '');
   }
 
   /** 解析 JSDoc 相关标签并赋值 */

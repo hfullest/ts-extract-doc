@@ -4,9 +4,13 @@ import { TemplateDefault } from './mardown/templates/default';
 import { TemplateBeauty } from './mardown/templates/beauty';
 
 export interface DocumentParseOptions {
-  /** 当前文档嵌套等级，默认`0` */
+  /** 当前文档嵌套等级，
+   *  @default 0
+   */
   nestedLevel?: number;
-  /** 最大嵌套等级，默认`2` */
+  /** 最大嵌套等级，
+   * @default 2
+   */
   maxNestedLevel?: number;
   /** 可以自定义 `project` */
   project?: (singleton: boolean) => Project;
@@ -25,6 +29,8 @@ export interface DocumentParseOptions {
    * @default true
    */
   singleton?: boolean;
+  /** 根据规则生成相应标签`id`, 例如 `<h3 id='someId'></h3>`, 优先级低于`@id` */
+  idGenerator?: (name: string) => string;
 }
 
 export interface TemplateCustom {

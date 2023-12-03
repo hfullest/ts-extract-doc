@@ -3,7 +3,20 @@ import { TemplateBeauty } from './interface';
 /** `markdown`默认`beauty`模版配置 */
 const beautyMarkdownOptions: TemplateBeauty = {
   template: 'beauty',
-  headerRender: (doc, headerMark) => `${headerMark} ${doc.name}${doc.version ? ` ~(${doc.version})~` : ''}\n`,
+  headerRender: (doc, headerLevel) => {
+    headerLevel = (Number(headerLevel) || 3) % 7;
+    const versionStyle = `
+    position:absolute;
+    font-size:0.6em;
+    color:#888;
+    top:0;
+    margin-left:0.2em;
+    background-color:#eee;
+    padding:1px 3px;
+    border-radius:4px;`;
+    const versionHtml = doc.version ? `<span style='${versionStyle}'>${doc.version}</span>` : '';
+    return `<h${headerLevel} id='${doc.id}' style='position:relative'>${doc.name}${versionHtml}</h${headerLevel}>\n`;
+  },
   headLevel: 3,
   columns: [
     {
@@ -35,6 +48,7 @@ const beautyMarkdownOptions: TemplateBeauty = {
       return text;
     },
   },
+  
 };
 
 export { beautyMarkdownOptions };

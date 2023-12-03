@@ -98,7 +98,7 @@ const fillClassOrInterfaceTableByDoc = (
 export const templateRender = (doc: Document, options: TemplateBeauty): string => {
   const { headLevel = 3, headerRender } = options ?? {};
   const { name, description, extraDescription, example } = doc;
-  const header = headerRender?.(doc, getHeadLevel(headLevel)) ?? `${getHeadLevel(headLevel)} ${name}\n`;
+  const header = headerRender?.(doc, headLevel) ?? `${getHeadLevel(headLevel)} ${name}\n`;
   const desc = description ? `${description}\n` : '';
   const propsTable = fillClassOrInterfaceTableByDoc(doc as DocumentInterface | DocumentClass, 'props', options);
   const methodsTable = fillClassOrInterfaceTableByDoc(doc as DocumentInterface | DocumentClass, 'methods', options);

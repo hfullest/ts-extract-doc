@@ -6,6 +6,7 @@ const documentParseOptions: DocumentParseOptions = {
   maxNestedLevel: 2,
   strategy: 'default',
   singleton: true,
+  idGenerator: (name) => name?.toLocaleLowerCase(),
 };
 
 export default documentParseOptions;

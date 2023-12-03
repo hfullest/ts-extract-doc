@@ -106,4 +106,6 @@ export enum JSDocCustomTagEnum {
   'noCalculate' = 'noCalculate',
   /** 指定文档摆放顺序，用来排序 */
   'order' = 'order',
+  /** 文档 id */
+  'id' = 'id',
 }

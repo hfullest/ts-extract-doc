@@ -1,13 +1,11 @@
 import { MarkdownOptions } from '../interface';
 import { Document } from '../models';
-import { beautyMarkdownOptions, defaultMarkdownOptions, render } from './templates';
+import { beautyMarkdownOptions, defaultMarkdownOptions, mergeMarkdownOptions, render } from './templates';
 
 /** 根据文档模型生成`markdown `*/
-export const generateMarkdown = (
-  docsFiles: Document[][],
-  options: MarkdownOptions = defaultMarkdownOptions,
-): string => {
+export const generateMarkdown = (docsFiles: Document[][], options?: MarkdownOptions): string => {
   const documents: string[] = [];
+  options = mergeMarkdownOptions(options);
   docsFiles.forEach((file) => {
     file.forEach((doc) => {
       documents.push(render(doc, options));
@@ -16,4 +14,4 @@ export const generateMarkdown = (
   return documents.join('\n');
 };
 
-export { defaultMarkdownOptions, beautyMarkdownOptions };
+export { defaultMarkdownOptions, beautyMarkdownOptions, mergeMarkdownOptions };

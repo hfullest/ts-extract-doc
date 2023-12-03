@@ -19,9 +19,9 @@ export interface TemplateBeauty {
   columns?: OptionsColums[];
   /** 标题自定义渲染
    * @param doc 文档块
-   * @param headerMark 标题标记，例如`###`
+   * @param headerLevel 标题标记，例如`###`
    */
-  headerRender?: (doc: Document, headerMark: string) => string;
+  headerRender?: (doc: Document, headerLevel: number) => string;
   table?: {
     /** 表格头部属性标题 默认值`属性` */
     propHeadName: string;
