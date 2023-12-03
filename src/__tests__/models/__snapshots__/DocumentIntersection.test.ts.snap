@@ -32,7 +32,7 @@ UiButton 属性
 "
 `;
 
-exports[`DocumentIntersection 文档模型解析: 1`] = `
+exports[`DocumentIntersection 文档模型解析[toTypeString]: 1`] = `
 "{
   a: string;
   b?: number;
@@ -43,6 +43,7 @@ exports[`DocumentIntersection 文档模型解析: 1`] = `
   ant?: never;
   compat: boolean;
 }
+
 {
   native?: N;
   children?: React.ReactNode;

@@ -33,3 +33,5 @@ exports[`DocumentClass 快照 1`] = `
 
 "
 `;
+
+exports[`DocumentClass 文档模型解析[toTypeString]: 1`] = `""`;

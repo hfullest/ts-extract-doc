@@ -3,9 +3,9 @@ import { extractTsToMarkdown, genrateDocument } from '../..';
 
 describe('DocumentIntersection', () => {
   const sourcePath = resolve(__dirname, '../fixtures/intersection.ts');
-  it('文档模型解析:', () => {
+  it('文档模型解析[toTypeString]:', () => {
     const documents = genrateDocument(sourcePath);
-    const result = documents.map(doc=>doc.map(it=>it.toTypeString())?.join('\n')).join('\n\n')
+    const result = documents.map(doc=>doc.map(it=>it.toTypeString())?.join('\n\n')).join('\n\n\n')
     expect(result).toMatchSnapshot();
   });
 
