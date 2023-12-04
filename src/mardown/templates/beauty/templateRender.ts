@@ -1,4 +1,13 @@
-import { Document, DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../../../models';
+import {
+  Document,
+  DocumentClass,
+  DocumentClassComponent,
+  DocumentEnum,
+  DocumentFunctionComponent,
+  DocumentInterface,
+  DocumentMethod,
+  DocumentProp,
+} from '../../../models';
 import DataSource from './DataSource';
 import { TemplateBeauty } from './interface';
 
@@ -95,11 +104,7 @@ const fillClassOrInterfaceTableByDoc = (
   return dataRows ? `${result}\n` : '';
 };
 
-export const templateRender = (doc: Document, options: TemplateBeauty): string => {
-  const { headLevel = 3, headerRender } = options ?? {};
-  const { name, description, extraDescription, example } = doc;
-  const header = headerRender?.(doc, headLevel) ?? `${getHeadLevel(headLevel)} ${name}\n`;
-  const desc = description ? `${description}\n` : '';
+function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty) {
   const propsTable = fillClassOrInterfaceTableByDoc(doc as DocumentInterface | DocumentClass, 'props', options);
   const methodsTable = fillClassOrInterfaceTableByDoc(doc as DocumentInterface | DocumentClass, 'methods', options);
   const staticPropsTable = fillClassOrInterfaceTableByDoc(
@@ -112,10 +117,27 @@ export const templateRender = (doc: Document, options: TemplateBeauty): string =
     'staticMethods',
     options,
   );
-  const extra = extraDescription ? `${extraDescription}` : '';
+  return [propsTable, methodsTable, staticPropsTable, staticMethodsTable];
+}
+
+function handleReactComponent(doc: Document, options: TemplateBeauty): string[] {}
+
+const CONTENT_RECORDS = [
+  { types: [DocumentClass, DocumentInterface, DocumentEnum], handler: handleClassInterfaceEtc },
+  { types: [DocumentFunctionComponent, DocumentClassComponent], handler: handleReactComponent },
+];
+
+export const templateRender = (doc: Document, options: TemplateBeauty): string => {
+  const { headLevel = 3, headerRender } = options ?? {};
+  const { name, description, extraDescription, example } = doc;
+  const header = headerRender?.(doc, headLevel) ?? `${getHeadLevel(headLevel)} ${name}\n`;
+  const desc = description ? `<div>${description}</div>\n` : '';
+  const targetHandler = CONTENT_RECORDS?.find((it) =>
+    it.types.some((Constor) => Reflect.getPrototypeOf(doc) === Constor.prototype),
+  )?.handler;
+  const content = targetHandler?.(doc, options) ?? [];
+  const extra = extraDescription ? `<div>${extraDescription}</div>` : '';
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
-  const result = [header, desc, propsTable, methodsTable, staticPropsTable, staticMethodsTable, extra, exampleCode]
-    .filter(Boolean)
-    .join('\n');
+  const result = [header, desc, ...content, exampleCode, extra].filter(Boolean).join('\n');
   return `${result}\n`;
 };

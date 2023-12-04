@@ -12,8 +12,8 @@ const beautyMarkdownOptions: TemplateBeauty = {
     top:0;
     margin-left:0.2em;
     background-color:#eee;
-    padding:1px 3px;
-    border-radius:4px;`;
+    padding:0.05em 0.3em;
+    border-radius:0.3em;`;
     const versionHtml = doc.version ? `<span style='${versionStyle}'>${doc.version}</span>` : '';
     return `<h${headerLevel} id='${doc.id}' style='position:relative'>${doc.name}${versionHtml}</h${headerLevel}>\n`;
   },
