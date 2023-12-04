@@ -7,7 +7,7 @@ import {
   ArrowFunction,
   VariableDeclaration,
 } from 'ts-morph';
-import { BaseDocField, DocumentReturn, DocumentParameter, DocumentOptions } from '../helper';
+import { BaseDocField, DocumentReturn, DocumentParameter, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 export class DocumentFunction extends BaseDocField {
   /** 参数 */
@@ -15,27 +15,25 @@ export class DocumentFunction extends BaseDocField {
   /** 方法返回 */
   returns?: DocumentReturn;
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
-    this.#options = options;
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
+    super(symbolOrOther, options);
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
-  #options: DocumentOptions;
-
-  #assign(symbol: Symbol) {
-    const node = symbol?.getDeclarations()[0];
-    const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { symbol, node } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    const functionTypeNode = DocumentFunction.getFunctionTypeNode(node!);
     const parametersNode = (functionTypeNode as FunctionDeclaration)?.getParameters();
     this.parameters = parametersNode?.map(
       (parameter, index) =>
         new DocumentParameter(parameter.getSymbol()!, {
-          ...this.#options,
-          parentSymbol: symbol,
-          rootSymbol: this.rootSymbol,
+          ...this.$options,
+          $parentSymbol: symbol,
+          $rootSymbol: this.rootSymbol,
           index,
         }),
     );
@@ -46,9 +44,9 @@ export class DocumentFunction extends BaseDocField {
     const returnSymbol = returnTypeNode?.getSymbol() ?? returnType?.getSymbol() ?? returnSubstitionSymbol;
     if (returnSymbol) {
       this.returns = new DocumentReturn(returnSymbol, {
-        ...this.#options,
-        parentSymbol: symbol,
-        rootSymbol: this.rootSymbol,
+        ...this.$options,
+        $parentSymbol: symbol,
+        $rootSymbol: this.rootSymbol,
       });
     }
   }
@@ -74,7 +72,9 @@ export class DocumentFunction extends BaseDocField {
     return functionTypeNode;
   }
 
-  static isTarget(nodeOrOther: Node): nodeOrOther is FunctionDeclaration | FunctionExpression | ArrowFunction {
+  static isTarget(
+    nodeOrOther: SymbolOrOtherType,
+  ): nodeOrOther is FunctionDeclaration | FunctionExpression | ArrowFunction {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     if (Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) || Node.isArrowFunction(node)) return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);

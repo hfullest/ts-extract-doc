@@ -1,8 +1,9 @@
-import { FunctionDeclaration, Node, Symbol, VariableStatement, ts } from 'ts-morph';
+import { FunctionDeclaration, VariableStatement, ts } from 'ts-morph';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { JSDocCustomTagEnum } from '../../utils/constants';
-import { DocumentOptions, DocumentType } from '../helper';
+import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { DocumentObject } from '../normal';
+import { DocumentParser } from '../index';
 
 // @ts-ignore
 export class DocumentFunctionComponent extends DocumentFunction {
@@ -10,29 +11,28 @@ export class DocumentFunctionComponent extends DocumentFunction {
 
   methods: DocumentObject['methods'] = {};
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
-    this.#options = options;
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
+    super(symbolOrOther, options);
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
-  #options: DocumentOptions;
-
-  #assign(symbol: Symbol) {
-    const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol);
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol!);
     const propsNode = (functionTypeNode as FunctionDeclaration)?.getParameters()?.[0];
     const typeNode = propsNode?.getTypeNode?.();
     if (!typeNode) return;
-    const doc = new DocumentType(typeNode, this.#options);
-    const value = doc?.value as DocumentObject;
-    this.props = value?.props;
-    this.methods = value?.methods;
+    const doc = DocumentParser<DocumentObject>(typeNode, this.$options);
+    this.props = doc?.props;
+    this.methods = doc?.methods;
   }
 
-  static isTarget(node: Node) {
+  static isTarget(nodeOrOther: SymbolOrOtherType) {
+    const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     const parentNode = DocumentFunction.getCompatAncestorNode<VariableStatement>(node?.getSymbol());
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(node?.getSymbol()!);
     if (!DocumentFunction.isTarget(functionTypeNode!)) return false;

@@ -1,6 +1,12 @@
 import { DocumentParseOptions } from '../interface';
 
-export default {
+/** 文档解析默认配置 */
+const documentParseOptions: DocumentParseOptions = {
   nestedLevel: 0,
   maxNestedLevel: 2,
-} as DocumentParseOptions;
+  strategy: 'default',
+  singleton: true,
+  idGenerator: (name) => name?.toLocaleLowerCase(),
+};
+
+export default documentParseOptions;

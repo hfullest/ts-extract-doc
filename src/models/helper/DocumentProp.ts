@@ -1,6 +1,6 @@
 import { Node, PropertyAssignment, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
-import { DocumentType } from './DocumentType';
+import { DocumentParser } from '../index';
 
 export class DocumentProp extends BaseDocField {
   /** 是否可选  */
@@ -13,8 +13,8 @@ export class DocumentProp extends BaseDocField {
   index: number = 0;
 
   constructor(symbol: Symbol, options: DocumentOptions & { index?: number }) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
     super(symbol, options);
 
     this.index = options?.index ?? 0;
@@ -34,7 +34,7 @@ export class DocumentProp extends BaseDocField {
     this.defaultValue = prop?.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
     this.isOptional = prop?.hasQuestionToken();
     this.modifiers = (prop?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
-    this.type = new DocumentType(typeOrTypeNode!, this.getComputedOptions());
+    this.type = DocumentParser(typeOrTypeNode!, this.getComputedOptions());
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration | PropertyAssignment {

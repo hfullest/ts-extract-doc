@@ -1,6 +1,6 @@
 import { ClassDeclaration, ClassExpression, Node, Symbol, VariableDeclaration, ts } from 'ts-morph';
-import { BaseDocField, DocumentMethod, DocumentOptions, DocumentProp } from '../helper';
-import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
+import { BaseDocField, DocumentMethod, DocumentOptions, DocumentProp, SymbolOrOtherType } from '../helper';
+import { JSDocTagEnum } from '../../utils/constants';
 
 // @ts-ignore
 export class DocumentClass extends BaseDocField {
@@ -15,31 +15,29 @@ export class DocumentClass extends BaseDocField {
   /** 静态方法 */
   staticMethods: Record<string, DocumentMethod> = {};
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
-    this.#options = options;
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
+    super(symbolOrOther, options);
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
-  #options: DocumentOptions;
-
-  #assign(symbol: Symbol): void {
-    const node = symbol?.getDeclarations()[0];
-    if (!DocumentClass.isTarget(node)) return;
+  #assign(symbolOrOther: SymbolOrOtherType): void {
+    const { symbol, node } = BaseDocField.splitSymbolNodeOrType<Symbol, ClassDeclaration>(symbolOrOther);
+    if (!DocumentClass.isTarget(symbolOrOther)) return;
     const constructorDeclaration = node?.getConstructors?.()[0];
     if (Node.isConstructorDeclaration(constructorDeclaration)) {
-      this.constructors = new DocumentMethod(constructorDeclaration?.getSymbol()!, this.#options);
+      this.constructors = new DocumentMethod(constructorDeclaration?.getSymbol()!, this.$options);
     }
     const properties = node?.getProperties();
-    properties.forEach((prop, index) => {
+    properties?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       const options: DocumentOptions = {
-        ...this.#options,
-        parentSymbol: symbol,
+        ...this.$options,
+        $parentSymbol: symbol,
         nestedLevel: this.getNestedLevel(),
         maxNestedLevel: this.getMaxNestedLevel(),
       };
@@ -77,7 +75,7 @@ export class DocumentClass extends BaseDocField {
     return tagIgnores.some((tg) => doc.tags?.find((t) => t.name === tg));
   }
 
-  static isTarget(nodeOrOther: Node): nodeOrOther is ClassDeclaration | ClassExpression {
+  static isTarget(nodeOrOther: SymbolOrOtherType): nodeOrOther is ClassDeclaration | ClassExpression {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     if (Node.isClassDeclaration(node)) return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);

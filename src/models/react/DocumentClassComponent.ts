@@ -8,29 +8,29 @@ import {
   TypeNode,
   ts,
 } from 'ts-morph';
-import { BaseDocField, DocumentOptions, DocumentType } from '../helper';
+import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { DocumentClass, DocumentObject } from '../normal';
 import { JSDocCustomTagEnum } from '../../utils/constants';
+import { DocumentParser } from '../index';
 
 export class DocumentClassComponent extends BaseDocField {
   props: DocumentObject['props'] = {};
 
   methods: DocumentObject['methods'] = {};
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
-    this.#options = options;
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
+    super(symbolOrOther, options);
 
-    this.#assign(symbol);
+    this.#assign(symbolOrOther);
   }
 
-  #options: DocumentOptions;
-
-  #assign(symbol: Symbol) {
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     const declarations = symbol?.getDeclarations(); // 可能有interface重载情况
-    if (!declarations.some((it) => DocumentClassComponent.isTarget(it))) return; // 至少有一个为类组件声明则继续，否则跳出
+    if (!declarations?.some((it) => DocumentClassComponent.isTarget(it))) return; // 至少有一个为类组件声明则继续，否则跳出
     declarations?.forEach((declaration) => {
       const node = Node.isVariableDeclaration(declaration)
         ? declaration.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
@@ -74,15 +74,15 @@ export class DocumentClassComponent extends BaseDocField {
       typeOrTypeNode = (interfaceNode as InterfaceDeclaration)?.getProperty('props')?.getTypeNode(); // 类组件接口重载声明必须为 props 例如： interface Component { props:{a:string} }
     }
     if (!typeOrTypeNode) return;
-    const doc = new DocumentType(typeOrTypeNode, this.#options);
-    const value = doc?.value as DocumentObject;
-    this.props = Object.assign({}, this.props, value?.props);
-    this.methods = Object.assign({}, this.methods, value?.methods);
+    const doc = DocumentParser<DocumentObject>(typeOrTypeNode, this.$options);
+    this.props = doc.props;
+    this.methods = doc.methods;
   }
 
-  static isTarget(node: Node) {
-    node = BaseDocField.getCompatAncestorNode(node?.getSymbol());
-    if (!DocumentClass.isTarget(node)) return false;
+  static isTarget(symbolOrOther: SymbolOrOtherType) {
+    const { node: originNode } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    const node = BaseDocField.getCompatAncestorNode(originNode?.getSymbol());
+    if (!DocumentClass.isTarget(node!)) return false;
     const jsDocTags = node?.getJsDocs()?.at(-1)?.getTags();
     const isJsxElement = !!jsDocTags?.find((tag) => tag.getTagName() === JSDocCustomTagEnum.reactComponent);
     if (isJsxElement) return true; // 如果手动指定了标签注释，则直接跳过检查，当作组件进行处理

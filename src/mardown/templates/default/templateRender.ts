@@ -1,22 +1,22 @@
-import { GenMarkdownOptions } from '../interface';
-import { Document, DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../models';
+import { Document, DocumentClass, DocumentInterface, DocumentMethod, DocumentProp } from '../../../models';
 import DataSource from './DataSource';
+import { TemplateDefault } from './interface';
 
 export type FillType = 'props' | 'methods' | 'staticProps' | 'staticMethods';
 
-const getHeadLevel = (level: GenMarkdownOptions['headLevel'] = 0) => '#######'.slice(-level);
+const getHeadLevel = (level: TemplateDefault['headLevel'] = 0) => '#######'.slice(-level);
 
-const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: string } & GenMarkdownOptions) => {
+const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: string } & TemplateDefault) => {
   const headMark = config?.headMark ?? '';
   const typeMap: Record<
     FillType,
     {
       header: string;
       member:
-      | DocumentClass['props']
-      | DocumentClass['methods']
-      | DocumentClass['staticProps']
-      | DocumentClass['staticMethods'];
+        | DocumentClass['props']
+        | DocumentClass['methods']
+        | DocumentClass['staticProps']
+        | DocumentClass['staticMethods'];
     }
   > = {
     props: {
@@ -47,10 +47,9 @@ const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: s
 const fillClassOrInterfaceTableByDoc = (
   doc: DocumentInterface | DocumentClass,
   type: FillType,
-  options: GenMarkdownOptions,
+  options: TemplateDefault,
 ): string => {
   const { columns = [] } = options ?? {};
-  debugger;
   const headMark = getHeadLevel((options?.headLevel ?? 0) + 1);
   const target = getTargetInfo(type, doc as DocumentClass, { ...options, headMark });
   const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(target?.member ?? {});
@@ -96,7 +95,7 @@ const fillClassOrInterfaceTableByDoc = (
   return dataRows ? `${result}\n` : '';
 };
 
-export const templateReplacement = (doc: Document, options: GenMarkdownOptions): string => {
+export const templateRender = (doc: Document, options: TemplateDefault): string => {
   const { headLevel = 3, headerRender } = options ?? {};
   const { name, description, extraDescription, example } = doc;
   const header = headerRender?.(doc, getHeadLevel(headLevel)) ?? `${getHeadLevel(headLevel)} ${name}\n`;

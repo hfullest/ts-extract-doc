@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentIntersection 快照 1`] = `
+"### UiButtonProps
+
+UiButton 属性
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|a |-|string|-|-|
+|b ~(可选)~ |属性b|number|-|-|
+|c ||{ c1: string; c2: () => string }|-|-|
+|native ~(可选)~ |是否使用原生按钮|N|-|-|
+|children ~(可选)~ |-|React.ReactNode|-|-|
+|ant ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|never|-|-|
+|compat |测试嵌套|boolean|-|-|
+
+
+### CompatButtonProps
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|native ~(可选)~ |是否使用原生按钮|N|-|-|
+|children ~(可选)~ |-|React.ReactNode|-|-|
+|ant ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|never|-|-|
+|compat |测试嵌套|boolean|-|-|
+
+"
+`;
+
+exports[`DocumentIntersection 文档模型解析[toTypeString]: 1`] = `
+"{
+  a: string;
+  b?: number;
+  c: { c1: string; c2: () => string };
+}&{
+  native?: N;
+  children?: React.ReactNode;
+  ant?: never;
+  compat: boolean;
+}
+
+{
+  native?: N;
+  children?: React.ReactNode;
+  ant?: never;
+  compat: boolean;
+}"
+`;

@@ -1,15 +1,22 @@
-import { ClassDeclaration, JSDocTag, Node, Symbol, Type, VariableStatement, ts } from 'ts-morph';
+import { ClassDeclaration, JSDocTag, Node, PropertyDeclaration, Symbol, Type, VariableStatement, ts } from 'ts-morph';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
 import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
-import { Document } from '..';
+import { Document } from '../index';
 
-export interface DocumentCarryInfo {
+/** 内部传递属性，不对外公开
+ * @inner
+ */
+export class DocumentCarryInfo {
   /** 父级 symbol */
-  parentSymbol?: Symbol;
+  $parentSymbol?: Symbol;
   /** 顶级 symbol */
-  rootSymbol?: Symbol;
+  $rootSymbol?: Symbol;
+  /** 是否计算类型 */
+  $typeCalculate?: boolean = false;
 }
+
+export type SymbolOrOtherType = Symbol | Node | Type;
 
 export interface DocumentOptions extends DocumentCarryInfo, DocumentParseOptions {}
 
@@ -30,6 +37,14 @@ export class BaseDocField {
   description?: string;
   /** 全文本 */
   fullText?: string;
+  /** 用来展示的类型文本 */
+  displayType: string | undefined;
+  /** 内容摆放顺序 */
+  order: number = 0;
+  /** 当前文档 id，方便用来定位，比如`<h3 id='someId'></h3>` */
+  id?: string;
+  /** 路径位置，包含路径和行号 `/path/to/somewhere:18` */
+  location: string | undefined;
   /** 全部的注释标签，包括`JSDoc标签`和自定义标签
    *
    * 如需仅查看`JSDoc标签`，可以参考`jsDocTags`属性
@@ -55,31 +70,64 @@ export class BaseDocField {
   /** 全部 `JSDoc标签` */
   jsDocTags: DocumentJSDocTag[] = [];
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
-    this.symbol = symbol;
-    this.parentSymbol = options?.parentSymbol ?? symbol;
-    this.rootSymbol = options?.rootSymbol ?? symbol;
-    if (!symbol) return;
-    this.#assign(symbol);
-    this.#options = options;
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    this.symbol = symbol!;
+    this.parentSymbol = options?.$parentSymbol ?? symbol!;
+    this.rootSymbol = options?.$rootSymbol ?? symbol!;
+    this.$options = options;
+    this.#assign(symbolOrOther);
   }
 
-  #options = {} as DocumentOptions;
+  /** 选项配置信息 */
+  protected $options = {} as DocumentOptions;
 
-  #assign(symbol: Symbol) {
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
     const ancestorNode = BaseDocField.getCompatAncestorNode<ClassDeclaration>(symbol);
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
+    this.displayType = (node as PropertyDeclaration)?.getTypeNode?.()?.getText?.();
     this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
     const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);
     this.filePath = jsDoc?.getSourceFile?.().getFilePath?.() ?? node?.getSourceFile?.()?.getFilePath?.();
     this.pos = {
-      start: [node?.getStartLineNumber?.(), node?.getStartLinePos?.()],
-      end: [node?.getEndLineNumber?.(), node?.getEnd?.()], // TODO：确认结束位置
+      start: [node?.getStartLineNumber?.()!, node?.getStartLinePos?.()!],
+      end: [node?.getEndLineNumber?.()!, node?.getEnd?.()!], // TODO：确认结束位置
     };
+    this.location = [this.filePath, node?.getStartLineNumber?.()!].filter(Boolean).join(':');
+
+    this.#handleOther();
+  }
+
+  #handleOther() {
+    const tagsMap = new Map(this.tags.map((tag) => [tag.name, tag]) ?? []);
+
+    // 类型计算处理
+    if (tagsMap.has(JSDocCustomTagEnum.calculate)) {
+      const level = Number(tagsMap.get(JSDocCustomTagEnum.calculate)?.text) || -1;
+      if (level < 0) {
+        this.$options.maxNestedLevel = Number.MAX_VALUE;
+      } else {
+        this.$options.nestedLevel = (this.$options.nestedLevel ?? 0) + level;
+      }
+      this.$options.$typeCalculate = true;
+    }
+
+    // 禁用类型计算处理
+    if (tagsMap.has(JSDocCustomTagEnum.noCalculate)) {
+      this.$options.$typeCalculate = false;
+      this.$options.maxNestedLevel = Number.MIN_VALUE;
+    }
+
+    // 摆放顺序
+    this.order = Number(tagsMap.get(JSDocCustomTagEnum.order)?.text) || this.order;
+
+    // id
+    this.id = String(tagsMap.get(JSDocCustomTagEnum.id)?.text ?? this.$options?.idGenerator?.(this.name!) ?? '');
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -88,20 +136,20 @@ export class BaseDocField {
     this.tags = jsDocTags?.map((tag) => new DocumentTag(tag));
 
     this.tags?.forEach((tag) => {
-      switch (tag.name as keyof typeof JSDocTagEnum | keyof typeof JSDocCustomTagEnum) {
-        case 'description':
+      switch (tag.name) {
+        case JSDocTagEnum.description:
           this.extraDescription = tag.text?.replace(/(^\n)|(\n$)/g, '');
           break;
-        case 'example':
+        case JSDocTagEnum.example:
           this.example = tag.text;
           break;
-        case 'version':
+        case JSDocTagEnum.version:
           this.version = tag.text;
           break;
-        case 'since':
+        case JSDocTagEnum.since:
           this.since = tag.text;
           break;
-        case 'deprecated':
+        case JSDocTagEnum.deprecated:
           this.deprecated = !!tag.text ? tag.text : true; // 如果有描述使用描述，无描述则赋值true
           break;
         default:
@@ -114,6 +162,20 @@ export class BaseDocField {
     jsDocTags?.forEach((tag) => {
       this.jsDocTags.push(new DocumentJSDocTag(tag));
     });
+  }
+
+  /** 输出当前文档模型的文本表示 */
+  public toTypeString(options?: {
+    /** 移除注释 */
+    removeComment: boolean;
+  }) {
+    const { removeComment = true } = options ?? {};
+    if (removeComment) {
+      const pureText = this.displayType?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
+      const text = pureText?.replace(/(\n\s*){2,}/g, '$1'); // 移除连续多余的回车，最多保留一个回车
+      return text;
+    }
+    return this.displayType;
   }
 
   /** 获取兼容的父节点
@@ -137,20 +199,20 @@ export class BaseDocField {
 
   /** 计算并获取当前等级+n的配置 */
   protected getComputedOptions(n: number = 1): DocumentOptions {
-    return { ...this.#options, nestedLevel: this.getNestedLevel(n), maxNestedLevel: this.getMaxNestedLevel() };
+    return { ...this.$options, nestedLevel: this.getNestedLevel(n), maxNestedLevel: this.getMaxNestedLevel() };
   }
 
   /** 计算并获取当前等级`+n`的等级数，默认`+1` */
   protected getNestedLevel(n: number = 1) {
-    return Number((this.#options.nestedLevel ?? 0) + n) ?? 1;
+    return Number((this.$options.nestedLevel ?? 0) + n) ?? 1;
   }
   /** 计算并获取最大嵌套等级数 */
   protected getMaxNestedLevel() {
-    const targetTag = this.tags?.find((t) => t.name === JSDocCustomTagEnum.expand);
-    if (!targetTag) return this.#options.maxNestedLevel;
+    const targetTag = this.tags?.find((t) => t.name === JSDocCustomTagEnum.calculate);
+    if (!targetTag) return this.$options.maxNestedLevel;
     const maxNestedLevel = targetTag?.text;
     const value = maxNestedLevel?.toString().trim() === '0' ? 0 : 1;
-    return (this.#options.maxNestedLevel ?? 0) + value;
+    return (this.$options.maxNestedLevel ?? 0) + value;
   }
 
   /** 获取兼容的父节点
@@ -171,15 +233,21 @@ export class BaseDocField {
     return parentNode as T;
   }
 
-  /** 分离节点 */
-  static splitSymbolNodeOrType(symbolOrNodeOrType: Symbol | Node | Type) {
-    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : null)!;
-    const originNode = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType : null;
-    const calNode = BaseDocField.getCompatAncestorNode(symbol!);
-    const node = originNode ?? calNode;
+  /** 分离节点，尽可能获取节点，如果`symbol`和`node`不存在，则或尝试从`type`获取`symbol`和`node` */
+  static splitSymbolNodeOrType<
+    S extends Symbol = Symbol,
+    N extends Node = Node<ts.Node>,
+    T extends Type = Type<ts.Type>,
+  >(symbolOrNodeOrType: SymbolOrOtherType | undefined | null): { symbol?: S; node?: N; type?: T } {
+    if (!symbolOrNodeOrType) return {};
     const originType = symbolOrNodeOrType instanceof Type ? symbolOrNodeOrType : null;
+    const typeSymbol = originType?.getAliasSymbol?.() ?? originType?.getSymbol?.();
+    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : typeSymbol)!;
+    const originNode = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType : null;
+    const calNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
+    const node = originNode ?? calNode;
     const calType = node?.getType?.();
     const type = originType ?? calType;
-    return { symbol, node, type };
+    return { symbol, node, type } as { symbol: S; node: N; type: T };
   }
 }

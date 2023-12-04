@@ -1,16 +1,17 @@
-import { GenMarkdownOptions } from '../interface';
+import { MarkdownOptions } from '../interface';
 import { Document } from '../models';
-import defaultMarkdownOptions from './defaultOptions';
-import { templateReplacement } from './templateReplacement';
+import { beautyMarkdownOptions, defaultMarkdownOptions, mergeMarkdownOptions, render } from './templates';
 
-export const generateMarkdown = (docsFiles: Document[][], options: GenMarkdownOptions = defaultMarkdownOptions): string => {
+/** 根据文档模型生成`markdown `*/
+export const generateMarkdown = (docsFiles: Document[][], options?: MarkdownOptions): string => {
   const documents: string[] = [];
+  options = mergeMarkdownOptions(options);
   docsFiles.forEach((file) => {
     file.forEach((doc) => {
-      documents.push(templateReplacement(doc, options));
+      documents.push(render(doc, options));
     });
   });
   return documents.join('\n');
 };
 
-export { defaultMarkdownOptions };
+export { defaultMarkdownOptions, beautyMarkdownOptions, mergeMarkdownOptions };

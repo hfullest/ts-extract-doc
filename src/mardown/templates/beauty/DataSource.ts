@@ -1,4 +1,4 @@
-import { DocumentClass, DocumentFunction, DocumentInterface, DocumentMethod, DocumentProp } from '../models';
+import { DocumentClass, DocumentFunction, DocumentInterface, DocumentMethod, DocumentProp } from '../../../models';
 
 export default class DataSource {
   /** 字段名称 */
@@ -23,7 +23,7 @@ export default class DataSource {
     this.description = doc.description;
     this.defaultValue = doc?.defaultValue;
     this.isOptional = doc?.isOptional;
-    this.type = doc?.type?.text;
+    this.type = doc.toTypeString();
     this.version = doc?.version;
     this.deprecated = doc?.deprecated;
     if (doc instanceof DocumentFunction) this.kind = 'Function';

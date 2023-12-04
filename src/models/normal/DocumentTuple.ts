@@ -1,31 +1,34 @@
-import { Node, Symbol, Type } from 'ts-morph';
-import { BaseDocField, DocumentOptions } from '../helper';
+import { TypeAliasDeclaration } from 'ts-morph';
+import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
+import { DocumentParser } from '../index';
 
 export class DocumentTuple extends BaseDocField {
-  constructor(symbol: Symbol, options: DocumentOptions) {
-    options.parentSymbol ??= symbol;
-    options.rootSymbol ??= options?.parentSymbol;
-    super(symbol, options);
-    this.#options = options;
+  /** 元组类型文档模型 */
+  tuples: Document[] = [];
 
-    this.#assign(symbol);
+  constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
+    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    options.$parentSymbol ??= symbol;
+    options.$rootSymbol ??= options?.$parentSymbol;
+    super(symbolOrOther, options);
+
+    this.#assign(symbolOrOther);
   }
 
-  #options: DocumentOptions;
+  #assign(symbolOrOther: SymbolOrOtherType) {
+    const { node, type } = BaseDocField.splitSymbolNodeOrType<any, TypeAliasDeclaration>(symbolOrOther);
+    const tupleTypes = type?.getTupleElements();
+    const docs = tupleTypes?.map((tuple) => DocumentParser(tuple, this.getComputedOptions())).filter(Boolean);
+    this.tuples = docs ?? [];
+    this.displayType = node?.getTypeNode?.()?.getText?.();
+    if (this.$options.$typeCalculate) {
+      const displayType = docs?.map((it) => it.toTypeString()).join(',');
+      this.displayType = displayType ? `[${displayType}]` : undefined;
+    }
+  }
 
-  #assign(symbol: Symbol) {}
-
-  static isTarget(nodeOrType: Node | Type) {
+  static isTarget(nodeOrType: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(nodeOrType);
-    return (
-      type?.isNumber() ||
-      type?.isNumberLiteral() ||
-      type?.isBoolean() ||
-      type?.isBooleanLiteral() ||
-      type?.isString() ||
-      type?.isStringLiteral() ||
-      type?.isTemplateLiteral() ||
-      type?.isNullable()
-    );
+    return type?.isTuple();
   }
 }
