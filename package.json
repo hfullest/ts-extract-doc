@@ -1,13 +1,15 @@
 {
   "name": "ts-extract-doc",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
   "files": [
     "package.json",
     ".npmrc",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md",
+    "dist"
   ],
   "scripts": {
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
@@ -17,6 +19,14 @@
     "clean": "rimraf dist",
     "try:example": "cd ./example/five && pnpm docs:dev",
     "readme": "node ./scripts/gen-readme.mjs",
+    "v:alpha": "standard-version --prerelease alpha",
+    "v:beta": "standard-version --prerelease beta",
+    "v:pre": "standard-version prepatch",
+    "prepatch": "standard-version --prepatch",
+    "prerelease": "standard-version --prerelease",
+    "release": "standard-version",
+    "pre-pub": "npm run build && npm run prerelease && git push --follow-tags origin HEAD && npm publish --tag prerelease",
+    "pub": "npm run build && npm run release && git push --follow-tags origin HEAD  && npm publish --tag latest",
     "test": "jest"
   },
   "dependencies": {
@@ -36,6 +46,7 @@
     "prettier": "^3.1.0",
     "react": "^18.2.0",
     "rimraf": "^5.0.5",
+    "standard-version": "^9.5.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.2"

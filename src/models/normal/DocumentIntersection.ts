@@ -24,8 +24,10 @@ export class DocumentIntersection extends BaseDocField {
       symbolOrOther,
     );
     const intersectionTypes = type?.getIntersectionTypes();
-    const docs = intersectionTypes?.map((it) => DocumentParser<DocumentObject>(it, this.getComputedOptions()));
-    this.intersections = docs ?? [];
+    const docs = intersectionTypes
+      ?.map((it) => DocumentParser<DocumentObject>(it, this.getComputedOptions()))
+      .filter(Boolean);
+    this.intersections = (docs as Document[]) ?? [];
     this.displayType = node?.getTypeNode?.()?.getText?.();
     if (this.$options.$typeCalculate) {
       const displayTypes: string[] = [];

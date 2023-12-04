@@ -7,9 +7,9 @@ import { DocumentParser } from '../index';
 
 // @ts-ignore
 export class DocumentFunctionComponent extends DocumentFunction {
-  props: DocumentObject['props'] = {};
+  props?: DocumentObject['props'];
 
-  methods: DocumentObject['methods'] = {};
+  methods?: DocumentObject['methods'];
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);

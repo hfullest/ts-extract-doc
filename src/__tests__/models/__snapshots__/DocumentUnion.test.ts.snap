@@ -1,23 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTuple 快照 1`] = `
-"string||{
+"string|{
       a: string;
       readonly b?: number;
     }|{
   a: string;
   b?: number;
   c: { c1: string; c2: () => string };
-}|"
+}
+
+string|{
+      a: string;
+      readonly b?: number;
+    }|{
+  a: string;
+  b?: number;
+  c: { c1: string; c2: () => string };
+}"
 `;
 
 exports[`DocumentTuple 文档模型解析[toTypeString]: 1`] = `
-"string||{
+"string|{
       a: string;
       readonly b?: number;
     }|{
   a: string;
   b?: number;
   c: { c1: string; c2: () => string };
-}|"
+}"
 `;
