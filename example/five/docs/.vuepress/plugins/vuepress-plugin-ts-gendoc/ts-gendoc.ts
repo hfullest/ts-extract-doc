@@ -18,30 +18,32 @@ export default {
       const token = tokens[idx];
       const { path, params } = token.meta;
       /*************************************** */
-      const result = extractTsToMarkdown(path);
+      const result = extractTsToMarkdown(path, {
+        markdown: { template: "beauty" },
+      });
       writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
       // parse(path);
       debugger;
-      const tsDocument = generateMarkdown(path, {
-        sourceFilesPaths: ["**/*.ts"],
-      });
-      console.log(tsDocument);
-      // writeFileSync(
-      //   resolve(process.cwd(), "./tsDocument.md"),
-      //   JSON.stringify(tsDocument),
-      //   "utf-8",
-      // );
+      // const tsDocument = generateMarkdown(path, {
+      //   sourceFilesPaths: ["**/*.ts"],
+      // });
+      // console.log(tsDocument);
+      // // writeFileSync(
+      // //   resolve(process.cwd(), "./tsDocument.md"),
+      // //   JSON.stringify(tsDocument),
+      // //   "utf-8",
+      // // );
 
-      /***************************************** */
+      // /***************************************** */
 
-      const componentDocs = parser.parse(path, {
-        savePropValueAsString: true,
-      });
-      const mdDoc = markdownRender(componentDocs, {
-        renderer: renderers.aliMaterialRenderer,
-        language: "zh_CN",
-      });
-      console.log({ mdDoc });
+      // const componentDocs = parser.parse(path, {
+      //   savePropValueAsString: true,
+      // });
+      // const mdDoc = markdownRender(componentDocs, {
+      //   renderer: renderers.aliMaterialRenderer,
+      //   language: "zh_CN",
+      // });
+      // console.log({ mdDoc });
       process.exit();
 
       // const componentTokens = md.parse(mdDoc, {});
