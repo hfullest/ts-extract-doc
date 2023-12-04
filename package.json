@@ -8,6 +8,7 @@
     "package.json",
     ".npmrc",
     "README.md",
+    "CHANGELOG.md",
     "dist"
   ],
   "scripts": {
@@ -21,10 +22,11 @@
     "v:alpha": "standard-version --prerelease alpha",
     "v:beta": "standard-version --prerelease beta",
     "v:pre": "standard-version prepatch",
+    "prepatch": "standard-version --prepatch",
     "prerelease": "standard-version --prerelease",
     "release": "standard-version",
-    "pre-publish": "npm run build && npm run prerelase && git push git push --follow-tags origin HEAD && npm publish --tag prerelease",
-    "publish": "pnpm run build && npm run release && git push git push --follow-tags origin HEAD && npm publish --tag release",
+    "pre-pub": "npm run build && npm run prerelease && git push --follow-tags origin HEAD && npm publish --tag prerelease",
+    "pub": "npm run build && npm run release && git push --follow-tags origin HEAD  && npm publish --tag latest",
     "test": "jest"
   },
   "dependencies": {
