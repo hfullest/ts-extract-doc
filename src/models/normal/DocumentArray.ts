@@ -10,7 +10,7 @@ export class DocumentArray extends BaseDocField {
   /** 当前类型`type`对象 */
   current?: Type | null = null;
   /** 数组元素类型 */
-  elementType!: Document | undefined;
+  elementType!: Document | null;
 
   constructor(symbolOrType: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrType);

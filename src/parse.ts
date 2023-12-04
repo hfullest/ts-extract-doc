@@ -3,6 +3,7 @@ import { DocumentParseOptions } from './interface';
 import { JSDocCustomTagEnum } from './utils/constants';
 import { resolve } from 'path';
 import { Document, DocumentCarryInfo, DocumentParser, defaultDocumentOptions } from './models';
+import outputManager from './utils/OutputManager';
 
 const singletonProject = new Project();
 
@@ -67,11 +68,10 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
       const bEndLine = bSym?.getDeclarations()?.[0]?.getEndLineNumber() ?? 0;
       return aEndLine - bEndLine;
     });
-  const docs = (
-    Array.from(outputSymbols ?? []).map((it) =>
-      DocumentParser(it as Symbol, Object.assign({}, parseOptions, new DocumentCarryInfo())),
-    ) as Document[]
-  ).filter(Boolean);
+  for (let symbol of outputSymbols) {
+    const doc = DocumentParser(symbol as Symbol, Object.assign({}, parseOptions, new DocumentCarryInfo()));
+    outputManager.append(doc!);
+  }
 
-  return docs;
+  return outputManager.getDocs();
 };

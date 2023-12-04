@@ -14,9 +14,9 @@ import { JSDocCustomTagEnum } from '../../utils/constants';
 import { DocumentParser } from '../index';
 
 export class DocumentClassComponent extends BaseDocField {
-  props: DocumentObject['props'] = {};
+  props?: DocumentObject['props'];
 
-  methods: DocumentObject['methods'] = {};
+  methods?: DocumentObject['methods'];
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -75,8 +75,8 @@ export class DocumentClassComponent extends BaseDocField {
     }
     if (!typeOrTypeNode) return;
     const doc = DocumentParser<DocumentObject>(typeOrTypeNode, this.$options);
-    this.props = doc.props;
-    this.methods = doc.methods;
+    this.props = doc?.props;
+    this.methods = doc?.methods;
   }
 
   static isTarget(symbolOrOther: SymbolOrOtherType) {

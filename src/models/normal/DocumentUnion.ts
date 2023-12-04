@@ -1,6 +1,6 @@
 import { TypeAliasDeclaration } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
-import { DocumentParser } from '../index';
+import { Document, DocumentParser } from '../index';
 
 export class DocumentUnion extends BaseDocField {
   /** 联合类型 */
@@ -19,10 +19,13 @@ export class DocumentUnion extends BaseDocField {
     const tupleTypes = type?.getUnionTypes();
     debugger;
     const docs = tupleTypes?.map((tuple) => DocumentParser(tuple, this.getComputedOptions())).filter(Boolean);
-    this.unions = docs ?? [];
+    this.unions = (docs as Document[]) ?? [];
     this.displayType = node?.getTypeNode?.()?.getText?.();
     if (this.$options.$typeCalculate) {
-      const displayType = docs?.map((it) => it.toTypeString()).join('|');
+      const displayType = docs
+        ?.map((it) => it?.toTypeString())
+        ?.filter(Boolean)
+        .join('|');
       this.displayType = displayType;
     }
   }

@@ -1,6 +1,6 @@
 import { TypeAliasDeclaration } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
-import { DocumentParser } from '../index';
+import { Document, DocumentParser } from '../index';
 
 export class DocumentTuple extends BaseDocField {
   /** 元组类型文档模型 */
@@ -19,10 +19,13 @@ export class DocumentTuple extends BaseDocField {
     const { node, type } = BaseDocField.splitSymbolNodeOrType<any, TypeAliasDeclaration>(symbolOrOther);
     const tupleTypes = type?.getTupleElements();
     const docs = tupleTypes?.map((tuple) => DocumentParser(tuple, this.getComputedOptions())).filter(Boolean);
-    this.tuples = docs ?? [];
+    this.tuples = (docs as Document[]) ?? [];
     this.displayType = node?.getTypeNode?.()?.getText?.();
     if (this.$options.$typeCalculate) {
-      const displayType = docs?.map((it) => it.toTypeString()).join(',');
+      const displayType = docs
+        ?.map((it) => it?.toTypeString())
+        ?.filter(Boolean)
+        .join(',');
       this.displayType = displayType ? `[${displayType}]` : undefined;
     }
   }

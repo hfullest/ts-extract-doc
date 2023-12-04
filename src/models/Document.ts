@@ -37,8 +37,8 @@ export type Document = InstanceType<(typeof DOCUMENT_HANDLES)[number]>;
 export default function DocumentParser<D extends Document = Document>(
   symbolOrNodeOrType: SymbolOrOtherType,
   parseOptions = defaultOptions as DocumentOptions,
-): D {
-  const emptyDoc = {} as D;
+): D | null {
+  const emptyDoc = null;
   if (!((parseOptions.nestedLevel ?? 0) < (parseOptions.maxNestedLevel ?? 0))) return emptyDoc; // 超过嵌套深度强制跳出递归，不进行构造对象
   for (let handler of DOCUMENT_HANDLES) {
     if (!handler.isTarget(symbolOrNodeOrType)) continue;
