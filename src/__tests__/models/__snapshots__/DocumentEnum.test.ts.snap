@@ -5,6 +5,11 @@ exports[`DocumentClass 快照 1`] = `
 
 枚举示例\`ExampleEnum\`描述
 
+
+### ExampleEnum
+
+枚举示例\`ExampleEnum\`描述
+
 "
 `;
 
