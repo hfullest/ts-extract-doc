@@ -62,46 +62,32 @@ const fillClassOrInterfaceTableByDoc = (
   const headMark = getHeadLevel((options?.headLevel ?? 0) + 1);
   const target = getTargetInfo(type, doc as DocumentClass, { ...options, headMark });
   const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(target?.member ?? {});
-  const titleStr = columns.map((it) => it.title).join('|');
-  const colSpanStr = columns
+  const headerTh = columns
     .map((it) => {
-      const splits = Array(it?.title.length).fill('-');
-      switch (it.align) {
-        case 'center':
-          splits.unshift(':');
-          splits.push(':');
-          break;
-        case 'left':
-          splits.unshift(':');
-          break;
-        case 'right':
-          splits.push(':');
-          break;
-      }
-      return splits.join('');
+      const style = it?.align ? `style='text-align:${it.align}'` : '';
+      return `<th ${style}>${it.title}</th>`;
     })
-    .join('|');
-  const defaultSpace = String.fromCharCode(32); /** 空格 */
-  const propsStr = propsDoc
-    ?.map(([, doc], index) => {
+    .join('\n');
+  const headerRows = headerTh ? `<thead>\n<tr>\n${headerTh}\n</tr>\n</thead>` : '';
+  const bodyTd = propsDoc
+    .map(([, doc], index) => {
       const dataSource = new DataSource(doc);
       const fields = columns
         .map((col) => {
-          if (typeof col?.render === 'function') return col.render(dataSource, index, doc);
-          return (dataSource[col?.dataIndex] ?? options?.table?.whiteSpaceFill ?? defaultSpace) as string;
+          const content = { current: dataSource[col?.dataIndex] };
+          if (typeof col?.render === 'function') content.current = col.render(dataSource, index, doc);
+          const style = col?.align ? `style='text-align:${col?.align}'` : '';
+          return `<td data-type='${col?.dataIndex}' ${style}>${content.current ?? options?.table?.whiteSpaceFill}</td>`;
         })
-        .map((it) => options.table?.escapeRules?.(it) ?? it);
-      if (!fields.length) return '';
-      return `|${fields.join('|').replace(/\n/g, options?.table?.lineBreakDelimiter ?? defaultSpace)}|`;
+        .join('\n');
+      return `<tr>${fields ? `\n${fields}\n` : ''}</tr>`;
     })
-    .filter(Boolean)
     .join('\n');
+  const bodyRows = `<tbody>${bodyTd ? `\n${bodyTd}\n` : ''}</tbody>`;
   const header = target?.header;
-  const tableTitle = titleStr ? `|${titleStr}|` : '';
-  const tableColSpan = colSpanStr ? `|${colSpanStr}|` : '';
-  const dataRows = `${propsStr}`;
-  const result = [header, tableTitle, tableColSpan, dataRows].filter(Boolean).join('\n');
-  return dataRows ? `${result}\n` : '';
+  const table = columns?.length && propsDoc?.length ? `<table>\n${headerRows}\n${bodyRows}\n</table>\n` : '';
+
+  return [header, table].join('\n');
 };
 
 function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty) {

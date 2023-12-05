@@ -19,10 +19,6 @@ export default class DataSource {
   readonly?: boolean;
   /** 文档类型 */
   kind!: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
-  /** 属性 */
-  props?: Record<string, DocumentProp>;
-  /** 方法 */
-  methods?: Record<string, DocumentMethod>;
 
   constructor(doc: DocumentProp | DocumentMethod) {
     this.name = doc?.name!;
