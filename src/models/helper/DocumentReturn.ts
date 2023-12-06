@@ -4,6 +4,8 @@ import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentParser } from '../index';
 
 export class DocumentReturn extends BaseDocField {
+  /** 文档类型 */
+  type: Document | null = null;
   constructor(symbol: Symbol, options: DocumentOptions) {
     options.$parentSymbol ??= symbol;
     options.$rootSymbol ??= options?.$parentSymbol;

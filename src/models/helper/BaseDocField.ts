@@ -29,8 +29,6 @@ export class BaseDocField {
   rootSymbol: Symbol;
   /** 文档路径 */
   filePath: string | undefined;
-  /** 类型描述 */
-  type?: Document | null;
   /** 名称 */
   name: string | undefined;
   /** 简单描述，取自注释`tag`标记之前的文本内容 */

@@ -11,6 +11,8 @@ export class DocumentProp extends BaseDocField {
   modifiers?: ts.ModifierFlags;
   /** 属性方法的索引顺序，可以用来指定文档输出顺序 */
   index: number = 0;
+  /** 文档类型 */
+  type: Document | null = null;
 
   constructor(symbol: Symbol, options: DocumentOptions & { index?: number }) {
     options.$parentSymbol ??= symbol;

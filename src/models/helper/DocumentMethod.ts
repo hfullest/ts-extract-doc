@@ -2,11 +2,12 @@ import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-mor
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentDecorator } from './DocumentDecorator';
 import { DocumentOptions } from './BaseDocField';
-import { DocumentParser } from '../index';
 
 // @ts-ignore 忽略继承导致的静态类型不兼容 https://segmentfault.com/q/1010000023736777
 export class DocumentMethod extends DocumentFunction {
-  /** 装饰器 */
+  /** 装饰器
+   * @todo
+   */
   decorator?: DocumentDecorator[];
   /** 默认值 */
   defaultValue: any;
@@ -30,12 +31,10 @@ export class DocumentMethod extends DocumentFunction {
     const node = symbol?.getDeclarations()[0];
     if (!DocumentMethod.isTarget(node)) return;
     const jsDoc = node?.getJsDocs()[0];
-    const typeNode = node?.getTypeNode();
     this.isOptional = node?.hasQuestionToken();
     this.modifiers = (node?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
     const defaultTagNode = this.tags?.find((t) => /^default(Value)?/.test(t.name))?.node;
     this.defaultValue = node.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
-    this.type = DocumentParser(typeNode!, { ...this.$options, nestedLevel: this.$options.nestedLevel! + 1 });
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {
