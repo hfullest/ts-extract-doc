@@ -13,4 +13,12 @@ describe('DocumentClass', () => {
     const result = extractTsToMarkdown(sourcePath);
     expect(result).toMatchSnapshot();
   });
+
+  it(`【beauty】模版快照`, () => {
+    const result = extractTsToMarkdown(sourcePath, {
+      markdown: { template: 'beauty' },
+      document: { singleton: false },
+    });
+    expect(result).toMatchSnapshot();
+  });
 });
