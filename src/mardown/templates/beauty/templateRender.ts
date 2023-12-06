@@ -87,7 +87,7 @@ const fillClassOrInterfaceTableByDoc = (
   const header = target?.header;
   const table = columns?.length && propsDoc?.length ? `<table>\n${headerRows}\n${bodyRows}\n</table>\n` : '';
 
-  return [header, table].join('\n');
+  return [header, table].filter(Boolean).join('\n');
 };
 
 function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty) {
@@ -103,10 +103,12 @@ function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty) {
     'staticMethods',
     options,
   );
-  return [propsTable, methodsTable, staticPropsTable, staticMethodsTable];
+  return [propsTable, methodsTable, staticPropsTable, staticMethodsTable].filter(Boolean);
 }
 
-function handleReactComponent(doc: Document, options: TemplateBeauty): string[] {}
+function handleReactComponent(doc: Document, options: TemplateBeauty): string[] {
+  return []
+}
 
 const CONTENT_RECORDS = [
   { types: [DocumentClass, DocumentInterface, DocumentEnum], handler: handleClassInterfaceEtc },

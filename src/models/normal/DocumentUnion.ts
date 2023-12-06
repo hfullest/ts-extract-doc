@@ -17,7 +17,6 @@ export class DocumentUnion extends BaseDocField {
   #assign(symbolOrOther: SymbolOrOtherType) {
     const { node, type } = BaseDocField.splitSymbolNodeOrType<any, TypeAliasDeclaration>(symbolOrOther);
     const tupleTypes = type?.getUnionTypes();
-    debugger;
     const docs = tupleTypes?.map((tuple) => DocumentParser(tuple, this.getComputedOptions())).filter(Boolean);
     this.unions = (docs as Document[]) ?? [];
     this.displayType = node?.getTypeNode?.()?.getText?.();

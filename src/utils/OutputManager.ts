@@ -13,6 +13,8 @@ class OutputManager {
   public append(doc: Document) {
     if (!doc) return;
     this.#documents.push(...this.#beforeQueue, doc, ...this.#afterQueue);
+    this.#beforeQueue = [];
+    this.#afterQueue = [];
     return this;
   }
   /** 在某个文档前插入，如果没有找到目标文档则插入失败*/
