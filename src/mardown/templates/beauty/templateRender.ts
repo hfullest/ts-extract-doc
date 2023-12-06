@@ -3,6 +3,7 @@ import {
   DocumentClass,
   DocumentClassComponent,
   DocumentEnum,
+  DocumentFunction,
   DocumentFunctionComponent,
   DocumentInterface,
   DocumentMethod,
@@ -107,12 +108,15 @@ function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty) {
 }
 
 function handleReactComponent(doc: Document, options: TemplateBeauty): string[] {
-  return []
+  return [];
 }
 
 const CONTENT_RECORDS = [
-  { types: [DocumentClass, DocumentInterface, DocumentEnum], handler: handleClassInterfaceEtc },
-  { types: [DocumentFunctionComponent, DocumentClassComponent], handler: handleReactComponent },
+  {
+    types: [DocumentClass, DocumentInterface, DocumentEnum, DocumentFunctionComponent, DocumentClassComponent],
+    handler: handleClassInterfaceEtc,
+  },
+  { types: [DocumentFunction], handler: handleReactComponent },
 ];
 
 export const templateRender = (doc: Document, options: TemplateBeauty): string => {
