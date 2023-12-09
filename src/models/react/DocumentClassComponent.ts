@@ -66,7 +66,6 @@ export class DocumentClassComponent extends BaseDocField {
       const defaultPropsNode = (classDeclaration as ClassDeclaration)
         ?.getStaticProperty('defaultProps')
         ?.asKind(ts.SyntaxKind.PropertyDeclaration);
-        debugger;
       typeOrTypeNode = (defaultPropsNode as PropertyDeclaration)?.getInitializer()?.getType();
     }
     if (!typeOrTypeNode) {

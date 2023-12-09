@@ -1,4 +1,12 @@
-import { DocumentClass, DocumentFunction, DocumentInterface, DocumentMethod, DocumentProp } from '../../../models';
+import {
+  Document,
+  DocumentClass,
+  DocumentFunction,
+  DocumentInterface,
+  DocumentMethod,
+  DocumentParameter,
+  DocumentProp,
+} from '../../../models';
 
 export default class DataSource {
   /** 字段名称 */
@@ -20,16 +28,23 @@ export default class DataSource {
   /** 文档类型 */
   kind!: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
 
-  constructor(doc: DocumentProp | DocumentMethod) {
+  constructor(doc: DocumentProp | DocumentMethod | DocumentParameter, document: Document) {
+    const paramDoc = { current: null } as { current: Document | null };
+    if (doc instanceof DocumentParameter) {
+      paramDoc.current = doc?.type;
+    }
     this.name = doc?.name!;
-    this.description = doc.description?.replace(/^/, '\n\n'); //开头添加两个换行是为了触发markdown在html中对`abc`这样的语法解析
+    const description = paramDoc.current?.description ?? doc?.description;
+    this.description = description?.replace(/^/, '\n\n'); //开头添加两个换行是为了触发markdown在html中对`abc`这样的语法解析
     this.defaultValue = doc?.defaultValue;
     this.isOptional = doc?.isOptional;
-    this.type = doc.toTypeString();
-    this.version = doc?.version;
-    this.deprecated = doc?.deprecated;
-    if (doc instanceof DocumentFunction) this.kind = 'Function';
-    else if (doc instanceof DocumentClass) this.kind = 'Class';
-    else if (doc instanceof DocumentInterface) this.kind = 'Interface';
+    const type = paramDoc.current?.toTypeString() ?? doc?.toTypeString();
+    this.type = type;
+    this.version = paramDoc.current?.version ?? doc?.version;
+    this.deprecated = paramDoc.current?.deprecated ?? doc?.deprecated;
+
+    if (document instanceof DocumentFunction) this.kind = 'Function';
+    else if (document instanceof DocumentClass) this.kind = 'Class';
+    else if (document instanceof DocumentInterface) this.kind = 'Interface';
   }
 }

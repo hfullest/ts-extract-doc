@@ -18,9 +18,11 @@ export class DocumentObject extends BaseDocField {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType) {
-    const { node: objectDeclaration, symbol } = BaseDocField.splitSymbolNodeOrType<Symbol, TypeAliasDeclaration>(
-      symbolOrOther,
-    );
+    const {
+      node: objectDeclaration,
+      symbol,
+      type,
+    } = BaseDocField.splitSymbolNodeOrType<Symbol, TypeAliasDeclaration>(symbolOrOther);
     const node =
       objectDeclaration?.asKind(ts.SyntaxKind.TypeLiteral) ?? // 兼容
       objectDeclaration?.asKind(ts.SyntaxKind.ObjectLiteralExpression) ??
@@ -40,7 +42,7 @@ export class DocumentObject extends BaseDocField {
         this.props[propName] = new DocumentProp(currentSymbol!, options);
       }
     });
-    this.displayType = node?.getText();
+    this.displayType = type?.getText() ?? node?.getText();
   }
 
   static isTarget(nodeOrOther: SymbolOrOtherType) {

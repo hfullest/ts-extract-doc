@@ -1,6 +1,6 @@
 import { JSDocParameterTag, Node, ParameterDeclaration, Symbol } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
-import { DocumentParser } from '../index';
+import { Document, DocumentParser } from '../index';
 
 export class DocumentParameter extends BaseDocField {
   /** 是否可选  */

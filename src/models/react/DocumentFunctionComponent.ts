@@ -21,7 +21,6 @@ export class DocumentFunctionComponent extends DocumentFunction {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType) {
-    debugger;
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol!);
     const propsNode = (functionTypeNode as FunctionDeclaration)?.getParameters()?.[0];

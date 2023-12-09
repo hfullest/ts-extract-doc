@@ -40,7 +40,6 @@ export class DocumentBasic extends BaseDocField {
       // 兼容其他未知类型
       type?.isVoid() ||
       type?.isAny() ||
-      type?.isAnonymous() ||
       type?.isUnknown() ||
       type?.isNever()
     );

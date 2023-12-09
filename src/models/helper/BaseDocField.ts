@@ -177,6 +177,12 @@ export class BaseDocField {
     return this.displayType;
   }
 
+  /** 获取完整`id`,包括父级id */
+  public getFullId(): string[] {
+    //TODO: 完善
+    return [this.id!];
+  }
+
   /** 获取兼容的父节点
    *
    * 由于 VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
