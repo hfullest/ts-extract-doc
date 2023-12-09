@@ -36,7 +36,13 @@ export class DocumentBasic extends BaseDocField {
       type?.isString() ||
       type?.isStringLiteral() ||
       type?.isTemplateLiteral() ||
-      type?.isNullable()
+      type?.isNullable() ||
+      // 兼容其他未知类型
+      type?.isVoid() ||
+      type?.isAny() ||
+      type?.isAnonymous() ||
+      type?.isUnknown() ||
+      type?.isNever()
     );
   }
 }

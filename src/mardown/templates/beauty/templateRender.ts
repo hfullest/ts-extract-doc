@@ -16,8 +16,8 @@ export type FillType = 'props' | 'methods' | 'staticProps' | 'staticMethods';
 
 const getHeadLevel = (level: TemplateBeauty['headLevel'] = 0) => '#######'.slice(-level);
 
-const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: string } & TemplateBeauty) => {
-  const headMark = config?.headMark ?? '';
+const getTargetInfo = (type: FillType, doc: DocumentClass, config: TemplateBeauty) => {
+  const level = config?.headLevel ?? 3;
   const typeMap: Record<
     FillType,
     {
@@ -30,22 +30,22 @@ const getTargetInfo = (type: FillType, doc: DocumentClass, config: { headMark: s
     }
   > = {
     props: {
-      header: Object.keys(doc?.props ?? {}).length ? `${headMark} ${config?.table?.propHeadName}\n` : '',
+      header: Object.keys(doc?.props ?? {}).length ? `<h${level}>${config?.table?.propHeadName}</h${level}>\n` : '',
       member: doc?.props,
     },
     methods: {
-      header: Object.keys(doc?.methods ?? {}).length ? `${headMark} ${config?.table?.methodHeadName}\n` : '',
+      header: Object.keys(doc?.methods ?? {}).length ? `<h${level}>${config?.table?.methodHeadName}</h${level}>\n` : '',
       member: doc?.methods,
     },
     staticProps: {
       header: Object.keys((doc as DocumentClass)?.staticProps ?? {}).length
-        ? `${headMark} ${config?.table?.staticPropHeadName}\n`
+        ? `<h${level}>${config?.table?.staticPropHeadName}</h${level}>\n`
         : '',
       member: (doc as DocumentClass)?.staticProps,
     },
     staticMethods: {
       header: Object.keys((doc as DocumentClass)?.staticMethods ?? {}).length
-        ? `${headMark} ${config?.table?.staticMethodHeadName}\n`
+        ? `<h${level}>${config?.table?.staticMethodHeadName}</h${level}>\n`
         : '',
       member: (doc as DocumentClass)?.staticMethods,
     },
@@ -61,7 +61,10 @@ const fillClassOrInterfaceTableByDoc = (
 ): string => {
   const { columns = [] } = options ?? {};
   const headMark = getHeadLevel((options?.headLevel ?? 0) + 1);
-  const target = getTargetInfo(type, doc as DocumentClass, { ...options, headMark });
+  const target = getTargetInfo(type, doc as DocumentClass, {
+    ...options,
+    headLevel: (options?.headLevel ?? 3) + 1,
+  });
   const propsDoc: [string, DocumentProp | DocumentMethod][] = Object.entries(target?.member ?? {});
   const headerTh = columns
     .map((it) => {
@@ -109,7 +112,7 @@ function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty) {
   return [propsTable, methodsTable, staticPropsTable, staticMethodsTable].filter(Boolean);
 }
 
-function handleReactComponent(doc: Document, options: TemplateBeauty): string[] {
+function handleFunction(doc: Document, options: TemplateBeauty): string[] {
   return [];
 }
 
@@ -118,7 +121,7 @@ const CONTENT_RECORDS = [
     types: [DocumentClass, DocumentInterface, DocumentEnum, DocumentFunctionComponent, DocumentClassComponent],
     handler: handleClassInterfaceEtc,
   },
-  { types: [DocumentFunction], handler: handleReactComponent },
+  { types: [DocumentFunction, DocumentMethod], handler: handleFunction },
 ];
 
 export const templateRender = (doc: Document, options: TemplateBeauty): string => {
