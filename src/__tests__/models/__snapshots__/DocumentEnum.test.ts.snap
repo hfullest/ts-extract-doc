@@ -1,48 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocumentClass 【beauty】模版快照 1`] = `
+exports[`DocumentEnum 【beauty】模版快照 1`] = `
 "<h3 id='exampleenum' style='position:relative'>ExampleEnum</h3>
 
 <div>枚举示例\`ExampleEnum\`描述</div>
 
 
-
-
-
-
-
-
-
-
 <h3 id='exampleenum' style='position:relative'>ExampleEnum</h3>
 
 <div>枚举示例\`ExampleEnum\`描述</div>
 
 
-
-
-
-
-
-
-
-
 <h3 id='exampleenum' style='position:relative'>ExampleEnum</h3>
 
 <div>枚举示例\`ExampleEnum\`描述</div>
-
-
-
-
-
-
-
-
 
 "
 `;
 
-exports[`DocumentClass 快照 1`] = `
+exports[`DocumentEnum 快照 1`] = `
 "### ExampleEnum
 
 枚举示例\`ExampleEnum\`描述
@@ -55,4 +31,4 @@ exports[`DocumentClass 快照 1`] = `
 "
 `;
 
-exports[`DocumentClass 文档模型解析[toTypeString]: 1`] = `""`;
+exports[`DocumentEnum 文档模型解析[toTypeString]: 1`] = `""`;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocumentTuple 快照 1`] = `
+exports[`DocumentUnion 快照 1`] = `
 "string|{
       a: string;
       readonly b?: number;
@@ -20,7 +20,7 @@ string|{
 }"
 `;
 
-exports[`DocumentTuple 文档模型解析[toTypeString]: 1`] = `
+exports[`DocumentUnion 文档模型解析[toTypeString]: 1`] = `
 "string|{
       a: string;
       readonly b?: number;
