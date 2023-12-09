@@ -86,7 +86,9 @@ const fillClassOrInterfaceTableByDoc = (
     .join('\n');
   const bodyRows = `<tbody>${bodyTd ? `\n${bodyTd}\n` : ''}</tbody>`;
   const header = target?.header;
-  const table = columns?.length && propsDoc?.length ? `<table>\n${headerRows}\n${bodyRows}\n</table>\n` : '';
+  const presetCss = `<style>table[data-id='${doc.id}'] p { margin:0; }</style>`;
+  const tableContent = [presetCss, headerRows, bodyRows].filter(Boolean).join('\n');
+  const table = columns?.length && propsDoc?.length ? `<table data-id='${doc.id}'>\n${tableContent}\n</table>\n` : '';
 
   return [header, table].filter(Boolean).join('\n');
 };

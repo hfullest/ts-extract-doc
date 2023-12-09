@@ -7,6 +7,7 @@ const documentParseOptions: DocumentParseOptions = {
   strategy: 'default',
   singleton: true,
   idGenerator: (name) => name?.toLocaleLowerCase(),
+  autoCalculate:true,
 };
 
 export default documentParseOptions;

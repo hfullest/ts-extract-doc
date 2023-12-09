@@ -22,7 +22,7 @@ export default class DataSource {
 
   constructor(doc: DocumentProp | DocumentMethod) {
     this.name = doc?.name!;
-    this.description = doc.description;
+    this.description = doc.description?.replace(/^/, '\n\n'); //开头添加两个换行是为了触发markdown在html中对`abc`这样的语法解析
     this.defaultValue = doc?.defaultValue;
     this.isOptional = doc?.isOptional;
     this.type = doc.toTypeString();

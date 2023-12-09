@@ -31,6 +31,8 @@ export interface DocumentParseOptions {
   singleton?: boolean;
   /** 根据规则生成相应标签`id`, 例如 `<h3 id='someId'></h3>`, 优先级低于`@id` */
   idGenerator?: (name: string) => string;
+  /** 是否自动计算合并推导类型，默认为`true`，优先级低于`@calculate` */
+  autoCalculate?: boolean;
 }
 
 export interface TemplateCustom {

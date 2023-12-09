@@ -21,12 +21,12 @@ export class DocumentFunctionComponent extends DocumentFunction {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType) {
+    debugger;
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol!);
     const propsNode = (functionTypeNode as FunctionDeclaration)?.getParameters()?.[0];
     const typeNode = propsNode?.getTypeNode?.();
-    if (!typeNode) return;
-    const doc = DocumentParser<DocumentObject>(typeNode, this.$options);
+    const doc = DocumentParser<DocumentObject>(typeNode!, this.$options);
     this.props = doc?.props;
     this.methods = doc?.methods;
   }

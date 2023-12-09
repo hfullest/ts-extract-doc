@@ -12,8 +12,8 @@ export class DocumentCarryInfo {
   $parentSymbol?: Symbol;
   /** 顶级 symbol */
   $rootSymbol?: Symbol;
-  /** 是否计算类型 */
-  $typeCalculate?: boolean = false;
+  /** 是否自动计算合并推导类型 */
+  $typeCalculate?: boolean;
 }
 
 export type SymbolOrOtherType = Symbol | Node | Type;
@@ -88,7 +88,7 @@ export class BaseDocField {
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
     this.displayType = (node as PropertyDeclaration)?.getTypeNode?.()?.getText?.();
-    this.description = jsDoc?.getDescription()?.replace(/(^\n)|(\n$)/g, '');
+    this.description = jsDoc?.getDescription();
     const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);
     this.filePath = jsDoc?.getSourceFile?.().getFilePath?.() ?? node?.getSourceFile?.()?.getFilePath?.();
@@ -105,6 +105,7 @@ export class BaseDocField {
     const tagsMap = new Map(this.tags.map((tag) => [tag.name, tag]) ?? []);
 
     // 类型计算处理
+    this.$options.$typeCalculate = this.$options.autoCalculate; // 设置默认值
     if (tagsMap.has(JSDocCustomTagEnum.calculate)) {
       const level = Number(tagsMap.get(JSDocCustomTagEnum.calculate)?.text) || -1;
       if (level < 0) {

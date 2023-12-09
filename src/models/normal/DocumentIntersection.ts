@@ -28,7 +28,7 @@ export class DocumentIntersection extends BaseDocField {
       ?.map((it) => DocumentParser<DocumentObject>(it, this.getComputedOptions()))
       .filter(Boolean);
     this.intersections = (docs as Document[]) ?? [];
-    this.displayType = node?.getTypeNode?.()?.getText?.();
+    this.displayType = node?.getTypeNode?.()?.getText?.() ?? node?.getText?.();
     if (this.$options.$typeCalculate) {
       const displayTypes: string[] = [];
       docs?.forEach((doc) => {

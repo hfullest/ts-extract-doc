@@ -20,7 +20,7 @@ export default class DataSource {
 
   constructor(doc: DocumentProp | DocumentMethod) {
     this.name = doc?.name!;
-    this.description = doc.description;
+    this.description = doc.description?.replace(/(^\n)|(\n$)/g, '');
     this.defaultValue = doc?.defaultValue;
     this.isOptional = doc?.isOptional;
     this.type = doc.toTypeString();
