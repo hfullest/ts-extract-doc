@@ -1,4 +1,4 @@
-import { EnumDeclaration, Node, Symbol, ts } from 'ts-morph';
+import { EnumDeclaration, Node, Symbol as TsSymbol, ts } from 'ts-morph';
 import { BaseDocField, DocumentEnumMember, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 export class DocumentEnum extends BaseDocField {
@@ -15,11 +15,13 @@ export class DocumentEnum extends BaseDocField {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType) {
-    const { node: enumDeclaration } = BaseDocField.splitSymbolNodeOrType<Symbol, EnumDeclaration>(symbolOrOther);
+    const { node: enumDeclaration } = BaseDocField.splitSymbolNodeOrType<TsSymbol, EnumDeclaration>(symbolOrOther);
     const node = enumDeclaration?.asKind(ts.SyntaxKind.EnumDeclaration);
     const members = (node as EnumDeclaration)?.getMembers?.();
     this.members = members?.map((it, index) => new DocumentEnumMember(it.getSymbol()!, { ...this.$options, index }));
   }
+
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
 
   static isTarget(nodeOrOther: SymbolOrOtherType) {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);

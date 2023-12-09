@@ -1,4 +1,4 @@
-import { Node, Symbol, Type, TypeAliasDeclaration, ts } from 'ts-morph';
+import { Node, Symbol as TsSymbol, Type, TypeAliasDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { Document, DocumentParser } from '../';
 
@@ -22,7 +22,7 @@ export class DocumentArray extends BaseDocField {
   }
 
   #assign(symbolOrType: SymbolOrOtherType) {
-    const { node, type } = BaseDocField.splitSymbolNodeOrType<Symbol, TypeAliasDeclaration>(symbolOrType);
+    const { node, type } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(symbolOrType);
     const arrayType = type?.getArrayElementType()?.getTargetType?.() ?? type?.getArrayElementType(); // 有泛型先取泛型
     const typeNode = node?.getTypeNode?.();
     this.text = node?.getText?.()?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
@@ -31,6 +31,8 @@ export class DocumentArray extends BaseDocField {
     this.elementType = DocumentParser(arrayType!, this.$options);
     this.displayType = typeNode?.getText?.();
   }
+
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
 
   static isTarget(nodeOrType: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(nodeOrType);

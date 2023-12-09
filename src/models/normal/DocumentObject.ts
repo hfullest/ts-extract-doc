@@ -1,4 +1,4 @@
-import { Node, Symbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
+import { Symbol as TsSymbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
 import { DocumentProp, BaseDocField, DocumentMethod, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 // @ts-ignore
@@ -22,11 +22,16 @@ export class DocumentObject extends BaseDocField {
       node: objectDeclaration,
       symbol,
       type,
-    } = BaseDocField.splitSymbolNodeOrType<Symbol, TypeAliasDeclaration>(symbolOrOther);
+    } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(symbolOrOther);
+    // 兼容泛型类型
+    const { node: targetNode } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(
+      objectDeclaration?.asKind(ts.SyntaxKind.TypeAliasDeclaration)?.getType()?.getTargetType(),
+    );
     const node =
       objectDeclaration?.asKind(ts.SyntaxKind.TypeLiteral) ?? // 兼容
       objectDeclaration?.asKind(ts.SyntaxKind.ObjectLiteralExpression) ??
-      objectDeclaration?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral);
+      objectDeclaration?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral) ??
+      targetNode?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral);
     const properties = (node as TypeLiteralNode)?.getProperties();
     properties?.forEach((prop, index) => {
       const propName = prop?.getName();
@@ -44,6 +49,8 @@ export class DocumentObject extends BaseDocField {
     });
     this.displayType = type?.getText() ?? node?.getText();
   }
+
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
 
   static isTarget(nodeOrOther: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);

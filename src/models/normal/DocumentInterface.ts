@@ -1,4 +1,4 @@
-import { InterfaceDeclaration, Node, Symbol } from 'ts-morph';
+import { InterfaceDeclaration, Node, Symbol as TsSymbol } from 'ts-morph';
 import { BaseDocField, DocumentProp, DocumentMethod, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 export class DocumentInterface extends BaseDocField {
@@ -17,7 +17,7 @@ export class DocumentInterface extends BaseDocField {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType) {
-    const { symbol, node } = BaseDocField.splitSymbolNodeOrType<Symbol, InterfaceDeclaration>(symbolOrOther);
+    const { symbol, node } = BaseDocField.splitSymbolNodeOrType<TsSymbol, InterfaceDeclaration>(symbolOrOther);
     const properties = node?.getProperties();
     properties?.forEach((prop, index) => {
       const propName = prop?.getName();
@@ -38,6 +38,8 @@ export class DocumentInterface extends BaseDocField {
       }
     });
   }
+
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
 
   /** 判断是否命中当前目标 */
   static isTarget(nodeOrOther: SymbolOrOtherType): nodeOrOther is InterfaceDeclaration {

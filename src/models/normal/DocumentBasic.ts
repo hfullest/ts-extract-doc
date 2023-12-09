@@ -26,6 +26,8 @@ export class DocumentBasic extends BaseDocField {
     this.displayType = type?.getText?.();
   }
 
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
+
   static isTarget(nodeOrType: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(nodeOrType);
     return (

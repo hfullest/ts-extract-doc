@@ -1,6 +1,6 @@
 import { JSDocReturnTag, Node } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
-import { DocumentParser, SymbolOrOtherType } from '../index';
+import { Document, DocumentParser, SymbolOrOtherType } from '../index';
 
 export class DocumentReturn extends BaseDocField {
   /** 文档类型 */

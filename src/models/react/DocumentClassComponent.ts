@@ -1,13 +1,4 @@
-import {
-  ClassDeclaration,
-  InterfaceDeclaration,
-  Node,
-  PropertyDeclaration,
-  Symbol,
-  Type,
-  TypeNode,
-  ts,
-} from 'ts-morph';
+import { ClassDeclaration, InterfaceDeclaration, Node, PropertyDeclaration, Type, TypeNode, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { DocumentClass, DocumentObject } from '../normal';
 import { JSDocCustomTagEnum } from '../../utils/jsDocTagDefinition';
@@ -78,6 +69,8 @@ export class DocumentClassComponent extends BaseDocField {
     this.props = doc?.props;
     this.methods = doc?.methods;
   }
+
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
 
   static isTarget(symbolOrOther: SymbolOrOtherType) {
     const { node: originNode } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);

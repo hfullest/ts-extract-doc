@@ -1,5 +1,5 @@
 import {
-  Symbol,
+  Symbol as TsSymbol,
   ts,
   Node,
   FunctionDeclaration,
@@ -63,11 +63,13 @@ export class DocumentFunction extends BaseDocField {
   }
 
   /** 根据symbol获取子级可能的函数节点 */
-  static getFunctionTypeNodeBySymbol(symbol: Symbol) {
+  static getFunctionTypeNodeBySymbol(symbol: TsSymbol) {
     const node = BaseDocField.getCompatAncestorNode(symbol);
     const functionTypeNode = DocumentFunction.getFunctionTypeNode(node);
     return functionTypeNode;
   }
+
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
 
   static isTarget(
     nodeOrOther: SymbolOrOtherType,

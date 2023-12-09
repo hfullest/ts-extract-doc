@@ -6,10 +6,9 @@ import {
   DocumentFunction,
   DocumentFunctionComponent,
   DocumentInterface,
-  DocumentMethod,
-  DocumentProp,
+  DocumentIntersection,
+  DocumentObject,
 } from '../../../models';
-import DataSource from './DataSource';
 import { beautyMarkdownOptions } from './defaultOptions';
 import { TableConfig, TableConfigFunction, TemplateBeauty } from './interface';
 import { generateTable } from './table';
@@ -28,34 +27,70 @@ const getTableConfig = (doc: Document, options: TemplateBeauty): TableConfig => 
   return tableConfig.current;
 };
 
-function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty) {
+function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty): string[] {
   const tableConfig = getTableConfig(doc, options);
-  const propsTable = generateTable((doc as DocumentClass)?.props, doc, tableConfig, {
+  const propsTable = generateTable(Array.from(Object.values((doc as DocumentClass)?.props ?? {})), doc, tableConfig, {
     header: tableConfig?.propHeadName,
   });
-  const methodsTable = generateTable((doc as DocumentClass)?.methods, doc, tableConfig, {
-    header: tableConfig?.methodHeadName,
-  });
-  const staticPropsTable = generateTable((doc as DocumentClass)?.staticProps, doc, tableConfig, {
-    header: tableConfig?.staticPropHeadName,
-  });
-  const staticMethodsTable = generateTable((doc as DocumentClass)?.staticMethods, doc, tableConfig, {
-    header: tableConfig.staticMethodHeadName,
-  });
+  const methodsTable = generateTable(
+    Array.from(Object.values((doc as DocumentClass)?.methods ?? {})),
+    doc,
+    tableConfig,
+    {
+      header: tableConfig?.methodHeadName,
+    },
+  );
+  const staticPropsTable = generateTable(
+    Array.from(Object.values((doc as DocumentClass)?.staticProps ?? {})),
+    doc,
+    tableConfig,
+    { header: tableConfig?.staticPropHeadName },
+  );
+  const staticMethodsTable = generateTable(
+    Array.from(Object.values((doc as DocumentClass)?.staticMethods ?? {})),
+    doc,
+    tableConfig,
+    { header: tableConfig.staticMethodHeadName },
+  );
   return [propsTable, methodsTable, staticPropsTable, staticMethodsTable].filter(Boolean);
 }
 
 function handleFunction(doc: Document, options: TemplateBeauty): string[] {
-  // const
-  return [];
+  const tableConfig = getTableConfig(doc, options);
+  const funDoc = doc instanceof DocumentFunction ? doc : null;
+  const paramsTable = generateTable(funDoc?.parameters!, doc, tableConfig, {
+    header: tableConfig?.propHeadName,
+  });
+  const returnHead = tableConfig?.returnHeadName!;
+  const returns = funDoc?.returns?.type?.toTypeString()!;
+  const returnContent = returns ? `<code>${returns}</code>\n` : '';
+  const returnFooter = funDoc?.returns?.type?.description ?? funDoc?.returns?.description;
+  return [paramsTable, returnHead, returnContent, returnFooter!].filter(Boolean);
+}
+
+function handleEnum(doc: Document, options: TemplateBeauty): string[] {
+  const tableConfig = getTableConfig(doc, options);
+  const enumDoc = doc instanceof DocumentEnum ? doc : null;
+  const membersTable = generateTable(enumDoc?.members!, doc, tableConfig, {
+    header: tableConfig?.memberHeadName,
+  });
+  return [membersTable].filter(Boolean);
 }
 
 const CONTENT_RECORDS = [
   {
-    types: [DocumentClass, DocumentInterface, DocumentEnum, DocumentFunctionComponent, DocumentClassComponent],
+    types: [
+      DocumentClass,
+      DocumentInterface,
+      DocumentObject,
+      DocumentIntersection,
+      DocumentFunctionComponent,
+      DocumentClassComponent,
+    ],
     handler: handleClassInterfaceEtc,
   },
   { types: [DocumentFunction], handler: handleFunction },
+  { types: [DocumentEnum], handler: handleEnum },
 ];
 
 export const templateRender = (doc: Document, options: TemplateBeauty): string => {

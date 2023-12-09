@@ -30,6 +30,8 @@ export class DocumentFunctionComponent extends DocumentFunction {
     this.methods = doc?.methods;
   }
 
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
+
   static isTarget(nodeOrOther: SymbolOrOtherType) {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
     const parentNode = DocumentFunction.getCompatAncestorNode<VariableStatement>(node?.getSymbol());

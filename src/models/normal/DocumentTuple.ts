@@ -30,6 +30,8 @@ export class DocumentTuple extends BaseDocField {
     }
   }
 
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
+
   static isTarget(nodeOrType: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(nodeOrType);
     return type?.isTuple();

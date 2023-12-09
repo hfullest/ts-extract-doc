@@ -1,4 +1,4 @@
-import { ClassDeclaration, ClassExpression, Node, Symbol, VariableDeclaration, ts } from 'ts-morph';
+import { ClassDeclaration, ClassExpression, Node, Symbol as TsSymbol, VariableDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentMethod, DocumentOptions, DocumentProp, SymbolOrOtherType } from '../helper';
 import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 
@@ -25,7 +25,7 @@ export class DocumentClass extends BaseDocField {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType): void {
-    const { symbol, node } = BaseDocField.splitSymbolNodeOrType<Symbol, ClassDeclaration>(symbolOrOther);
+    const { symbol, node } = BaseDocField.splitSymbolNodeOrType<TsSymbol, ClassDeclaration>(symbolOrOther);
     if (!DocumentClass.isTarget(symbolOrOther)) return;
     const constructorDeclaration = node?.getConstructors?.()[0];
     if (Node.isConstructorDeclaration(constructorDeclaration)) {
@@ -74,6 +74,8 @@ export class DocumentClass extends BaseDocField {
     ];
     return tagIgnores.some((tg) => doc.tags?.find((t) => t.name === tg));
   }
+
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
 
   static isTarget(nodeOrOther: SymbolOrOtherType): nodeOrOther is ClassDeclaration | ClassExpression {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);

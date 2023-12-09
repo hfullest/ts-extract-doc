@@ -1,4 +1,4 @@
-import { Document, DocumentMethod, DocumentParameter, DocumentProp } from '../../../models';
+import { Document, DocumentEnumMember, DocumentMethod, DocumentParameter, DocumentProp } from '../../../models';
 import DataSource from './DataSource';
 
 export interface OptionsColums {
@@ -9,7 +9,11 @@ export interface OptionsColums {
   /** 列布局 */
   align?: 'left' | 'right' | 'center';
   /** 自定义列渲染，输出应为`markdown`字符串 */
-  render?: (record: DataSource, index: number, doc: DocumentProp | DocumentMethod | DocumentParameter) => string;
+  render?: (
+    record: DataSource,
+    index: number,
+    doc: DocumentProp | DocumentMethod | DocumentParameter | DocumentEnumMember,
+  ) => string;
 }
 
 export interface TableConfig {
@@ -23,6 +27,14 @@ export interface TableConfig {
   staticPropHeadName?: string;
   /** 表格头部静态方法标题 默认值`静态方法` */
   staticMethodHeadName?: string;
+  /** 表格头部事件标题，默认值`事件` */
+  eventHeadName?: string;
+  /** 表格头部参数标题，默认值`参数`，用于函数 */
+  paramHeadName?: string;
+  /** 表格头部返回值标题，默认值`返回值`，用于函数 */
+  returnHeadName?: string;
+  /** 表格头部枚举成员标题，默认值`成员`，用于枚举 */
+  memberHeadName?: string;
   /** 表格中换行符的替换字符（由于markdown表格中换行符会破坏表格结构，因此需要替换）
    *
    *  默认值为`空格`

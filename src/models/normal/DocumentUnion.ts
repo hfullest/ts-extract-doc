@@ -29,6 +29,8 @@ export class DocumentUnion extends BaseDocField {
     }
   }
 
+  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
+
   static isTarget(typeOrNode: SymbolOrOtherType) {
     const { type } = BaseDocField.splitSymbolNodeOrType(typeOrNode);
     return type?.isUnion();
