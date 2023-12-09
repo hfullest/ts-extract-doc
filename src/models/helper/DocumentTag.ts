@@ -1,5 +1,5 @@
 import { JSDocTag, Node, ts } from 'ts-morph';
-import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
+import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 
 export class DocumentTag {
   name!: JSDocTagEnum | JSDocCustomTagEnum | `${JSDocCustomTagEnum}` | `${JSDocTagEnum}`;

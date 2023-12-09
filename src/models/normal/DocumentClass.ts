@@ -1,6 +1,6 @@
 import { ClassDeclaration, ClassExpression, Node, Symbol, VariableDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentMethod, DocumentOptions, DocumentProp, SymbolOrOtherType } from '../helper';
-import { JSDocTagEnum } from '../../utils/constants';
+import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 
 // @ts-ignore
 export class DocumentClass extends BaseDocField {

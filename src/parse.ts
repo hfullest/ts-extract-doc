@@ -1,6 +1,6 @@
 import { Project, SourceFile, InterfaceDeclaration, Symbol } from 'ts-morph';
 import { DocumentParseOptions } from './interface';
-import { JSDocCustomTagEnum } from './utils/constants';
+import { JSDocCustomTagEnum } from './utils/jsDocTagDefinition';
 import { resolve } from 'path';
 import { Document, DocumentCarryInfo, DocumentParser, defaultDocumentOptions } from './models';
 import outputManager from './utils/OutputManager';

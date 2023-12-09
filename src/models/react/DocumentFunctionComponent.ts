@@ -1,6 +1,6 @@
 import { FunctionDeclaration, VariableStatement, ts } from 'ts-morph';
 import { DocumentFunction } from '../normal/DocumentFunction';
-import { JSDocCustomTagEnum } from '../../utils/constants';
+import { JSDocCustomTagEnum } from '../../utils/jsDocTagDefinition';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { DocumentObject } from '../normal';
 import { DocumentParser } from '../index';

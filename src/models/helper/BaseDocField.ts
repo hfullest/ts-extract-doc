@@ -1,5 +1,5 @@
 import { ClassDeclaration, JSDocTag, Node, PropertyDeclaration, Symbol, Type, VariableStatement, ts } from 'ts-morph';
-import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/constants';
+import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
 import { Document } from '../index';

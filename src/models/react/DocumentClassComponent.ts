@@ -10,7 +10,7 @@ import {
 } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
 import { DocumentClass, DocumentObject } from '../normal';
-import { JSDocCustomTagEnum } from '../../utils/constants';
+import { JSDocCustomTagEnum } from '../../utils/jsDocTagDefinition';
 import { DocumentParser } from '../index';
 
 export class DocumentClassComponent extends BaseDocField {
@@ -66,6 +66,7 @@ export class DocumentClassComponent extends BaseDocField {
       const defaultPropsNode = (classDeclaration as ClassDeclaration)
         ?.getStaticProperty('defaultProps')
         ?.asKind(ts.SyntaxKind.PropertyDeclaration);
+        debugger;
       typeOrTypeNode = (defaultPropsNode as PropertyDeclaration)?.getInitializer()?.getType();
     }
     if (!typeOrTypeNode) {
