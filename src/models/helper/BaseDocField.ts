@@ -15,6 +15,7 @@ import { DocumentParseOptions } from '../../interface';
 import { DocumentTypeParameters } from './DocumentTypeParameter';
 import { Document } from '../index';
 import OutputManager from '../../utils/OutputManager';
+import { relative } from 'path';
 
 /** 内部传递属性，不对外公开
  * @inner
@@ -118,7 +119,8 @@ export class BaseDocField {
       start: [node?.getStartLineNumber?.()!, node?.getStartLinePos?.()!],
       end: [node?.getEndLineNumber?.()!, node?.getEnd?.()!], // TODO：确认结束位置
     };
-    this.location = [this.filePath, node?.getStartLineNumber?.()!].filter(Boolean).join(':');
+    const relativePath = relative(process.cwd(), this.filePath ?? '');
+    this.location = [relativePath, node?.getStartLineNumber?.()!].filter(Boolean).join(':');
 
     this.typeParameters = new DocumentTypeParameters(symbolOrOther, this.$options);
 

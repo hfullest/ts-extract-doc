@@ -57,4 +57,16 @@ export interface TemplateBeauty {
    * - 也可以配置函数，根据条件使用不同的配置，例如可以使用`doc instanceof DocumentClass`判断条件来返回命中规则的配置
    *  */
   table?: TableConfig | TableConfigFunction;
+  fileInfo?: {
+    /** 是否展示文档位置
+     * @default true
+     */
+    showLocation?: boolean;
+    /** 是否显示更新时间
+     * @default true
+     */
+    showUpdateTime?: boolean;
+    /** 放置位置 */
+    position?: 'left' | 'center' | 'right';
+  };
 }

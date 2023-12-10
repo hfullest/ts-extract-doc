@@ -21,7 +21,11 @@ const beautyMarkdownOptions: TemplateBeauty = {
     return `<h${headerLevel} id='${doc?.getId()}' style='position:relative'>${content}</h${headerLevel}>\n`;
   },
   headLevel: 3,
-
+  fileInfo:{
+    showLocation: true,
+    showUpdateTime:true,
+    position:'left'
+  },
   table: (doc, config, options) => {
     const level = (options?.headLevel ?? 3) + 1;
     const columns = [

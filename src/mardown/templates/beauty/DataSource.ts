@@ -45,7 +45,6 @@ export default class DataSource {
   kind!: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
 
   constructor(doc: DocumentProp | DocumentMethod | DocumentParameter | DocumentEnumMember, document: Document) {
-    debugger;
     if (!doc) return;
     const paramDoc = { current: null } as { current: Document | null };
     if (doc instanceof DocumentParameter) {

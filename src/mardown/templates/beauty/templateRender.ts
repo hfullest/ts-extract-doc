@@ -9,6 +9,7 @@ import {
   DocumentIntersection,
   DocumentObject,
 } from '../../../models';
+import { getFileUpdateTime } from '../../../utils/getFileUpdateTime';
 import { beautyMarkdownOptions } from './defaultOptions';
 import { TableConfig, TableConfigFunction, TemplateBeauty } from './interface';
 import { generateTable } from './table';
@@ -77,6 +78,19 @@ function handleEnum(doc: Document, options: TemplateBeauty): string[] {
   return [membersTable].filter(Boolean);
 }
 
+function genFileInfo(doc: Document, options: TemplateBeauty): string {
+  const fileInfo = options?.fileInfo;
+  if (!fileInfo) return '';
+  const location = fileInfo?.showLocation ? doc?.location : '';
+  const position = fileInfo?.position;
+  const lastUpdateTime = getFileUpdateTime(doc);
+  const justifyContent = position === 'left' ? 'flex-start' : position === 'center' ? 'center' : 'flex-end';
+  return `<div style='font-size:0.6em;margin-top:10px;display:flex;justify-content:${justifyContent};'>
+  文件位置：<code>${location}</code>&ensp;&ensp;
+  上次更新时间：<span>${lastUpdateTime}</span>
+  </div>`;
+}
+
 const CONTENT_RECORDS = [
   {
     types: [
@@ -102,6 +116,7 @@ export const templateRender = (doc: Document, options: TemplateBeauty): string =
   const content = targetHandler?.(doc, options) ?? [];
   const extra = extraDescription ? `<div>${extraDescription}</div>` : '';
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
-  const result = [header, desc, ...content, exampleCode, extra].filter(Boolean).join('\n');
+  const fileInfo = genFileInfo(doc, options);
+  const result = [header, desc, ...content, exampleCode, extra, fileInfo].filter(Boolean).join('\n');
   return `${result}\n`;
 };
