@@ -25,7 +25,7 @@ export class DocumentIntersection extends BaseDocField {
     );
     const intersectionTypes = type?.getIntersectionTypes();
     const docs = intersectionTypes
-      ?.map((it) => DocumentParser<DocumentObject>(it, this.getComputedOptions()))
+      ?.map((it) => DocumentParser<DocumentObject>(it, { ...this.getComputedOptions(), $parent: this }))
       .filter(Boolean);
     this.intersections = (docs as Document[]) ?? [];
     this.displayType = node?.getTypeNode?.()?.getText?.() ?? node?.getText?.();

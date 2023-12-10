@@ -72,6 +72,7 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
     const doc = DocumentParser(symbol as Symbol, Object.assign({}, parseOptions, new DocumentCarryInfo()));
     outputManager.append(doc!);
   }
-
-  return outputManager.getDocs();
+  const docs = outputManager.getDocs();
+  outputManager.clear(); // 清空本次文档处理
+  return docs;
 };

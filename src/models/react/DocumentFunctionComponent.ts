@@ -25,7 +25,7 @@ export class DocumentFunctionComponent extends DocumentFunction {
     const functionTypeNode = DocumentFunction.getFunctionTypeNodeBySymbol(symbol!);
     const propsNode = (functionTypeNode as FunctionDeclaration)?.getParameters()?.[0];
     const typeNode = propsNode?.getTypeNode?.();
-    const doc = DocumentParser<DocumentObject>(typeNode!, this.$options);
+    const doc = DocumentParser<DocumentObject>(typeNode!, { ...this.$options, $parent: this });
     this.props = doc?.props;
     this.methods = doc?.methods;
   }

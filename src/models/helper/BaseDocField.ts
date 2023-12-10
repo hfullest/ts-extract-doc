@@ -13,6 +13,8 @@ import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/jsDocTagDefinition
 import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
 import { DocumentTypeParameters } from './DocumentTypeParameter';
+import { Document } from '../index';
+import OutputManager from '../../utils/OutputManager';
 
 /** 内部传递属性，不对外公开
  * @inner
@@ -28,6 +30,8 @@ export class DocumentCarryInfo {
   $TypeParameters?: TypeParameterDeclaration[];
   /** 索引顺序 */
   $index?: number;
+  /** 父级文档 */
+  $parent?: Document | null;
 }
 
 export type SymbolOrOtherType = Symbol | Node | Type;
@@ -41,6 +45,8 @@ export class BaseDocField {
   parentSymbol: Symbol;
   /** 顶级 symbol */
   rootSymbol: Symbol;
+  /** 父级文档 */
+  parent: Document | null = null;
   /** 文档路径 */
   filePath: string | undefined;
   /** 名称 */
@@ -89,6 +95,7 @@ export class BaseDocField {
     this.symbol = symbol!;
     this.parentSymbol = options?.$parentSymbol ?? symbol!;
     this.rootSymbol = options?.$rootSymbol ?? symbol!;
+    this.parent = options?.$parent ?? null;
     this.$options = options;
     this.#assign(symbolOrOther);
   }
@@ -143,7 +150,9 @@ export class BaseDocField {
     this.order = Number(tagsMap.get(JSDocCustomTagEnum.order)?.text) || this.order;
 
     // id
-    this.id = String(tagsMap.get(JSDocCustomTagEnum.id)?.text ?? this.$options?.idGenerator?.(this.name!) ?? '');
+    this.id = String(
+      tagsMap.get(JSDocCustomTagEnum.id)?.text ?? this.$options?.idGenerator?.(this.name!) ?? this.name ?? '',
+    );
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -194,10 +203,22 @@ export class BaseDocField {
     return this.displayType;
   }
 
-  /** 获取完整`id`,包括父级id */
-  public getFullId(): string[] {
-    //TODO: 完善
-    return [this.id!];
+  /** 根据规则生成`id`，可以传入子参数 */
+  public getId(rest: string[] = []): string {
+    const ids = [this.id!, ...rest];
+    let p = this as unknown as Document;
+    const set = new WeakSet([p]);
+    while (p.parent) {
+      if (set.has(p.parent)) break; // 防止循环引用
+      set.add(p.parent);
+      ids.unshift(p.parent.id!);
+      p = p.parent;
+    }
+    const id = ids.filter(Boolean).join('__');
+    if (!OutputManager.hasDocReference(this.filePath!, id!)) {
+      OutputManager.setDocReference(this as unknown as Document);
+    }
+    return id;
   }
 
   /** 输出完整名称，包括泛型文本 */

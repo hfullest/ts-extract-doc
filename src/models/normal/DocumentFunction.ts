@@ -35,6 +35,7 @@ export class DocumentFunction extends BaseDocField {
           $parentSymbol: symbol,
           $rootSymbol: this.rootSymbol,
           $index: index,
+          $parent: this,
         }),
     );
     const returnTypeNode = (functionTypeNode as FunctionDeclaration)?.getReturnTypeNode(); // 如果指定了函数返回类型
@@ -45,6 +46,7 @@ export class DocumentFunction extends BaseDocField {
       ...this.$options,
       $parentSymbol: symbol,
       $rootSymbol: this.rootSymbol,
+      $parent: this,
     });
   }
 

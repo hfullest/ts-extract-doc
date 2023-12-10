@@ -9,6 +9,8 @@ import {
   DocumentParameter,
   DocumentProp,
 } from '../../../models';
+import OutputManager from '../../../utils/OutputManager';
+import { escapeHTMLTags } from '../../../utils/escapeHTMLTag';
 
 export type DataSourceDocumentType = ConstructorParameters<typeof DataSource>[0];
 
@@ -19,6 +21,8 @@ export default class DataSource {
   description?: string;
   /** 类型 */
   type?: string;
+  /** 附带引用的类型 */
+  referenceType?: string;
   /** 泛型定义参数文本 */
   typeParameters?: string;
   /** 是否可选 */
@@ -35,10 +39,14 @@ export default class DataSource {
   label?: DocumentEnumMember['label'];
   /** `value`值，用于枚举成员 */
   value?: DocumentEnumMember['value'];
+  /** 文档位置 */
+  location?: string;
   /** 文档类型 */
   kind!: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
 
   constructor(doc: DocumentProp | DocumentMethod | DocumentParameter | DocumentEnumMember, document: Document) {
+    debugger;
+    if (!doc) return;
     const paramDoc = { current: null } as { current: Document | null };
     if (doc instanceof DocumentParameter) {
       paramDoc.current = doc?.type;
@@ -52,8 +60,15 @@ export default class DataSource {
     this.description = description?.replace(/^/, '\n\n'); //开头添加两个换行是为了触发markdown在html中对`abc`这样的语法解析
     this.defaultValue = (doc as DocumentProp)?.defaultValue;
     this.isOptional = (doc as DocumentProp)?.isOptional;
+    this.location = doc.location;
     const type = paramDoc.current?.toTypeString() ?? doc?.toTypeString();
-    this.type = type;
+    this.type = escapeHTMLTags(type!);
+    const references = OutputManager.getDocReference(doc.filePath!);
+    const refTypeStr = references?.reduce((str, [id, docRef]) => {
+      if (!docRef?.name) return str;
+      return str?.replace(new RegExp(`\\b(${escapeHTMLTags(docRef.name)})\\b`, 'g'), `<a href='#${id}'>$1</a>`);
+    }, this.type);
+    this.referenceType = refTypeStr || this.type;
     this.version = paramDoc.current?.version ?? doc?.version;
     this.deprecated = paramDoc.current?.deprecated ?? doc?.deprecated;
     this.typeParameters = doc?.typeParameters?.toFullTypeParametersString();

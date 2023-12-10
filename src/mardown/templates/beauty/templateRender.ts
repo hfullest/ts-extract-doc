@@ -98,7 +98,6 @@ export const templateRender = (doc: Document, options: TemplateBeauty): string =
   const { name, description, extraDescription, example } = doc;
   const header = headerRender?.(doc, headLevel) ?? `${getHeadLevel(headLevel)} ${name}\n`;
   const desc = description ? `<div>${description}</div>\n` : '';
-  debugger;
   const targetHandler = CONTENT_RECORDS?.find((it) => it.types.some((Constor) => doc instanceof Constor))?.handler;
   const content = targetHandler?.(doc, options) ?? [];
   const extra = extraDescription ? `<div>${extraDescription}</div>` : '';

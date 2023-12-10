@@ -42,9 +42,9 @@ export class DocumentObject extends BaseDocField {
         index,
       };
       if (DocumentMethod.isTarget(prop)) {
-        this.methods[propName] = new DocumentMethod(currentSymbol!, options);
+        this.methods[propName] = new DocumentMethod(currentSymbol!, { ...options, $parent: this });
       } else if (DocumentProp.isTarget(prop)) {
-        this.props[propName] = new DocumentProp(currentSymbol!, options);
+        this.props[propName] = new DocumentProp(currentSymbol!, { ...options, $parent: this });
       }
     });
     this.displayType = type?.getText() ?? node?.getText();

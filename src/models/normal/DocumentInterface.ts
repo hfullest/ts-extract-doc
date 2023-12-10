@@ -28,12 +28,14 @@ export class DocumentInterface extends BaseDocField {
           ...this.$options,
           $parentSymbol: symbol,
           $index: index,
+          $parent: this,
         });
       } else if (DocumentProp.isTarget(prop)) {
         this.props[propName] = new DocumentProp(currentSymbol!, {
           ...this.$options,
           $parentSymbol: symbol,
           $index: index,
+          $parent: this,
         });
       }
     });

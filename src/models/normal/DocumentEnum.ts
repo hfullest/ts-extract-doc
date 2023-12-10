@@ -19,7 +19,7 @@ export class DocumentEnum extends BaseDocField {
     const node = enumDeclaration?.asKind(ts.SyntaxKind.EnumDeclaration);
     const members = (node as EnumDeclaration)?.getMembers?.();
     this.members = members?.map(
-      (it, index) => new DocumentEnumMember(it.getSymbol()!, { ...this.$options, $index: index }),
+      (it, index) => new DocumentEnumMember(it.getSymbol()!, { ...this.$options, $index: index, $parent: this }),
     );
   }
 

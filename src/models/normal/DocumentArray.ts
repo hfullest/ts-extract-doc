@@ -28,7 +28,7 @@ export class DocumentArray extends BaseDocField {
     this.text = node?.getText?.()?.replace(/(\n*\s*\/{2,}[\s\S]*?\n{1,}\s*)|(\/\*{1,}[\s\S]*?\*\/)/g, ''); // 去除注释
     this.typeNode = typeNode!;
     this.current = type;
-    this.elementType = DocumentParser(arrayType!, this.$options);
+    this.elementType = DocumentParser(arrayType!, { ...this.$options, $parent: this });
     this.displayType = typeNode?.getText?.();
   }
 

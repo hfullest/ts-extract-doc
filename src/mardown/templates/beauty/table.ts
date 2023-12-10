@@ -34,10 +34,14 @@ export const generateTable = (
     .join('\n');
   const bodyRows = `<tbody>${bodyTd ? `\n${bodyTd}\n` : ''}</tbody>`;
   const header = options?.header;
-  const fullId = encodeBase64([...document?.getFullId(), header, 'table'].join('-'));
+  const fullId = encodeBase64([...document?.getId(), header, 'table'].join('-'));
   const presetCss = options?.css
     ? `<style>${options?.css}</style>`
-    : `<style>table[data-id='${fullId}'] p { margin:0; } table[data-id='${fullId}'] [data-field='type']{color:#c41d7f}</style>`;
+    : `<style>
+    table[data-id='${fullId}'] p { margin:0;}
+    table[data-id='${fullId}'] [data-field='type'],
+    table[data-id='${fullId}'] [data-field='referenceType']{color:#c41d7f}
+    </style>`;
   const tableContent = [presetCss, headerRows, bodyRows].filter(Boolean).join('\n');
   const table = columns?.length && propDocs?.length ? `<table data-id='${fullId}'>\n${tableContent}\n</table>\n` : '';
 

@@ -65,7 +65,7 @@ export class DocumentClassComponent extends BaseDocField {
       typeOrTypeNode = (interfaceNode as InterfaceDeclaration)?.getProperty('props')?.getTypeNode(); // 类组件接口重载声明必须为 props 例如： interface Component { props:{a:string} }
     }
     if (!typeOrTypeNode) return;
-    const doc = DocumentParser<DocumentObject>(typeOrTypeNode, this.$options);
+    const doc = DocumentParser<DocumentObject>(typeOrTypeNode, { ...this.$options, $parent: this });
     this.props = doc?.props;
     this.methods = doc?.methods;
   }

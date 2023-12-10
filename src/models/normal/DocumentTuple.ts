@@ -18,7 +18,9 @@ export class DocumentTuple extends BaseDocField {
   #assign(symbolOrOther: SymbolOrOtherType) {
     const { node, type } = BaseDocField.splitSymbolNodeOrType<any, TypeAliasDeclaration>(symbolOrOther);
     const tupleTypes = type?.getTupleElements();
-    const docs = tupleTypes?.map((tuple) => DocumentParser(tuple, this.getComputedOptions())).filter(Boolean);
+    const docs = tupleTypes
+      ?.map((tuple) => DocumentParser(tuple, { ...this.getComputedOptions(), $parent: this }))
+      .filter(Boolean);
     this.tuples = (docs as Document[]) ?? [];
     this.displayType = node?.getTypeNode?.()?.getText?.();
     if (this.$options.$typeCalculate) {

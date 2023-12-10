@@ -18,13 +18,12 @@ const beautyMarkdownOptions: TemplateBeauty = {
     border-radius:0.3em;`;
     const versionHtml = doc?.version ? `<span style='${versionStyle}'>${escapeHTMLTags(doc?.version)}</span>` : '';
     const content = [escapeHTMLTags(doc?.toFullNameString()), versionHtml].filter(Boolean).join('');
-    return `<h${headerLevel} id='${doc?.getFullId()}' style='position:relative'>${content}</h${headerLevel}>\n`;
+    return `<h${headerLevel} id='${doc?.getId()}' style='position:relative'>${content}</h${headerLevel}>\n`;
   },
   headLevel: 3,
 
   table: (doc, config, options) => {
     const level = (options?.headLevel ?? 3) + 1;
-    const fullIds = doc.getFullId();
     const columns = [
       {
         title: '名称',
@@ -34,7 +33,7 @@ const beautyMarkdownOptions: TemplateBeauty = {
           `${record.name}${record.isOptional ? ` ~(可选)~` : ''} ${record?.deprecated ? `*~(已废弃)~*` : ''}`,
       },
       { title: '说明', dataIndex: 'description', align: 'center' },
-      { title: '类型', dataIndex: 'type', align: 'center' },
+      { title: '类型', dataIndex: 'referenceType', align: 'center' },
       { title: '默认值', dataIndex: 'defaultValue', align: 'center' },
       { title: '版本', dataIndex: 'version', align: 'center' },
     ] as TableConfig['columns'];
@@ -51,14 +50,14 @@ const beautyMarkdownOptions: TemplateBeauty = {
     ] as TableConfig['columns'];
     return {
       columns: doc instanceof DocumentEnum ? enumColums : columns,
-      propHeadName: `<h${level} id='${[...fullIds, 'props'].join('-')}'>属性</h${level}>\n`,
-      methodHeadName: `<h${level} id='${[...fullIds, 'methods'].join('-')}'>方法</h${level}>\n`,
-      staticPropHeadName: `<h${level} id='${[...fullIds, 'staticProps'].join('-')}'>静态属性</h${level}>\n`,
-      staticMethodHeadName: `<h${level} id='${[...fullIds, 'staticMethods'].join('-')}'>静态方法</h${level}>\n`,
-      memberHeadName: `<h${level} id='${[...fullIds, 'members'].join('-')}'>成员</h${level}>\n`,
-      paramHeadName: `<h${level} id='${[...fullIds, 'params'].join('-')}'>参数</h${level}>\n`,
-      returnHeadName: `<h${level} id='${[...fullIds, 'returns'].join('-')}'>返回值</h${level}>\n`,
-      eventHeadName: `<h${level} id='${[...fullIds, 'events'].join('-')}'>事件</h${level}>\n`,
+      propHeadName: `<h${level} id='${doc.getId(['props'])}'>属性</h${level}>\n`,
+      methodHeadName: `<h${level} id='${doc.getId(['methods'])}'>方法</h${level}>\n`,
+      staticPropHeadName: `<h${level} id='${doc.getId(['staticProps'])}'>静态属性</h${level}>\n`,
+      staticMethodHeadName: `<h${level} id='${doc.getId(['staticMethods'])}'>静态方法</h${level}>\n`,
+      memberHeadName: `<h${level} id='${doc.getId(['members'])}'>成员</h${level}>\n`,
+      paramHeadName: `<h${level} id='${doc.getId(['params'])}'>参数</h${level}>\n`,
+      returnHeadName: `<h${level} id='${doc.getId(['returns'])}'>返回值</h${level}>\n`,
+      eventHeadName: `<h${level} id='${doc.getId(['events'])}'>事件</h${level}>\n`,
       lineBreakDelimiter: ' ',
       whiteSpaceFill: '-',
       escapeRules(text) {
