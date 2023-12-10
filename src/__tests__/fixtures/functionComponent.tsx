@@ -198,3 +198,6 @@ export const UiButton = <N extends boolean = false>(
   else return <div>哈哈哈</div>;
   // return React.createElement('div',{})
 };
+
+/** 测试React组件转发 */
+export const TestRefUiButton = React.forwardRef(UiButton);

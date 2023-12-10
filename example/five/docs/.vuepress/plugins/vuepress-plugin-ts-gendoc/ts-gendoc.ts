@@ -17,13 +17,15 @@ export default {
     handler(md, tokens, idx) {
       const token = tokens[idx];
       const { path, params } = token.meta;
+      // debugger;
+
+      const tempPath = '/Users/liuhuaifu/Documents/WorkSpace.nosync/SelfWorkSpace/react-ts-extract-doc/src/__tests__/fixtures/classComponent.tsx'
       /*************************************** */
-      const result = extractTsToMarkdown(path, {
+      const result = extractTsToMarkdown(tempPath, {
         markdown: { template: "beauty" },
       });
       writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
       // parse(path);
-      debugger;
       // const tsDocument = generateMarkdown(path, {
       //   sourceFilesPaths: ["**/*.ts"],
       // });

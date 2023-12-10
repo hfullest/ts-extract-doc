@@ -1,32 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocumentUnion 快照 1`] = `
-"string|{
-      a: string;
-      readonly b?: number;
-    }|{
-  a: string;
-  b?: number;
-  c: { c1: string; c2: () => string };
-}
+exports[`DocumentUnion 快照 1`] = `"string|Function|{ a: string; readonly b?: number; }|UiButtonProps<false>|(p1: number, p2?: string) => void"`;
 
-string|{
-      a: string;
-      readonly b?: number;
-    }|{
-  a: string;
-  b?: number;
-  c: { c1: string; c2: () => string };
-}"
-`;
-
-exports[`DocumentUnion 文档模型解析[toTypeString]: 1`] = `
-"string|{
-      a: string;
-      readonly b?: number;
-    }|{
-  a: string;
-  b?: number;
-  c: { c1: string; c2: () => string };
-}"
-`;
+exports[`DocumentUnion 文档模型解析[toTypeString]: 1`] = `"string|Function|{ a: string; readonly b?: number; }|UiButtonProps<false>|(p1: number, p2?: string) => void"`;

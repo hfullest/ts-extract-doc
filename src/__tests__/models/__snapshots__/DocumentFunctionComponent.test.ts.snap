@@ -3,9 +3,14 @@
 exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 "<h3 id='antdbuttonprops' style='position:relative'>AntdButtonProps</h3>
 
-#### 属性
+<h4 id='antdbuttonprops__props'>属性</h4>
 
-<table>
+<table data-id='YS1uLXQtZC1iLXUtdC10LW8tbi1wLXItby1wLXMtPGg0IGlkPSdhbnRkYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='YS1uLXQtZC1iLXUtdC10LW8tbi1wLXItby1wLXMtPGg0IGlkPSdhbnRkYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='YS1uLXQtZC1iLXUtdC10LW8tbi1wLXItby1wLXMtPGg0IGlkPSdhbnRkYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='YS1uLXQtZC1iLXUtdC10LW8tbi1wLXItby1wLXMtPGg0IGlkPSdhbnRkYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
 <thead>
 <tr>
 <th style='text-align:center'>名称</th>
@@ -17,31 +22,37 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </thead>
 <tbody>
 <tr>
-<td data-type='name' style='text-align:center'>autoInsertSpaceInButton ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>只有两个字符时是否插入空格 默认\`false\`
+<td data-field='name' style='text-align:center'>autoInsertSpaceInButton ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+只有两个字符时是否插入空格 默认\`false\`
 
  注意：该属性非\`antd\`提供的属性，而是自定义的属性，是对\`antd\`按钮功能的增强</td>
-<td data-type='type' style='text-align:center'>boolean</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>boolean</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>loading ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否\`loading\`
+<td data-field='name' style='text-align:center'>loading ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+是否\`loading\`
 
 对\`antd\`按钮的\`loading\`功能进行了扩展，支持\`loading\`自定义配置</td>
-<td data-type='type' style='text-align:center'>| boolean
+<td data-field='referenceType' style='text-align:center'>| boolean
   | {
     loading?: boolean;
-    type?: "cover" | "contain";
+    type?: &quot;cover&quot; | &quot;contain&quot;;
     icon?: React.ReactNode;
   }</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>type ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮类型，在\`antd\`的\`type\`基础上进行了扩展
+<td data-field='name' style='text-align:center'>type ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+按钮类型，在\`antd\`的\`type\`基础上进行了扩展
 
 扩展的类型：
 - \`minority\` 次按钮
@@ -52,47 +63,56 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 
 按钮组一般使用主按钮\`primary\`和次按钮\`minority\`
 （注意：之前使用的次按钮为\`ghost\`，为统一规范，\`ghost\`不再推荐为次按钮使用，请使用\`minority\`代替）</td>
-<td data-type='type' style='text-align:center'>| ButtonProps["type"]
-  | "minority"
-  | "warn"
-  | "danger"
-  | "ghostLight"
-  | "textlink"</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>| ButtonProps[&quot;type&quot;]
+  | &quot;minority&quot;
+  | &quot;warn&quot;
+  | &quot;danger&quot;
+  | &quot;ghostLight&quot;
+  | &quot;textlink&quot;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>disabled ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮失效状态 对\`antd\`的属性进行了扩展</td>
-<td data-type='type' style='text-align:center'>| boolean
+<td data-field='name' style='text-align:center'>disabled ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+按钮失效状态 对\`antd\`的属性进行了扩展
+</td>
+<td data-field='referenceType' style='text-align:center'>| boolean
   | {
     tooltip?: TooltipProps;
   }</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>tooltip ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮tooltip提示，当按钮禁用时该属性会失效
+<td data-field='name' style='text-align:center'>tooltip ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+按钮tooltip提示，当按钮禁用时该属性会失效
 
  如果需要按钮禁用时提示请使用\`disabled.tooltip\`</td>
-<td data-type='type' style='text-align:center'>TooltipProps | null</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>TooltipProps | null</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>align ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮内容对齐方式 默认\`center\`</td>
-<td data-type='type' style='text-align:center'>"start" | "center" | "end"</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>align ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+按钮内容对齐方式 默认\`center\`</td>
+<td data-field='referenceType' style='text-align:center'>&quot;start&quot; | &quot;center&quot; | &quot;end&quot;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>padding ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮内联 padding 值，如果为false 则为0</td>
-<td data-type='type' style='text-align:center'>false | string</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>padding ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+按钮内联 padding 值，如果为false 则为0</td>
+<td data-field='referenceType' style='text-align:center'>false | string</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 </tbody>
 </table>
@@ -102,9 +122,14 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 
 <div>测试UiButton 描述</div>
 
-#### 属性
+<h4 id='uibutton__props'>属性</h4>
 
-<table>
+<table data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
 <thead>
 <tr>
 <th style='text-align:center'>名称</th>
@@ -116,432 +141,87 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </thead>
 <tbody>
 <tr>
-<td data-type='name' style='text-align:center'>native ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否使用原生按钮</td>
-<td data-type='type' style='text-align:center'>N</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>native ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+是否使用原生按钮</td>
+<td data-field='referenceType' style='text-align:center'>N</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>children ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>React.ReactNode</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>children ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>ant ~(可选)~ *~(已废弃)~*</td>
-<td data-type='description' style='text-align:center'>已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
-<td data-type='type' style='text-align:center'>UiButtonProps</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>ant ~(可选)~ *~(已废弃)~*</td>
+<td data-field='description' style='text-align:center'>
+
+已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='referenceType' style='text-align:center'>UiButtonProps</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>a </td>
-<td data-type='description' style='text-align:center'>a属性测试</td>
-<td data-type='type' style='text-align:center'>string</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>a </td>
+<td data-field='description' style='text-align:center'>
+
+a属性测试</td>
+<td data-field='referenceType' style='text-align:center'>string</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>b </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>number</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>b </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>number</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>native2 ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否使用原生按钮</td>
-<td data-type='type' style='text-align:center'>N</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>native2 ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>
+
+是否使用原生按钮</td>
+<td data-field='referenceType' style='text-align:center'>N</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>children2 ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>React.ReactNode</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>children2 ~(可选)~ </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>ant2 ~(可选)~ *~(已废弃)~*</td>
-<td data-type='description' style='text-align:center'>已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
-<td data-type='type' style='text-align:center'>never</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>ant2 ~(可选)~ *~(已废弃)~*</td>
+<td data-field='description' style='text-align:center'>
+
+已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='referenceType' style='text-align:center'>never</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-type='name' style='text-align:center'>compa2 </td>
-<td data-type='description' style='text-align:center'>测试嵌套</td>
-<td data-type='type' style='text-align:center'>boolean</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
+<td data-field='name' style='text-align:center'>compa2 </td>
+<td data-field='description' style='text-align:center'>
+
+测试嵌套</td>
+<td data-field='referenceType' style='text-align:center'>boolean</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
 </tr>
 </tbody>
 </table>
 
 
-<h3 id='antdbuttonprops' style='position:relative'>AntdButtonProps</h3>
+<h3 id='testrefuibutton' style='position:relative'>TestRefUiButton</h3>
 
-#### 属性
-
-<table>
-<thead>
-<tr>
-<th style='text-align:center'>名称</th>
-<th style='text-align:center'>说明</th>
-<th style='text-align:center'>类型</th>
-<th style='text-align:center'>默认值</th>
-<th style='text-align:center'>版本</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td data-type='name' style='text-align:center'>autoInsertSpaceInButton ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>只有两个字符时是否插入空格 默认\`false\`
-
- 注意：该属性非\`antd\`提供的属性，而是自定义的属性，是对\`antd\`按钮功能的增强</td>
-<td data-type='type' style='text-align:center'>boolean</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>loading ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否\`loading\`
-
-对\`antd\`按钮的\`loading\`功能进行了扩展，支持\`loading\`自定义配置</td>
-<td data-type='type' style='text-align:center'>| boolean
-  | {
-    loading?: boolean;
-    type?: "cover" | "contain";
-    icon?: React.ReactNode;
-  }</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>type ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮类型，在\`antd\`的\`type\`基础上进行了扩展
-
-扩展的类型：
-- \`minority\` 次按钮
-- \`warn\` 警告按钮
-- \`danger\` 危险按钮 该类型样式等同于\`type=primary danger=true\`配置
-- \`textlink\` 链接文本类型，和\`link\`的区别在于\`link\`更像超链接，而\`textlink\`更像链接型按钮
-- \`ghostLight\`
-
-按钮组一般使用主按钮\`primary\`和次按钮\`minority\`
-（注意：之前使用的次按钮为\`ghost\`，为统一规范，\`ghost\`不再推荐为次按钮使用，请使用\`minority\`代替）</td>
-<td data-type='type' style='text-align:center'>| ButtonProps["type"]
-  | "minority"
-  | "warn"
-  | "danger"
-  | "ghostLight"
-  | "textlink"</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>disabled ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮失效状态 对\`antd\`的属性进行了扩展</td>
-<td data-type='type' style='text-align:center'>| boolean
-  | {
-    tooltip?: TooltipProps;
-  }</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>tooltip ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮tooltip提示，当按钮禁用时该属性会失效
-
- 如果需要按钮禁用时提示请使用\`disabled.tooltip\`</td>
-<td data-type='type' style='text-align:center'>TooltipProps | null</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>align ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮内容对齐方式 默认\`center\`</td>
-<td data-type='type' style='text-align:center'>"start" | "center" | "end"</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>padding ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮内联 padding 值，如果为false 则为0</td>
-<td data-type='type' style='text-align:center'>false | string</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-</tbody>
-</table>
-
-
-<h3 id='uibutton' style='position:relative'>UiButton</h3>
-
-<div>测试UiButton 描述</div>
-
-#### 属性
-
-<table>
-<thead>
-<tr>
-<th style='text-align:center'>名称</th>
-<th style='text-align:center'>说明</th>
-<th style='text-align:center'>类型</th>
-<th style='text-align:center'>默认值</th>
-<th style='text-align:center'>版本</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td data-type='name' style='text-align:center'>native ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否使用原生按钮</td>
-<td data-type='type' style='text-align:center'>N</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>children ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>React.ReactNode</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>ant ~(可选)~ *~(已废弃)~*</td>
-<td data-type='description' style='text-align:center'>已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
-<td data-type='type' style='text-align:center'>UiButtonProps</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>a </td>
-<td data-type='description' style='text-align:center'>a属性测试</td>
-<td data-type='type' style='text-align:center'>string</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>b </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>number</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>native2 ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否使用原生按钮</td>
-<td data-type='type' style='text-align:center'>N</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>children2 ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>React.ReactNode</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>ant2 ~(可选)~ *~(已废弃)~*</td>
-<td data-type='description' style='text-align:center'>已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
-<td data-type='type' style='text-align:center'>never</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>compa2 </td>
-<td data-type='description' style='text-align:center'>测试嵌套</td>
-<td data-type='type' style='text-align:center'>boolean</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-</tbody>
-</table>
-
-
-<h3 id='antdbuttonprops' style='position:relative'>AntdButtonProps</h3>
-
-#### 属性
-
-<table>
-<thead>
-<tr>
-<th style='text-align:center'>名称</th>
-<th style='text-align:center'>说明</th>
-<th style='text-align:center'>类型</th>
-<th style='text-align:center'>默认值</th>
-<th style='text-align:center'>版本</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td data-type='name' style='text-align:center'>autoInsertSpaceInButton ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>只有两个字符时是否插入空格 默认\`false\`
-
- 注意：该属性非\`antd\`提供的属性，而是自定义的属性，是对\`antd\`按钮功能的增强</td>
-<td data-type='type' style='text-align:center'>boolean</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>loading ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否\`loading\`
-
-对\`antd\`按钮的\`loading\`功能进行了扩展，支持\`loading\`自定义配置</td>
-<td data-type='type' style='text-align:center'>| boolean
-  | {
-    loading?: boolean;
-    type?: "cover" | "contain";
-    icon?: React.ReactNode;
-  }</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>type ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮类型，在\`antd\`的\`type\`基础上进行了扩展
-
-扩展的类型：
-- \`minority\` 次按钮
-- \`warn\` 警告按钮
-- \`danger\` 危险按钮 该类型样式等同于\`type=primary danger=true\`配置
-- \`textlink\` 链接文本类型，和\`link\`的区别在于\`link\`更像超链接，而\`textlink\`更像链接型按钮
-- \`ghostLight\`
-
-按钮组一般使用主按钮\`primary\`和次按钮\`minority\`
-（注意：之前使用的次按钮为\`ghost\`，为统一规范，\`ghost\`不再推荐为次按钮使用，请使用\`minority\`代替）</td>
-<td data-type='type' style='text-align:center'>| ButtonProps["type"]
-  | "minority"
-  | "warn"
-  | "danger"
-  | "ghostLight"
-  | "textlink"</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>disabled ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮失效状态 对\`antd\`的属性进行了扩展</td>
-<td data-type='type' style='text-align:center'>| boolean
-  | {
-    tooltip?: TooltipProps;
-  }</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>tooltip ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮tooltip提示，当按钮禁用时该属性会失效
-
- 如果需要按钮禁用时提示请使用\`disabled.tooltip\`</td>
-<td data-type='type' style='text-align:center'>TooltipProps | null</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>align ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮内容对齐方式 默认\`center\`</td>
-<td data-type='type' style='text-align:center'>"start" | "center" | "end"</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>padding ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>按钮内联 padding 值，如果为false 则为0</td>
-<td data-type='type' style='text-align:center'>false | string</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-</tbody>
-</table>
-
-
-<h3 id='uibutton' style='position:relative'>UiButton</h3>
-
-<div>测试UiButton 描述</div>
-
-#### 属性
-
-<table>
-<thead>
-<tr>
-<th style='text-align:center'>名称</th>
-<th style='text-align:center'>说明</th>
-<th style='text-align:center'>类型</th>
-<th style='text-align:center'>默认值</th>
-<th style='text-align:center'>版本</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td data-type='name' style='text-align:center'>native ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否使用原生按钮</td>
-<td data-type='type' style='text-align:center'>N</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>children ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>React.ReactNode</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>ant ~(可选)~ *~(已废弃)~*</td>
-<td data-type='description' style='text-align:center'>已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
-<td data-type='type' style='text-align:center'>UiButtonProps</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>a </td>
-<td data-type='description' style='text-align:center'>a属性测试</td>
-<td data-type='type' style='text-align:center'>string</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>b </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>number</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>native2 ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>是否使用原生按钮</td>
-<td data-type='type' style='text-align:center'>N</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>children2 ~(可选)~ </td>
-<td data-type='description' style='text-align:center'>-</td>
-<td data-type='type' style='text-align:center'>React.ReactNode</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>ant2 ~(可选)~ *~(已废弃)~*</td>
-<td data-type='description' style='text-align:center'>已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
-<td data-type='type' style='text-align:center'>never</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-<tr>
-<td data-type='name' style='text-align:center'>compa2 </td>
-<td data-type='description' style='text-align:center'>测试嵌套</td>
-<td data-type='type' style='text-align:center'>boolean</td>
-<td data-type='defaultValue' style='text-align:center'>-</td>
-<td data-type='version' style='text-align:center'>-</td>
-</tr>
-</tbody>
-</table>
+<div>测试React组件转发</div>
 
 "
 `;
@@ -581,38 +261,9 @@ exports[`DocumentFuctionComponent 快照 1`] = `
 |compa2 |测试嵌套|boolean|-|-|
 
 
-### AntdButtonProps
+### TestRefUiButton
 
-#### 属性
-
-|名称|说明|类型|默认值|版本|
-|:--:|:--:|:--:|:---:|:--:|
-|autoInsertSpaceInButton ~(可选)~ |只有两个字符时是否插入空格 默认\`false\`   注意：该属性非\`antd\`提供的属性，而是自定义的属性，是对\`antd\`按钮功能的增强|boolean|-|-|
-|loading ~(可选)~ |是否\`loading\`  对\`antd\`按钮的\`loading\`功能进行了扩展，支持\`loading\`自定义配置|\\| boolean   \\| {     loading?: boolean;     type?: "cover" \\| "contain";     icon?: React.ReactNode;   }|-|-|
-|type ~(可选)~ |按钮类型，在\`antd\`的\`type\`基础上进行了扩展  扩展的类型： - \`minority\` 次按钮 - \`warn\` 警告按钮 - \`danger\` 危险按钮 该类型样式等同于\`type=primary danger=true\`配置 - \`textlink\` 链接文本类型，和\`link\`的区别在于\`link\`更像超链接，而\`textlink\`更像链接型按钮 - \`ghostLight\`  按钮组一般使用主按钮\`primary\`和次按钮\`minority\` （注意：之前使用的次按钮为\`ghost\`，为统一规范，\`ghost\`不再推荐为次按钮使用，请使用\`minority\`代替）|\\| ButtonProps["type"]   \\| "minority"   \\| "warn"   \\| "danger"   \\| "ghostLight"   \\| "textlink"|-|-|
-|disabled ~(可选)~ |按钮失效状态 对\`antd\`的属性进行了扩展|\\| boolean   \\| {     tooltip?: TooltipProps;   }|-|-|
-|tooltip ~(可选)~ |按钮tooltip提示，当按钮禁用时该属性会失效   如果需要按钮禁用时提示请使用\`disabled.tooltip\`|TooltipProps \\| null|-|-|
-|align ~(可选)~ |按钮内容对齐方式 默认\`center\`|"start" \\| "center" \\| "end"|-|-|
-|padding ~(可选)~ |按钮内联 padding 值，如果为false 则为0|false \\| string|-|-|
-
-
-### UiButton
-
-测试UiButton 描述
-
-#### 属性
-
-|名称|说明|类型|默认值|版本|
-|:--:|:--:|:--:|:---:|:--:|
-|native ~(可选)~ |是否使用原生按钮|N|-|-|
-|children ~(可选)~ |-|React.ReactNode|-|-|
-|ant ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|UiButtonProps|-|-|
-|a |a属性测试|string|-|-|
-|b |-|number|-|-|
-|native2 ~(可选)~ |是否使用原生按钮|N|-|-|
-|children2 ~(可选)~ |-|React.ReactNode|-|-|
-|ant2 ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|never|-|-|
-|compa2 |测试嵌套|boolean|-|-|
+测试React组件转发
 
 "
 `;
@@ -620,5 +271,7 @@ exports[`DocumentFuctionComponent 快照 1`] = `
 exports[`DocumentFuctionComponent 文档模型解析[toTypeString]: 1`] = `
 "
 
-"
+
+
+any"
 `;

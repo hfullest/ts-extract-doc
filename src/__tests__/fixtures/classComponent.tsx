@@ -1,9 +1,10 @@
 
 import React from 'react';
 
-type UiButtonProps = {
+/** @output */
+type UiButtonProps<T> = {
   /**是否使用原生按钮 */
-  native?: boolean;
+  native?: T;
   children?: React.ReactNode;
   /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
    *  @deprecated
@@ -23,6 +24,10 @@ type UiButtonProps = {
     },
     string,
   ];
+
+  arr: { p1: number, p2: string }[]
+
+  arr2:Array<string>
 };
 
 type CompatButtonProps<N> = {
@@ -178,7 +183,7 @@ export interface AntdButtonProps
  * export class UiButton extends React.Component{
  * }
  *  */
-export class UiButton<N> extends React.Component<{
+export class UiButton<N extends boolean = false> extends React.Component<{
   /**是否使用原生按钮 */
   native?: N;
   children?: React.ReactNode;
@@ -189,7 +194,7 @@ export class UiButton<N> extends React.Component<{
    * 哈哈哈这里可以是markdown
    *
    *  */
-  ant?: UiButtonProps;
+  ant?: UiButtonProps<N>;
 } & {
   /** a属性测试 */
   a: string;

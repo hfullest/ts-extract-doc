@@ -5,26 +5,44 @@ exports[`DocumentEnum 【beauty】模版快照 1`] = `
 
 <div>枚举示例\`ExampleEnum\`描述</div>
 
+<h4 id='exampleenum__members'>成员</h4>
 
-<h3 id='exampleenum' style='position:relative'>ExampleEnum</h3>
+<table data-id='ZS14LWEtbS1wLWwtZS1lLW4tdS1tLTxoNCBpZD0nZXhhbXBsZWVudW1fX21lbWJlcnMnPuaIkOWRmDwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='ZS14LWEtbS1wLWwtZS1lLW4tdS1tLTxoNCBpZD0nZXhhbXBsZWVudW1fX21lbWJlcnMnPuaIkOWRmDwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='ZS14LWEtbS1wLWwtZS1lLW4tdS1tLTxoNCBpZD0nZXhhbXBsZWVudW1fX21lbWJlcnMnPuaIkOWRmDwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='ZS14LWEtbS1wLWwtZS1lLW4tdS1tLTxoNCBpZD0nZXhhbXBsZWVudW1fX21lbWJlcnMnPuaIkOWRmDwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>值</th>
+<th style='text-align:center'>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='label' style='text-align:center'>AA </td>
+<td data-field='value' style='text-align:center'>123</td>
+<td data-field='description' style='text-align:center'>
 
-<div>枚举示例\`ExampleEnum\`描述</div>
+枚举AA</td>
+</tr>
+<tr>
+<td data-field='label' style='text-align:center'>BB </td>
+<td data-field='value' style='text-align:center'>345</td>
+<td data-field='description' style='text-align:center'>
 
-
-<h3 id='exampleenum' style='position:relative'>ExampleEnum</h3>
-
-<div>枚举示例\`ExampleEnum\`描述</div>
+枚举BB</td>
+</tr>
+</tbody>
+</table>
 
 "
 `;
 
 exports[`DocumentEnum 快照 1`] = `
 "### ExampleEnum
-
-枚举示例\`ExampleEnum\`描述
-
-
-### ExampleEnum
 
 枚举示例\`ExampleEnum\`描述
 

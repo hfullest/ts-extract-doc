@@ -8,7 +8,7 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
  * @id ReactClassComponentA-Test
  */
 export class ReactClassComponentA extends React.Component {
-  static defaultProps = { c: { c1: 'aaa' },e:'sdkfdsfs' };
+  static defaultProps = { c: { c1: 'aaa' }, e: 'sdkfdsfs' };
   render(): React.ReactNode {
     return <div>哈哈哈</div>;
   }
@@ -48,8 +48,8 @@ export type TypeObjectLiteral = [{
 /** UiButton */
 export type UiButtonProps<N = false> = {} & MidUiButtonProps<N>;
 
-export type MidUiButtonProps<N=true> = MidUiButtonProps2<N>;
-export type MidUiButtonProps2<N=true> = CompatButtonProps<N>;
+export type MidUiButtonProps<N = true> = MidUiButtonProps2<N>;
+export type MidUiButtonProps2<N = true> = CompatButtonProps<N>;
 
 /** @output */
 type CompatButtonProps<N> = {
@@ -131,7 +131,9 @@ export function DeclarationFunction(
   a: number /** 测试声明函数的a参数后置注释 */,
   b?: symbol,
   c: string = "ssss"
-): void { }
+): UiButtonProps {
+  return {} as any
+}
 
 /** 错误边界 */
 export class ErrorBound {
