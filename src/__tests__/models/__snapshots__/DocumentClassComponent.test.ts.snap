@@ -78,6 +78,10 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
+  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:5')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/classComponent.tsx:5</code>&ensp;&ensp;
+  上次更新时间：<span>2023-12-10 22:29:48</span>
+  </div>
 
 <h3 id='antdbuttonprops' style='position:relative'>AntdButtonProps</h3>
 
@@ -195,6 +199,10 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
+  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:105')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/classComponent.tsx:105</code>&ensp;&ensp;
+  上次更新时间：<span>2023-12-09 09:40:48</span>
+  </div>
 
 <h3 id='uibutton' style='position:relative'>UiButton&lt;N extends boolean = false&gt;</h3>
 
@@ -302,6 +310,10 @@ a属性测试</td>
 export class UiButton extends React.Component{
 }
 \`\`\`
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
+  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:186')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/classComponent.tsx:186</code>&ensp;&ensp;
+  上次更新时间：<span>2023-12-10 15:50:01</span>
+  </div>
 "
 `;
 
@@ -363,7 +375,7 @@ export class UiButton extends React.Component{
 `;
 
 exports[`DocumentFuctionComponent 文档模型解析[toTypeString]: 1`] = `
-"UiButtonProps<T>
+"import("/Users/liuhuaifu/Documents/WorkSpace.nosync/SelfWorkSpace/react-ts-extract-doc/src/__tests__/fixtures/classComponent").UiButtonProps<T>
 
 
 

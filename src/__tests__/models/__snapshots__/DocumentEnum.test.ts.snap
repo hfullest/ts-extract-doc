@@ -38,6 +38,10 @@ exports[`DocumentEnum 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
+  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/enum.ts:2')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/enum.ts:2</code>&ensp;&ensp;
+  上次更新时间：<span>2023-12-03 08:40:25</span>
+  </div>
 "
 `;
 

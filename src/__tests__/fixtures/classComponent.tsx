@@ -2,7 +2,7 @@
 import React from 'react';
 
 /** @output */
-type UiButtonProps<T> = {
+export type UiButtonProps<T> = {
   /**是否使用原生按钮 */
   native?: T;
   children?: React.ReactNode;
@@ -27,7 +27,7 @@ type UiButtonProps<T> = {
 
   arr: { p1: number, p2: string }[]
 
-  arr2:Array<string>
+  arr2: Array<string>
 };
 
 type CompatButtonProps<N> = {

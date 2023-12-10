@@ -19,7 +19,7 @@ export default {
       const { path, params } = token.meta;
       // debugger;
 
-      const tempPath = '/Users/liuhuaifu/Documents/WorkSpace.nosync/SelfWorkSpace/react-ts-extract-doc/src/__tests__/fixtures/classComponent.tsx'
+      const tempPath = '/Users/liuhuaifu/Documents/WorkSpace.nosync/SelfWorkSpace/react-ts-extract-doc/src/__tests__/fixtures/interface.ts'
       /*************************************** */
       const result = extractTsToMarkdown(tempPath, {
         markdown: { template: "beauty" },

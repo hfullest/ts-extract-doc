@@ -117,6 +117,10 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
+  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:98')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/functionComponent.tsx:98</code>&ensp;&ensp;
+  上次更新时间：<span>2023-12-09 09:40:48</span>
+  </div>
 
 <h3 id='uibutton' style='position:relative'>UiButton</h3>
 
@@ -218,11 +222,19 @@ a属性测试</td>
 </tbody>
 </table>
 
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
+  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:177')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/functionComponent.tsx:177</code>&ensp;&ensp;
+  上次更新时间：<span>2023-12-10 15:50:01</span>
+  </div>
 
 <h3 id='testrefuibutton' style='position:relative'>TestRefUiButton</h3>
 
 <div>测试React组件转发</div>
 
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
+  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:203')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/functionComponent.tsx:203</code>&ensp;&ensp;
+  上次更新时间：<span>2023-12-10 15:50:01</span>
+  </div>
 "
 `;
 
