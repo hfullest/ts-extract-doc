@@ -43,7 +43,7 @@ export class DocumentClass extends BaseDocField {
       };
       if (!currentSymbol) return;
       if (DocumentMethod.isTarget(prop)) {
-        const methodDoc = new DocumentMethod(currentSymbol, { ...options, index });
+        const methodDoc = new DocumentMethod(currentSymbol, { ...options, $index: index });
         if (this.#isIgnoreField(methodDoc)) return;
         if ((methodDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
           this.staticMethods[propName] = methodDoc;
@@ -51,7 +51,7 @@ export class DocumentClass extends BaseDocField {
           this.methods[propName] = methodDoc;
         }
       } else if (DocumentProp.isTarget(prop)) {
-        const propDoc = new DocumentProp(currentSymbol, { ...options, index });
+        const propDoc = new DocumentProp(currentSymbol, { ...options, $index: index });
         if (this.#isIgnoreField(propDoc)) return;
         if ((propDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
           this.staticProps[propName] = propDoc;

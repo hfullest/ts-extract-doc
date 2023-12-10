@@ -9,12 +9,12 @@ export class DocumentEnumMember extends BaseDocField {
   /** 属性方法的索引顺序，可以用来指定文档输出顺序 */
   index: number = 0;
 
-  constructor(symbol: Symbol, options: DocumentOptions & { index?: number }) {
+  constructor(symbol: Symbol, options: DocumentOptions) {
     options.$parentSymbol ??= symbol;
     options.$rootSymbol ??= options?.$parentSymbol;
     super(symbol, options);
 
-    this.index = options?.index ?? 0;
+    this.index = options?.$index ?? 0;
 
     this.#assign(symbol);
   }

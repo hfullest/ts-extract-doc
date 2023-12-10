@@ -1,5 +1,5 @@
 import { Document, DocumentEnumMember, DocumentMethod, DocumentParameter, DocumentProp } from '../../../models';
-import DataSource from './DataSource';
+import DataSource, { DataSourceDocumentType } from './DataSource';
 
 export interface OptionsColums {
   /** 列名称 */
@@ -9,11 +9,7 @@ export interface OptionsColums {
   /** 列布局 */
   align?: 'left' | 'right' | 'center';
   /** 自定义列渲染，输出应为`markdown`字符串 */
-  render?: (
-    record: DataSource,
-    index: number,
-    doc: DocumentProp | DocumentMethod | DocumentParameter | DocumentEnumMember,
-  ) => string;
+  render?: (record: DataSource, index: number, doc: DataSourceDocumentType) => string;
 }
 
 export interface TableConfig {

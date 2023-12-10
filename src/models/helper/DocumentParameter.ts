@@ -12,12 +12,12 @@ export class DocumentParameter extends BaseDocField {
   /** 文档类型 */
   type: Document | null = null;
 
-  constructor(symbol: Symbol, options: DocumentOptions & { index?: number }) {
+  constructor(symbol: Symbol, options: DocumentOptions) {
     options.$parentSymbol ??= symbol;
     options.$rootSymbol ??= options?.$parentSymbol;
     super(symbol, options);
 
-    this.index = options?.index ?? 0;
+    this.index = options?.$index ?? 0;
 
     this.#assign(symbol);
   }

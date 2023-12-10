@@ -9,7 +9,7 @@ export interface DocumentParseOptions {
    */
   nestedLevel?: number;
   /** 最大嵌套等级，
-   * @default 2
+   * @default 5
    */
   maxNestedLevel?: number;
   /** 可以自定义 `project` */

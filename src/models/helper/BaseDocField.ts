@@ -1,8 +1,18 @@
-import { ClassDeclaration, JSDocTag, Node, PropertyDeclaration, Symbol, Type, VariableStatement, ts } from 'ts-morph';
+import {
+  ClassDeclaration,
+  JSDocTag,
+  Node,
+  PropertyDeclaration,
+  Symbol,
+  Type,
+  TypeParameterDeclaration,
+  VariableStatement,
+  ts,
+} from 'ts-morph';
 import { JSDocCustomTagEnum, JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 import { DocumentJSDocTag, DocumentTag } from './DocumentTag';
 import { DocumentParseOptions } from '../../interface';
-import { Document } from '../index';
+import { DocumentTypeParameters } from './DocumentTypeParameter';
 
 /** 内部传递属性，不对外公开
  * @inner
@@ -14,11 +24,15 @@ export class DocumentCarryInfo {
   $rootSymbol?: Symbol;
   /** 是否自动计算合并推导类型 */
   $typeCalculate?: boolean;
+  /** 类型参数，用于泛型计算 */
+  $TypeParameters?: TypeParameterDeclaration[];
+  /** 索引顺序 */
+  $index?: number;
 }
 
 export type SymbolOrOtherType = Symbol | Node | Type;
 
-export interface DocumentOptions extends DocumentCarryInfo, DocumentParseOptions {}
+export interface DocumentOptions extends Partial<DocumentCarryInfo>, DocumentParseOptions {}
 
 export class BaseDocField {
   /** 当前 symbol */
@@ -37,6 +51,8 @@ export class BaseDocField {
   fullText?: string;
   /** 用来展示的类型文本 */
   displayType: string | undefined;
+  /** 泛型参数 */
+  typeParameters?: DocumentTypeParameters;
   /** 内容摆放顺序 */
   order: number = 0;
   /** 当前文档 id，方便用来定位，比如`<h3 id='someId'></h3>` */
@@ -81,8 +97,7 @@ export class BaseDocField {
   protected $options = {} as DocumentOptions;
 
   #assign(symbolOrOther: SymbolOrOtherType) {
-    const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
-    const node = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
+    const { symbol, node } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     const ancestorNode = BaseDocField.getCompatAncestorNode<ClassDeclaration>(symbol);
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
@@ -97,6 +112,8 @@ export class BaseDocField {
       end: [node?.getEndLineNumber?.()!, node?.getEnd?.()!], // TODO：确认结束位置
     };
     this.location = [this.filePath, node?.getStartLineNumber?.()!].filter(Boolean).join(':');
+
+    this.typeParameters = new DocumentTypeParameters(symbolOrOther, this.$options);
 
     this.#handleOther();
   }
@@ -183,6 +200,10 @@ export class BaseDocField {
     return [this.id!];
   }
 
+  /** 输出完整名称，包括泛型文本 */
+  public toFullNameString() {
+    return [this.name, this.typeParameters?.toFullTypeParametersString()].filter(Boolean).join('');
+  }
   /** 获取兼容的父节点
    *
    * 由于 VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到

@@ -27,13 +27,13 @@ export class DocumentInterface extends BaseDocField {
         this.methods[propName] = new DocumentMethod(currentSymbol!, {
           ...this.$options,
           $parentSymbol: symbol,
-          index,
+          $index: index,
         });
       } else if (DocumentProp.isTarget(prop)) {
         this.props[propName] = new DocumentProp(currentSymbol!, {
           ...this.$options,
           $parentSymbol: symbol,
-          index,
+          $index: index,
         });
       }
     });

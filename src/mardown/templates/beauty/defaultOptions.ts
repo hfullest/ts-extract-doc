@@ -1,4 +1,5 @@
 import { DocumentEnum } from '../../../models';
+import { escapeHTMLTags } from '../../../utils/escapeHTMLTag';
 import { TableConfig, TemplateBeauty } from './interface';
 
 /** `markdown`默认`beauty`模版配置 */
@@ -15,8 +16,9 @@ const beautyMarkdownOptions: TemplateBeauty = {
     background-color:#eee;
     padding:0.05em 0.3em;
     border-radius:0.3em;`;
-    const versionHtml = doc.version ? `<span style='${versionStyle}'>${doc.version}</span>` : '';
-    return `<h${headerLevel} id='${doc.id}' style='position:relative'>${doc.name}${versionHtml}</h${headerLevel}>\n`;
+    const versionHtml = doc?.version ? `<span style='${versionStyle}'>${escapeHTMLTags(doc?.version)}</span>` : '';
+    const content = [escapeHTMLTags(doc?.toFullNameString()), versionHtml].filter(Boolean).join('');
+    return `<h${headerLevel} id='${doc?.getFullId()}' style='position:relative'>${content}</h${headerLevel}>\n`;
   },
   headLevel: 3,
 

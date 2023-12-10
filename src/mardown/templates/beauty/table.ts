@@ -1,10 +1,10 @@
 import { TableConfig } from '.';
-import { Document, DocumentEnumMember, DocumentMethod, DocumentParameter, DocumentProp } from '../../../models';
+import { Document } from '../../../models';
 import { encodeBase64 } from '../../../utils/base64';
-import DataSource from './DataSource';
+import DataSource, { DataSourceDocumentType } from './DataSource';
 
 export const generateTable = (
-  propDocs: (DocumentProp | DocumentMethod | DocumentParameter | DocumentEnumMember)[],
+  propDocs: DataSourceDocumentType[],
   document: Document,
   config: TableConfig,
   options: { header?: string; css?: string; footer?: string },
@@ -37,7 +37,7 @@ export const generateTable = (
   const fullId = encodeBase64([...document?.getFullId(), header, 'table'].join('-'));
   const presetCss = options?.css
     ? `<style>${options?.css}</style>`
-    : `<style>table[data-id='${fullId}'] p { margin:0; }</style>`;
+    : `<style>table[data-id='${fullId}'] p { margin:0; } table[data-id='${fullId}'] [data-field='type']{color:#c41d7f}</style>`;
   const tableContent = [presetCss, headerRows, bodyRows].filter(Boolean).join('\n');
   const table = columns?.length && propDocs?.length ? `<table data-id='${fullId}'>\n${tableContent}\n</table>\n` : '';
 

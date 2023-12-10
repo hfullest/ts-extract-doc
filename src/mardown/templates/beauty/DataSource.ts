@@ -10,6 +10,8 @@ import {
   DocumentProp,
 } from '../../../models';
 
+export type DataSourceDocumentType = ConstructorParameters<typeof DataSource>[0];
+
 export default class DataSource {
   /** 字段名称 */
   name!: string;
@@ -17,6 +19,8 @@ export default class DataSource {
   description?: string;
   /** 类型 */
   type?: string;
+  /** 泛型定义参数文本 */
+  typeParameters?: string;
   /** 是否可选 */
   isOptional?: boolean;
   /** 默认值 */
@@ -52,6 +56,7 @@ export default class DataSource {
     this.type = type;
     this.version = paramDoc.current?.version ?? doc?.version;
     this.deprecated = paramDoc.current?.deprecated ?? doc?.deprecated;
+    this.typeParameters = doc?.typeParameters?.toFullTypeParametersString();
 
     if (document instanceof DocumentFunction) this.kind = 'Function';
     else if (document instanceof DocumentClass) this.kind = 'Class';
