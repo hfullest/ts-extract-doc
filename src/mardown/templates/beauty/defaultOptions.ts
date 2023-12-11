@@ -74,6 +74,7 @@ const beautyMarkdownOptions: TemplateBeauty = {
         }
         return text;
       },
+      referenceHandler: (id, content) => `<a href="#${id}">${content}</a>`,
     };
   },
 };

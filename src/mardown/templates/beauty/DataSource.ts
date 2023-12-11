@@ -1,3 +1,4 @@
+import { TableConfig } from './index';
 import {
   Document,
   DocumentClass,
@@ -44,7 +45,11 @@ export default class DataSource {
   /** 文档类型 */
   kind!: 'Function' | 'Class' | 'Interface' | 'Enum' | 'LiteralObject';
 
-  constructor(doc: DocumentProp | DocumentMethod | DocumentParameter | DocumentEnumMember, document: Document) {
+  constructor(
+    doc: DocumentProp | DocumentMethod | DocumentParameter | DocumentEnumMember,
+    document: Document,
+    config?: TableConfig,
+  ) {
     if (!doc) return;
     const paramDoc = { current: null } as { current: Document | null };
     if (doc instanceof DocumentParameter) {
@@ -65,7 +70,10 @@ export default class DataSource {
     const references = OutputManager.getDocReference(doc.filePath!);
     const refTypeStr = references?.reduce((str, [id, docRef]) => {
       if (!docRef?.name) return str;
-      return str?.replace(new RegExp(`\\b(${escapeHTMLTags(docRef.name)})\\b`, 'g'), `<a href='#${id}'>$1</a>`);
+      return str?.replace(
+        new RegExp(`\\b(${escapeHTMLTags(docRef.name)})\\b`, 'g'),
+        (_, $1) => config?.referenceHandler?.(id, $1) ?? $1,
+      );
     }, this.type);
     this.referenceType = refTypeStr || this.type;
     this.version = paramDoc.current?.version ?? doc?.version;

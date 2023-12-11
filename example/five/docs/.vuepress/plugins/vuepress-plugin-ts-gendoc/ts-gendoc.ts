@@ -19,9 +19,12 @@ export default {
       const { path, params } = token.meta;
       // debugger;
 
-      const tempPath = '/Users/liuhuaifu/Documents/WorkSpace.nosync/SelfWorkSpace/react-ts-extract-doc/src/__tests__/fixtures/interface.ts'
+      const tempPath = resolve(
+        __dirname,
+        "../../../../../../src/__tests__/fixtures/interface.ts",
+      );
       /*************************************** */
-      const result = extractTsToMarkdown(tempPath, {
+      const result = extractTsToMarkdown(path, {
         markdown: { template: "beauty" },
       });
       writeFileSync(resolve(process.cwd(), "./测试内容.md"), result, "utf-8");
