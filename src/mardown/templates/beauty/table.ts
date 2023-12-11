@@ -23,7 +23,9 @@ export const generateTable = (
       const dataSource = new DataSource(doc, document);
       const fields = columns
         .map((col) => {
-          const content = { current: dataSource[col?.dataIndex] };
+          const content = {
+            current: dataSource[col?.dataIndex]?.toString().replace(/\n/g, config?.lineBreakDelimiter ?? '\n'),
+          };
           if (typeof col?.render === 'function') content.current = col.render(dataSource, index, doc);
           const style = col?.align ? `style='text-align:${col?.align}'` : '';
           return `<td data-field='${col?.dataIndex}' ${style}>${content.current ?? config?.whiteSpaceFill}</td>`;
@@ -40,7 +42,7 @@ export const generateTable = (
     : `<style>
     table[data-id='${fullId}'] p { margin:0;}
     table[data-id='${fullId}'] [data-field='type'],
-    table[data-id='${fullId}'] [data-field='referenceType']{color:#c41d7f}
+    table[data-id='${fullId}'] [data-field='referenceType']{color:${config?.themeColor ?? 'unset'}}
     </style>`;
   const tableContent = [presetCss, headerRows, bodyRows].filter(Boolean).join('\n');
   const table = columns?.length && propDocs?.length ? `<table data-id='${fullId}'>\n${tableContent}\n</table>\n` : '';

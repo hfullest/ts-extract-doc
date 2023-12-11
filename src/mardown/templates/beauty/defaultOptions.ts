@@ -21,10 +21,10 @@ const beautyMarkdownOptions: TemplateBeauty = {
     return `<h${headerLevel} id='${doc?.getId()}' style='position:relative'>${content}</h${headerLevel}>\n`;
   },
   headLevel: 3,
-  fileInfo:{
+  fileInfo: {
     showLocation: true,
-    showUpdateTime:true,
-    position:'left'
+    showUpdateTime: true,
+    position: 'left',
   },
   table: (doc, config, options) => {
     const level = (options?.headLevel ?? 3) + 1;
@@ -53,6 +53,7 @@ const beautyMarkdownOptions: TemplateBeauty = {
       { title: '描述', dataIndex: 'description', align: 'center' },
     ] as TableConfig['columns'];
     return {
+      themeColor: '#c41d7f',
       columns: doc instanceof DocumentEnum ? enumColums : columns,
       propHeadName: `<h${level} id='${doc.getId(['props'])}'>属性</h${level}>\n`,
       methodHeadName: `<h${level} id='${doc.getId(['methods'])}'>方法</h${level}>\n`,

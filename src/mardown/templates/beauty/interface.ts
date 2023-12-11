@@ -13,6 +13,8 @@ export interface OptionsColums {
 }
 
 export interface TableConfig {
+  /** 主题色 */
+  themeColor?: string;
   /** 表格列配置 */
   columns?: OptionsColums[];
   /** 表格头部属性标题 默认值`属性` */
