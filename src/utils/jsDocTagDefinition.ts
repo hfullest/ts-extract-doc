@@ -100,7 +100,7 @@ export enum JSDocCustomTagEnum {
   'annoteStart' = 'annoteStart',
   /** `jsDoc`内注释结束标签，由于注释内注释需要转译等操作，编写成本较高，因此提供标签注释，配合`@annoteStart`一起使用 */
   'annoteEnd' = 'annoteEnd',
-  /** 尝试合并计算类型属性，可以指定计算深度，默认为`2`，如果失败则回退到最近的一次深度类型，可以手动指定计算深度，默认`-1`，递归计算所有深度 */
+  /** 尝试合并计算类型属性，可以指定计算深度，默认为`5`，如果失败则回退到最近的一次深度类型，可以手动指定计算深度，默认`-1`，递归计算所有深度 */
   'calculate' = 'calculate',
   /** 从当前层级开始往下，禁用属性类型计算，优先级比`@calculte`高 */
   'noCalculate' = 'noCalculate',

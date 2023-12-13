@@ -2,6 +2,7 @@ import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-mor
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentDecorator } from './DocumentDecorator';
 import { DocumentOptions } from './BaseDocField';
+import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 
 // @ts-ignore 忽略继承导致的静态类型不兼容 https://segmentfault.com/q/1010000023736777
 export class DocumentMethod extends DocumentFunction {
@@ -17,6 +18,8 @@ export class DocumentMethod extends DocumentFunction {
   modifiers?: ts.ModifierFlags;
   /** 属性方法的索引顺序，可以用来指定文档输出顺序 */
   index: number = 0;
+  /** 是否只读 */
+  readonly?: boolean;
 
   constructor(symbol: Symbol, options: DocumentOptions) {
     options.$parentSymbol ??= symbol;
@@ -35,6 +38,8 @@ export class DocumentMethod extends DocumentFunction {
     this.modifiers = (node?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
     const defaultTagNode = this.tags?.find((t) => /^default(Value)?/.test(t.name))?.node;
     this.defaultValue = node.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
+
+    this.readonly = !!this.tags.find(it => it.name === JSDocTagEnum.readonly);
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {

@@ -6,6 +6,7 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 /**
  * @version 2.5.16-alpha.0
  * @id ReactClassComponentA-Test
+ * @alias ABCReact
  */
 export class ReactClassComponentA extends React.Component {
   static defaultProps = { c: { c1: 'aaa' }, e: 'sdkfdsfs' };

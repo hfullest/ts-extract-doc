@@ -37,7 +37,7 @@ export class DocumentCarryInfo {
 
 export type SymbolOrOtherType = Symbol | Node | Type;
 
-export interface DocumentOptions extends Partial<DocumentCarryInfo>, DocumentParseOptions {}
+export interface DocumentOptions extends Partial<DocumentCarryInfo>, DocumentParseOptions { }
 
 export class BaseDocField {
   /** 当前 symbol */
@@ -52,6 +52,8 @@ export class BaseDocField {
   filePath: string | undefined;
   /** 名称 */
   name: string | undefined;
+  /** 别名 */
+  alias?: string;
   /** 简单描述，取自注释`tag`标记之前的文本内容 */
   description?: string;
   /** 全文本 */
@@ -155,6 +157,9 @@ export class BaseDocField {
     this.id = String(
       tagsMap.get(JSDocCustomTagEnum.id)?.text ?? this.$options?.idGenerator?.(this.name!) ?? this.name ?? '',
     );
+
+    // 别名
+    this.alias = tagsMap.get(JSDocTagEnum.alias)?.text ?? this.alias;
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -225,7 +230,8 @@ export class BaseDocField {
 
   /** 输出完整名称，包括泛型文本 */
   public toFullNameString() {
-    return [this.name, this.typeParameters?.toFullTypeParametersString()].filter(Boolean).join('');
+    const name = this.alias ? this.alias : this.name;
+    return [name, this.typeParameters?.toFullTypeParametersString()].filter(Boolean).join('');
   }
   /** 获取兼容的父节点
    *
@@ -242,7 +248,7 @@ export class BaseDocField {
         ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
         : parentNode;
       return ancestorNode as T | VariableStatement;
-    } catch (e) {}
+    } catch (e) { }
     return parentNode as T;
   }
 
@@ -278,7 +284,7 @@ export class BaseDocField {
         ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
         : parentNode;
       return ancestorNode as T | VariableStatement;
-    } catch (e) {}
+    } catch (e) { }
     return parentNode as T;
   }
 

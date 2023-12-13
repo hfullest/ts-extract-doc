@@ -1,6 +1,7 @@
 import { Node, PropertyAssignment, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { DocumentParser } from '../index';
+import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 
 export class DocumentProp extends BaseDocField {
   /** 是否可选  */
@@ -13,6 +14,8 @@ export class DocumentProp extends BaseDocField {
   index: number = 0;
   /** 文档类型 */
   type: Document | null = null;
+  /** 是否只读 */
+  readonly?: boolean;
 
   constructor(symbol: Symbol, options: DocumentOptions) {
     options.$parentSymbol ??= symbol;
@@ -37,6 +40,8 @@ export class DocumentProp extends BaseDocField {
     this.isOptional = prop?.hasQuestionToken();
     this.modifiers = (prop?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
     this.type = DocumentParser(typeOrTypeNode!, { ...this.getComputedOptions(), $parent: this.parent });
+
+    this.readonly = !!this.tags.find(it => it.name === JSDocTagEnum.readonly);
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration | PropertyAssignment {

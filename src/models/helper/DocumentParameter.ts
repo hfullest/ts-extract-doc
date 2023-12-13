@@ -1,6 +1,7 @@
 import { JSDocParameterTag, Node, ParameterDeclaration, Symbol } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { Document, DocumentParser } from '../index';
+import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 
 export class DocumentParameter extends BaseDocField {
   /** 是否可选  */
@@ -11,6 +12,8 @@ export class DocumentParameter extends BaseDocField {
   index: number = 0;
   /** 文档类型 */
   type: Document | null = null;
+  /** 是否只读 */
+  readonly?: boolean;
 
   constructor(symbol: Symbol, options: DocumentOptions) {
     options.$parentSymbol ??= symbol;
@@ -38,5 +41,7 @@ export class DocumentParameter extends BaseDocField {
       (leadingComment ?? trailingComment)?.replace(/(^\/{2,}\s?)|(^\/\*{1,2}\s?)|(\s?\*\/$)/g, '') ??
       paramCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
     this.type = DocumentParser(paramTypeNode!, { ...this.getComputedOptions(), $parent: this.parent });
+
+    this.readonly = !!this.tags.find(it => it.name === JSDocTagEnum.readonly);
   }
 }
