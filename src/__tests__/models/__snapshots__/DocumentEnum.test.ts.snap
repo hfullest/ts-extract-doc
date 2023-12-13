@@ -24,22 +24,18 @@ exports[`DocumentEnum 【beauty】模版快照 1`] = `
 <tr>
 <td data-field='label' style='text-align:center'>AA </td>
 <td data-field='value' style='text-align:center'>123</td>
-<td data-field='description' style='text-align:center'>
-
-枚举AA</td>
+<td data-field='description' style='text-align:center'>  枚举AA</td>
 </tr>
 <tr>
 <td data-field='label' style='text-align:center'>BB </td>
 <td data-field='value' style='text-align:center'>345</td>
-<td data-field='description' style='text-align:center'>
-
-枚举BB</td>
+<td data-field='description' style='text-align:center'>  枚举BB</td>
 </tr>
 </tbody>
 </table>
 
-<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
-  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/enum.ts:2')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/enum.ts:2</code>&ensp;&ensp;
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/enum.ts:2')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/enum.ts:2</span>&ensp;&ensp;
   上次更新时间：<span>2023-12-03 08:40:25</span>
   </div>
 "

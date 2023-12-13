@@ -22,42 +22,30 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </thead>
 <tbody>
 <tr>
-<td data-field='name' style='text-align:center'>native ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-是否使用原生按钮</td>
+<td data-field='name' style='text-align:center'>native (可选) </td>
+<td data-field='description' style='text-align:center'>  是否使用原生按钮</td>
 <td data-field='referenceType' style='text-align:center'>T</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>children ~(可选)~ </td>
+<td data-field='name' style='text-align:center'>children (可选) </td>
 <td data-field='description' style='text-align:center'>-</td>
 <td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>ant ~(可选)~ *~(已废弃)~*</td>
-<td data-field='description' style='text-align:center'>
-
-已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='name' style='text-align:center'>ant (可选) ~~(已废弃)~~</td>
+<td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
 <td data-field='referenceType' style='text-align:center'>never</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
 <td data-field='name' style='text-align:center'>compat </td>
-<td data-field='description' style='text-align:center'>
-
-测试嵌套</td>
-<td data-field='referenceType' style='text-align:center'>[
-    {
-      a: string;
-      readonly b?: number;
-    },
-    string,
-  ]</td>
+<td data-field='description' style='text-align:center'>  测试嵌套</td>
+<td data-field='referenceType' style='text-align:center'>[     {       a: string;       readonly b?: number;     },     string,   ]</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
@@ -78,9 +66,9 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
-<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
-  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:5')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/classComponent.tsx:5</code>&ensp;&ensp;
-  上次更新时间：<span>2023-12-10 22:29:48</span>
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:5')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:5</span>&ensp;&ensp;
+  上次更新时间：<span>2023-12-10 22:30:17</span>
   </div>
 
 <h3 id='antdbuttonprops' style='position:relative'>AntdButtonProps</h3>
@@ -104,94 +92,50 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </thead>
 <tbody>
 <tr>
-<td data-field='name' style='text-align:center'>autoInsertSpaceInButton ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-只有两个字符时是否插入空格 默认\`false\`
-
- 注意：该属性非\`antd\`提供的属性，而是自定义的属性，是对\`antd\`按钮功能的增强</td>
+<td data-field='name' style='text-align:center'>autoInsertSpaceInButton (可选) </td>
+<td data-field='description' style='text-align:center'>  只有两个字符时是否插入空格 默认\`false\`   注意：该属性非\`antd\`提供的属性，而是自定义的属性，是对\`antd\`按钮功能的增强</td>
 <td data-field='referenceType' style='text-align:center'>boolean</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>loading ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-是否\`loading\`属性
-
-对\`antd\`按钮的\`loading\`功能进行了扩展，支持\`loading\`自定义配置</td>
-<td data-field='referenceType' style='text-align:center'>| boolean
-  | {
-    loading?: boolean;
-    type?: &quot;cover&quot; | &quot;contain&quot;;
-    icon?: React.ReactNode;
-  }</td>
+<td data-field='name' style='text-align:center'>loading (可选) </td>
+<td data-field='description' style='text-align:center'>  是否\`loading\`属性  对\`antd\`按钮的\`loading\`功能进行了扩展，支持\`loading\`自定义配置</td>
+<td data-field='referenceType' style='text-align:center'>| boolean   | {     loading?: boolean;     type?: &quot;cover&quot; | &quot;contain&quot;;     icon?: React.ReactNode;   }</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>type ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-按钮类型，在\`antd\`的\`type\`基础上进行了扩展
-
-扩展的类型：
-- \`minority\` 次按钮
-- \`warn\` 警告按钮
-- \`danger\` 危险按钮 该类型样式等同于\`type=primary danger=true\`配置
-- \`textlink\` 链接文本类型，和\`link\`的区别在于\`link\`更像超链接，而\`textlink\`更像链接型按钮
-- \`ghostLight\`
-
-按钮组一般使用主按钮\`primary\`和次按钮\`minority\`
-（注意：之前使用的次按钮为\`ghost\`，为统一规范，\`ghost\`不再推荐为次按钮使用，请使用\`minority\`代替）</td>
-<td data-field='referenceType' style='text-align:center'>| ButtonProps[&quot;type&quot;]
-  | &quot;minority&quot;
-  | &quot;warn&quot;
-  | &quot;danger&quot;
-  | &quot;ghostLight&quot;
-  | &quot;textlink&quot;</td>
+<td data-field='name' style='text-align:center'>type (可选) </td>
+<td data-field='description' style='text-align:center'>  按钮类型，在\`antd\`的\`type\`基础上进行了扩展  扩展的类型： - \`minority\` 次按钮 - \`warn\` 警告按钮 - \`danger\` 危险按钮 该类型样式等同于\`type=primary danger=true\`配置 - \`textlink\` 链接文本类型，和\`link\`的区别在于\`link\`更像超链接，而\`textlink\`更像链接型按钮 - \`ghostLight\`  按钮组一般使用主按钮\`primary\`和次按钮\`minority\` （注意：之前使用的次按钮为\`ghost\`，为统一规范，\`ghost\`不再推荐为次按钮使用，请使用\`minority\`代替）</td>
+<td data-field='referenceType' style='text-align:center'>| ButtonProps[&quot;type&quot;]   | &quot;minority&quot;   | &quot;warn&quot;   | &quot;danger&quot;   | &quot;ghostLight&quot;   | &quot;textlink&quot;</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>disabled ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-按钮失效状态 对\`antd\`的属性进行了扩展
-</td>
-<td data-field='referenceType' style='text-align:center'>| boolean
-  | {
-    tooltip?: TooltipProps;
-  }</td>
+<td data-field='name' style='text-align:center'>disabled (可选) </td>
+<td data-field='description' style='text-align:center'>  按钮失效状态 对\`antd\`的属性进行了扩展 </td>
+<td data-field='referenceType' style='text-align:center'>| boolean   | {     tooltip?: TooltipProps;   }</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>tooltip ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-按钮tooltip提示，当按钮禁用时该属性会失效
-
- 如果需要按钮禁用时提示请使用\`disabled.tooltip\`</td>
+<td data-field='name' style='text-align:center'>tooltip (可选) </td>
+<td data-field='description' style='text-align:center'>  按钮tooltip提示，当按钮禁用时该属性会失效   如果需要按钮禁用时提示请使用\`disabled.tooltip\`</td>
 <td data-field='referenceType' style='text-align:center'>TooltipProps | null</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>align ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-按钮内容对齐方式 默认\`center\`</td>
+<td data-field='name' style='text-align:center'>align (可选) </td>
+<td data-field='description' style='text-align:center'>  按钮内容对齐方式 默认\`center\`</td>
 <td data-field='referenceType' style='text-align:center'>&quot;start&quot; | &quot;center&quot; | &quot;end&quot;</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>padding ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-按钮内联 padding 值，如果为false 则为0</td>
+<td data-field='name' style='text-align:center'>padding (可选) </td>
+<td data-field='description' style='text-align:center'>  按钮内联 padding 值，如果为false 则为0</td>
 <td data-field='referenceType' style='text-align:center'>false | string</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
@@ -199,8 +143,8 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
-<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
-  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:105')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/classComponent.tsx:105</code>&ensp;&ensp;
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:105')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:105</span>&ensp;&ensp;
   上次更新时间：<span>2023-12-09 09:40:48</span>
   </div>
 
@@ -227,35 +171,29 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </thead>
 <tbody>
 <tr>
-<td data-field='name' style='text-align:center'>native ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-是否使用原生按钮</td>
+<td data-field='name' style='text-align:center'>native (可选) </td>
+<td data-field='description' style='text-align:center'>  是否使用原生按钮</td>
 <td data-field='referenceType' style='text-align:center'>N</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>children ~(可选)~ </td>
+<td data-field='name' style='text-align:center'>children (可选) </td>
 <td data-field='description' style='text-align:center'>-</td>
 <td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>ant ~(可选)~ *~(已废弃)~*</td>
-<td data-field='description' style='text-align:center'>
-
-已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
-<td data-field='referenceType' style='text-align:center'><a href='#uibuttonprops'>UiButtonProps</a>&lt;N&gt;</td>
+<td data-field='name' style='text-align:center'>ant (可选) ~~(已废弃)~~</td>
+<td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='referenceType' style='text-align:center'><a href="#uibuttonprops">UiButtonProps</a>&lt;N&gt;</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
 <td data-field='name' style='text-align:center'>a </td>
-<td data-field='description' style='text-align:center'>
-
-a属性测试</td>
+<td data-field='description' style='text-align:center'>  a属性测试</td>
 <td data-field='referenceType' style='text-align:center'>string</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
@@ -268,35 +206,29 @@ a属性测试</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>native2 ~(可选)~ </td>
-<td data-field='description' style='text-align:center'>
-
-是否使用原生按钮</td>
+<td data-field='name' style='text-align:center'>native2 (可选) </td>
+<td data-field='description' style='text-align:center'>  是否使用原生按钮</td>
 <td data-field='referenceType' style='text-align:center'>N</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>children2 ~(可选)~ </td>
+<td data-field='name' style='text-align:center'>children2 (可选) </td>
 <td data-field='description' style='text-align:center'>-</td>
 <td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>ant2 ~(可选)~ *~(已废弃)~*</td>
-<td data-field='description' style='text-align:center'>
-
-已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='name' style='text-align:center'>ant2 (可选) ~~(已废弃)~~</td>
+<td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
 <td data-field='referenceType' style='text-align:center'>never</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
 <td data-field='name' style='text-align:center'>compa2 </td>
-<td data-field='description' style='text-align:center'>
-
-测试嵌套</td>
+<td data-field='description' style='text-align:center'>  测试嵌套</td>
 <td data-field='referenceType' style='text-align:center'>boolean</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
 <td data-field='version' style='text-align:center'>4.1.23.alpha.0</td>
@@ -310,8 +242,8 @@ a属性测试</td>
 export class UiButton extends React.Component{
 }
 \`\`\`
-<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;'>
-  文件位置：<code onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:186')" style='cursor:pointer;display:flex;align-items:center;'>src/__tests__/fixtures/classComponent.tsx:186</code>&ensp;&ensp;
+<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:186')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:186</span>&ensp;&ensp;
   上次更新时间：<span>2023-12-10 15:50:01</span>
   </div>
 "
@@ -375,7 +307,7 @@ export class UiButton extends React.Component{
 `;
 
 exports[`DocumentFuctionComponent 文档模型解析[toTypeString]: 1`] = `
-"import("/Users/liuhuaifu/Documents/WorkSpace.nosync/SelfWorkSpace/react-ts-extract-doc/src/__tests__/fixtures/classComponent").UiButtonProps<T>
+"import("/Users/danker/Documents/KSWorkspace/react-ts-extract-doc/src/__tests__/fixtures/classComponent").UiButtonProps<T>
 
 
 
