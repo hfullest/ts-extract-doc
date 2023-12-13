@@ -139,8 +139,12 @@ writeFileSync(resolve(process.cwd(), "./markdown.md"), result, "utf-8");
 
 ### 文档模型
 
-```shell
-```
+1. 分析ts可能存在的类型
+2. 如何高效复用及扩展
+   1. 类继承、类型复写
+   2. 根据开源库提供的已有能力，提取ts文件类型及文档注释等元信息
+   3.
+3.
 
 ### 渲染模板
 
@@ -149,7 +153,7 @@ writeFileSync(resolve(process.cwd(), "./markdown.md"), result, "utf-8");
 使用方法
 
 ```md
-@import:ts-extract-doc @/components/Button/index.tsx?exportName=Button
+@import:ts-extract-doc @/components/Button/index.tsx
 ```
 
 ```typescript
@@ -209,15 +213,14 @@ function (p1:string /** 这里是p1后置注释 */,
 
 TODO:
 
-- [ ] apparent type 替换
 - [x] 类构造函数处理
-- [ ] 解析readonly
+- [x] 解析readonly
 - [ ] 处理泛型参数
-- [ ] 处理继承
+- [x] 处理继承
 - [ ] 处理组件或者函数的export
 - [x] 支持`@reactComponent`标签
-- [ ] `@name` 使用注解自定义的名称，可以在这里指定链接跳转
-- [ ] 支持`@noOutput`标签
+- [x] `@name` 使用注解自定义的名称，可以在这里指定链接跳转
+- [x] 支持`@noOutput`标签
 - [ ] 支持使用缓存
 - [x] 处理函数重载
 - [x] 支持href跳转
