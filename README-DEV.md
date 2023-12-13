@@ -194,6 +194,19 @@ function (p1:string /** 这里是p1后置注释 */,
 }
 ```
 
+## 支持的标签
+
+|名称|说明|如何使用|是否为`JSDOC`标准标签|
+|:--:|:--:|:--:|:--:|
+|`@alias`|名称别名，可以手动指定展示文档名称|`@alias <aliasName>`|是|
+|`@default`|指定默认值|`@default <defaultValue>`|是|
+|`@description`|额外的文档描述，可以使用使用支持的`markdown`语法|`@description <descriptionString>`|是|
+|`@output`|文档输出，指定的文档才会进行输出展示|`@output`|否|
+|`@ignoreOutput`|忽略文档输出，针对默认全部`export`策略下手动反向忽略输出使用|`@ignoreOutput`|否|
+|`@order`|手动指定文档输出顺序，按从小到大排序|`@order <orderNumber>`|否|
+|`@calculate`|对于需要计算合并的类型进行指定，可以尝试进行合并计算，例如相交类型.默认递归合并计算，可以手动指定计算深度，从当前层级往下算|`@calculate <calculateLevel>`|否|
+|`@noCalculate`|从当前层级开始往下禁用计算合并|`@noCalculate`|否|
+
 TODO:
 
 - [ ] apparent type 替换
