@@ -51,22 +51,7 @@ export class DocumentInterface extends BaseDocField {
   } {
     const { node } = BaseDocField.splitSymbolNodeOrType<TsSymbol, InterfaceDeclaration>(symbolOrOther);
     const extendsProperties = node?.getExtends?.();
-    const extendsSymbols = extendsProperties
-      ?.map((it) => {
-        const heritSymbol = it.getExpression?.()?.getSymbol?.();
-        const { node } = BaseDocField.splitSymbolNodeOrType<TsSymbol, InterfaceDeclaration>(heritSymbol);
-        const importSpecifier = node?.asKind(ts.SyntaxKind.ImportSpecifier);
-        // 处理导入
-        if (importSpecifier) {
-          const moduleSymbol = importSpecifier
-            ?.getImportDeclaration?.()
-            ?.getModuleSpecifierSourceFile()
-            ?.getLocal?.(heritSymbol?.getName()!);
-          return moduleSymbol;
-        }
-        return heritSymbol;
-      })
-      .filter(Boolean);
+    const extendsSymbols = extendsProperties?.map((it) => it.getExpression?.()?.getSymbol?.()).filter(Boolean);
     const docs = extendsSymbols?.reduce(
       (doc, symbol) => {
         const nestedDoc = DocumentParser<DocumentInterface>(symbol!, {

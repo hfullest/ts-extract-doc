@@ -11,7 +11,6 @@ export const getFileUpdateTime = (doc: Document) => {
     const reg = /(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})/g;
     const match = { current: null } as any;
     while ((match.current = reg.exec(result))) dates.push(match.current[1]);
-    debugger;
     const lastUpdateTime = dates.sort((d1, d2) => new Date(d2).getTime() - new Date(d1).getTime());
     return lastUpdateTime[0];
   } catch {}

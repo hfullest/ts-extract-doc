@@ -1,4 +1,5 @@
-import { UiButtonProps } from './classComponent';
+import { ExampleClass } from './class';
+import { UiButtonProps } from './object';
 
 interface ABC {
   abc1: string;
@@ -31,7 +32,7 @@ interface ABC {
  *
  * @output
  */
-interface ExampleInterface extends UiButtonProps<true>, ABC {
+interface ExampleInterface extends UiButtonProps<true>, Pick<ABC, 'abc1' | 'abc2'>, ExampleClass {
   /** a属性
    * @default 'hahah'
    *
