@@ -8,3 +8,4 @@ export * from './DocumentReturn';
 export * from './DocumentTag';
 export * from './DocumentEnumMember';
 export * from './DocumentTypeParameter';
+export * from './RealSymbolOrOther';

@@ -11,7 +11,7 @@ import {
   DocumentUnion,
 } from './normal';
 import { DocumentClassComponent, DocumentFunctionComponent } from './react';
-import { DocumentOptions, SymbolOrOtherType } from './helper';
+import { DocumentOptions, RealSymbolOrOther, SymbolOrOtherType } from './helper';
 import defaultOptions from './defaultOptions';
 
 /** 文档模型处理 handler */
@@ -40,6 +40,7 @@ export default function DocumentParser<D extends Document = Document>(
 ): D | null {
   const emptyDoc = null;
   if (!((parseOptions.nestedLevel ?? 0) < (parseOptions.maxNestedLevel ?? 0))) return emptyDoc; // 超过嵌套深度强制跳出递归，不进行构造对象
+  symbolOrNodeOrType = new RealSymbolOrOther(symbolOrNodeOrType).getSymbolOrOther();
   for (let handler of DOCUMENT_HANDLES) {
     if (!handler.isTarget(symbolOrNodeOrType)) continue;
     return new handler(symbolOrNodeOrType, { ...parseOptions }) as D;
