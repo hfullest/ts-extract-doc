@@ -1,7 +1,7 @@
 import { Document } from './models/Document';
 import { Project } from 'ts-morph';
-import { TemplateDefault } from './mardown/templates/default';
-import { TemplateBeauty } from './mardown/templates/beauty';
+import { TemplateDefault } from './markdown/templates/default';
+import { TemplateBeauty } from './markdown/templates/beauty';
 
 export interface DocumentParseOptions {
   /** 当前文档嵌套等级，

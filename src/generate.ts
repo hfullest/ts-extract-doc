@@ -1,6 +1,6 @@
 import { parse } from './parse';
 import { ConfigOptions, DocumentParseOptions, MarkdownOptions } from './interface';
-import { generateMarkdown, mergeMarkdownOptions } from './mardown';
+import { generateMarkdown, mergeMarkdownOptions } from './markdown';
 import { defaultDocumentOptions } from './models';
 
 /** 根据源文件生成文档模型 */
