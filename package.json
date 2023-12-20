@@ -11,6 +11,13 @@
     "CHANGELOG.md",
     "dist"
   ],
+  "exports": {
+    "./plugins": {
+      "types": "./dist/lib/plugins/",
+      "import": "./dist/es/plugins/",
+      "require": "./dist/lib/plugins/"
+    }
+  },
   "scripts": {
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --project .",
