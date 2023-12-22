@@ -74,5 +74,6 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
   }
   const docs = outputManager.getDocs();
   outputManager.clear(); // 清空本次文档处理
-  return docs;
+  const orderedDocs = docs.sort((a, b) => a.order - b.order);
+  return orderedDocs;
 };

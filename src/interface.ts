@@ -20,7 +20,7 @@ export interface DocumentParseOptions {
    *
    * - `default` 默认解析全部`export`导出，同时可以通过标签手动指定其他导出`@output`或者忽略导出`@ignoreOutput`
    * - `export` 只支持解析全部`export`导出
-   * - `manual` 只支持手动指定`export`导出
+   * - `manual` 只支持手动指定`output`导出
    *
    * @default 'default'
    */
