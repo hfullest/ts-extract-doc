@@ -4,9 +4,13 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 
 
 /**
+ * 测试描述哈哈哈哈 {@link https://example.com} 司法考试地方
+ * 
  * @version 2.5.16-alpha.0
  * @id ReactClassComponentA-Test
  * @alias ABCReact
+ * @order 
+ * @href {#12354}
  */
 export class ReactClassComponentA extends React.Component {
   static defaultProps = { c: { c1: 'aaa' }, e: 'sdkfdsfs' };
@@ -25,7 +29,9 @@ export class ReactClassComponentA extends React.Component {
  *  */
 /** 2 */
 /** 3 */
-/** 4 */
+/** 4
+ * @order 2
+ */
 export type AAAAAA = UiButtonProps<true>[];
 
 export enum BBBB {
@@ -66,7 +72,9 @@ type CompatButtonProps<N> = {
    *  */
   ant?: UiButtonProps<N>;
 
-  /** 测试嵌套 */
+  /** 测试嵌套
+   * @alias <a href='https://baidu.com'>compat</a>
+   */
   compat: TypeObjectLiteral;
 };
 
