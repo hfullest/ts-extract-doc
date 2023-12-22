@@ -1,7 +1,6 @@
 import React from "react";
 
 /**
- * 测试描述哈哈哈哈 {@link https://example.com} 司法考试地方
  * 
  * @version 2.5.16-alpha.0
  * @id ReactClassComponentA-Test
@@ -19,17 +18,7 @@ export class ReactClassComponentA extends React.Component {
 
 
 
-/**
- *? 为什么需要使用antd的Button组件进行封装
-    1. antd提供了很多样式类型，但NativeButton暂未完全实现，例如：link按钮等
-    2. 对antd按钮定制化的样式，同样也可以通过类名的方式给其他antd组件内部按钮添加样式，例如：Modal.confirm的按钮等
-    3. 如果后续的样式及功能迭代需要复用antd的Button组件，使用NativeButton难维护和扩展
- *  */
-/** 2 */
-/** 3 */
-/** 4
- * @order 2
- */
+
 export type AAAAAA = UiButtonProps<true>[];
 
 export enum BBBB {
@@ -45,18 +34,24 @@ export enum BBBB {
  * @example
  * const abc:TypeObjectLiteral = {};
  */
-export type TypeObjectLiteral = [{
+export type TypeObjectLiteral = {
   a: string;
   /** 测试b */
   readonly b?: number;
-}, string]
+}
 /** UiButton */
 export type UiButtonProps<N = false> = {} & MidUiButtonProps<N>;
 
 export type MidUiButtonProps<N = true> = MidUiButtonProps2<N>;
 export type MidUiButtonProps2<N = true> = CompatButtonProps<N>;
 
-/** @output */
+/**
+ *? 为什么需要使用antd的Button组件进行封装
+    1. antd提供了很多样式类型，但NativeButton暂未完全实现，例如：link按钮等
+    2. 对antd按钮定制化的样式，同样也可以通过类名的方式给其他antd组件内部按钮添加样式，例如：Modal.confirm的按钮等
+    3. 如果后续的样式及功能迭代需要复用antd的Button组件，使用NativeButton难维护和扩展
+ 
+ * @output */
 type CompatButtonProps<N> = {
 
   /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
