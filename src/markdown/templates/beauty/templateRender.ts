@@ -86,7 +86,7 @@ function genFileInfo(doc: Document, options: TemplateBeauty): string {
   const lastUpdateTime = getFileUpdateTime(doc);
   const justifyContent = position === 'left' ? 'flex-start' : position === 'center' ? 'center' : 'flex-end';
   const locationHtml = `<span onclick="navigator.clipboard.writeText(\'${location}\')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>${location}</span>`;
-  return `<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:${justifyContent};align-items:center;'>
+  return `<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:${justifyContent};align-items:center;'>
   文件位置：${locationHtml}&ensp;&ensp;
   上次更新时间：<span>${lastUpdateTime}</span>
   </div>`;

@@ -59,7 +59,7 @@ export default class DataSource {
       this.label = doc.label!;
       this.value = doc.value!;
     }
-    this.name = doc?.name!;
+    this.name = doc?.toNameString()!;
     const description = paramDoc.current?.description ?? doc?.description;
     this.description = description?.replace(/^/, '\n\n'); //开头添加两个换行是为了触发markdown在html中对`abc`这样的语法解析
     this.defaultValue = (doc as DocumentProp)?.defaultValue;
@@ -67,15 +67,20 @@ export default class DataSource {
     this.location = doc.location;
     const type = paramDoc.current?.toTypeString() ?? doc?.toTypeString();
     this.type = escapeHTMLTags(type!);
-    const references = OutputManager.getDocReference(doc.filePath!);
-    const refTypeStr = references?.reduce((str, [id, docRef]) => {
-      if (!docRef?.name) return str;
-      return str?.replace(
-        new RegExp(`\\b(${escapeHTMLTags(docRef.name)})\\b`, 'g'),
-        (_, $1) => config?.referenceHandler?.(id, $1) ?? $1,
-      );
-    }, this.type);
-    this.referenceType = refTypeStr || this.type;
+    const refType = { current: null } as { current: string | null };
+    if (doc.href) {
+      refType.current = config?.referenceHandler?.(doc.href, this.type) ?? this.type;
+    } else {
+      const references = OutputManager.getDocReference(doc.filePath!);
+      refType.current = references?.reduce((str, [id, docRef]) => {
+        if (!docRef?.toNameString()) return str;
+        return str?.replace(
+          new RegExp(`\\b(${escapeHTMLTags(docRef.toNameString()!)})\\b`, 'g'),
+          (_, $1) => config?.referenceHandler?.(`#${id}`, $1) ?? $1,
+        );
+      }, this.type);
+    }
+    this.referenceType = refType.current || this.type;
     this.version = paramDoc.current?.version ?? doc?.version;
     this.deprecated = paramDoc.current?.deprecated ?? doc?.deprecated;
     this.typeParameters = doc?.typeParameters?.toFullTypeParametersString();

@@ -92,6 +92,8 @@ export class BaseDocField {
   };
   /** 全部 `JSDoc标签` */
   jsDocTags: DocumentJSDocTag[] = [];
+  /** 文档模型链接 */
+  href?: string | null;
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -160,6 +162,10 @@ export class BaseDocField {
 
     // 别名
     this.alias = tagsMap.get(JSDocTagEnum.alias)?.text ?? this.alias;
+
+    this.href = tagsMap.get(JSDocCustomTagEnum.href)?.text?.trim()?.match(/^\{#?(.*)\}$/)?.[1];
+
+
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -226,6 +232,11 @@ export class BaseDocField {
       OutputManager.setDocReference(this as unknown as Document);
     }
     return id;
+  }
+
+  /** 输出名称，处理别名和实际名称 */
+  public toNameString() {
+    return this.alias ? this.alias : this.name;
   }
 
   /** 输出完整名称，包括泛型文本 */

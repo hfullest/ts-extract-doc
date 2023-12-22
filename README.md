@@ -311,6 +311,7 @@ function (p1:string /** 这里是p1后置注释 */,
 |    `@order`    |                                            手动指定文档输出顺序，按从小到大排序                                            |       `@order <orderNumber>`       |            否            |
 |  `@calculate`  | 对于需要计算合并的类型进行指定，可以尝试进行合并计算，例如相交类型.默认递归合并计算，可以手动指定计算深度，从当前层级往下算 |   `@calculate <calculateLevel>`   |            否            |
 | `@noCalculate` |                                               从当前层级开始往下禁用计算合并                                               |           `@noCalculate`           |            否            |
+|`@href`     | 指定当前文档属性类型要特殊链接的地址，如果需要指定属性名称的属性，可以使用`@alias <a href='http://example'>name</a>`|  `@href {#id}`或者`@href {https://example.com}`|否|
 
 TODO:
 

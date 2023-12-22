@@ -42,8 +42,8 @@ export interface TableConfig {
   whiteSpaceFill?: string;
   /** 转译规则，有的字段包含markdown误识别语法，需要转译 */
   escapeRules?: (text: string) => string;
-  /** 引用处理，例如`<a href='#${id}'>{content}</a>` */
-  referenceHandler?: (id:string, content: string) => string;
+  /** 引用处理，例如`<a href='${href}'>{content}</a>` */
+  referenceHandler?: (href:string, content: string) => string;
 }
 
 export type TableConfigFunction = (doc: Document, defaultConfig: TableConfig, options?: TemplateBeauty) => TableConfig;

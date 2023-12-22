@@ -108,4 +108,6 @@ export enum JSDocCustomTagEnum {
   'order' = 'order',
   /** 文档 id */
   'id' = 'id',
+  /** 指定当前文档属性类型要特殊链接的地址，使用`@href {#id}`或者`@href {https://example.com}` */
+  'href'='href'
 }
