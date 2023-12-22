@@ -126,7 +126,7 @@ export function DeclarationFunction(
   a: number /** 测试声明函数的a参数后置注释 */,
   b?: symbol,
   c: string = "ssss"
-): UiButtonProps {
+): {} {
   return {} as any
 }
 
