@@ -8,6 +8,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "sourceMap": true,
     "declaration": true,
     "module": "CommonJS",
     "skipLibCheck": true,
@@ -26,7 +27,7 @@
     "importHelpers": true,
     // Output
     "outDir": "dist",
-    "rootDir": "..",
+  "rootDirs": [".","../src"],
     "jsx": "react",
     "jsxFactory": "JSX.createElement",
     "jsxFragmentFactory": "JSX.Fragment",

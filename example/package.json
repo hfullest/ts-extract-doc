@@ -1,7 +1,8 @@
 {
     "name": "ts-extract-doc-demo",
     "scripts": {
-        "start": "tsc-watch --onSuccess 'node ./dist/example/index.js'"
+        "start": "tsc-watch --onSuccess 'node ./dist/example/index.js'",
+        "debug": "tsc && node --inspect-brk ./dist/example/index.js"
     },
     "devDependencies": {
         "@types/node": "^20.10.5",
