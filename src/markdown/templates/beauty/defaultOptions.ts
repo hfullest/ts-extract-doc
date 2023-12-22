@@ -34,7 +34,7 @@ const beautyMarkdownOptions: TemplateBeauty = {
         dataIndex: 'name',
         align: 'center',
         render: (record) =>
-          `${record.name}${record.isOptional ? ` (可选)` : ''} ${record?.deprecated ? `~~(已废弃)~~` : ''}`,
+          `${record.name}${record.isOptional ? ` (可选)` : ''} ${record?.deprecated ? `(已废弃)` : ''}`,
       },
       { title: '说明', dataIndex: 'description', align: 'center' },
       { title: '类型', dataIndex: 'referenceType', align: 'center' },
@@ -47,7 +47,7 @@ const beautyMarkdownOptions: TemplateBeauty = {
         dataIndex: 'label',
         align: 'center',
         render: (record) =>
-          `${record.name}${record.isOptional ? ` (可选)` : ''} ${record?.deprecated ? `~~(已废弃)~~` : ''}`,
+          `${record.name}${record.isOptional ? ` (可选)` : ''} ${record?.deprecated ? `(已废弃)` : ''}`,
       },
       { title: '值', dataIndex: 'value', align: 'center' },
       { title: '描述', dataIndex: 'description', align: 'center' },
