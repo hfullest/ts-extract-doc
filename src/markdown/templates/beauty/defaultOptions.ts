@@ -61,7 +61,7 @@ const beautyMarkdownOptions: TemplateBeauty = {
       staticMethodHeadName: `<h${level} id='${doc.getId(['staticMethods'])}'>静态方法</h${level}>\n`,
       memberHeadName: `<h${level} id='${doc.getId(['members'])}'>成员</h${level}>\n`,
       paramHeadName: `<h${level} id='${doc.getId(['params'])}'>参数</h${level}>\n`,
-      returnHeadName: `<h${level} id='${doc.getId(['returns'])}'>返回值</h${level}>\n`,
+      returnHeadName: `<h${level} id='${doc.getId(['returns'])}'>返回类型</h${level}>\n`,
       eventHeadName: `<h${level} id='${doc.getId(['events'])}'>事件</h${level}>\n`,
       lineBreakDelimiter: ' ',
       whiteSpaceFill: '-',
