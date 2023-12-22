@@ -1,7 +1,4 @@
 import React from "react";
-import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
-
-
 
 /**
  * 测试描述哈哈哈哈 {@link https://example.com} 司法考试地方
@@ -15,6 +12,7 @@ import { AntdButtonProps, AntdButton, UI_PREFIX } from "./AntdButton";
 export class ReactClassComponentA extends React.Component {
   static defaultProps = { c: { c1: 'aaa' }, e: 'sdkfdsfs' };
   render(): React.ReactNode {
+    //@ts-ignore
     return <div>哈哈哈</div>;
   }
 }
@@ -60,9 +58,7 @@ export type MidUiButtonProps2<N = true> = CompatButtonProps<N>;
 
 /** @output */
 type CompatButtonProps<N> = {
-  /**是否使用原生按钮 */
-  native?: N;
-  children?: React.ReactNode;
+
   /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
    *  @deprecated
    *
@@ -71,6 +67,9 @@ type CompatButtonProps<N> = {
    *
    *  */
   ant?: UiButtonProps<N>;
+  /**是否使用原生按钮 */
+  native?: N;
+  children?: React.ReactNode;
 
   /** 测试嵌套
    * @alias <a href='https://baidu.com'>compat</a>
@@ -101,14 +100,8 @@ export const UiButton = <N extends boolean = false>(
   } & CompatButtonProps<any>
 ) => {
   const { native = false, ...buttonProps } = props1;
-  const Button: any = AntdButton;
-  const innerFun = () => {
-    if (1 + 1 === 2) return <div>哈哈</div>;
-    else return <Button {...buttonProps}></Button>;
-  };
-  if (1 + 1 === 2) return null;
-  else return <div>哈哈哈</div>;
-  // return React.createElement('div',{})
+  //@ts-ignore
+   return <div>哈哈哈</div>;
 };
 
 export const testRefUiButton = () => React.forwardRef(UiButton);
@@ -116,9 +109,7 @@ export const testRefUiButton = () => React.forwardRef(UiButton);
 export default UiButton;
 
 UiButton.__ANT_BUTTON = true;
-UiButton.Group = AntdButton.Group;
 
-export { UI_PREFIX };
 
 /**
  *  AB测试函数
@@ -150,6 +141,7 @@ export class ErrorBound {
    * @public
    */
   public render() {
+    //@ts-ignore
     return <div>哈哈哈</div>;
   }
 }

@@ -1,0 +1,12 @@
+{
+    "name": "ts-extract-doc-demo",
+    "scripts": {
+        "start": "tsc-watch --onSuccess 'node ./dist/example/index.js'"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.5",
+        "react": "^18.2.0",
+        "tsc-watch": "^6.0.4",
+        "typescript": "^5.3.3"
+    }
+}
