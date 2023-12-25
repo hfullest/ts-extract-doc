@@ -39,9 +39,8 @@ export class DocumentFunction extends BaseDocField {
         }),
     );
     const returnTypeNode = (functionTypeNode as FunctionDeclaration)?.getReturnTypeNode(); // 如果指定了函数返回类型
-    const returnType = returnTypeNode?.getType();
     const returnSubstitionType = functionTypeNode?.getType()?.getCallSignatures()[0]?.getReturnType(); // 从返回类型推导
-    const returnSymbolOrOther = returnTypeNode ?? returnType ?? returnSubstitionType;
+    const returnSymbolOrOther = returnTypeNode ?? returnSubstitionType;
     this.returns = new DocumentReturn(returnSymbolOrOther!, {
       ...this.$options,
       $parentSymbol: symbol,

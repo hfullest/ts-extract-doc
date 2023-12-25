@@ -1,4 +1,4 @@
-import { ts } from 'ts-morph';
+import { Node, ts } from 'ts-morph';
 import { BaseDocField, SymbolOrOtherType } from './BaseDocField';
 
 /** 获取真实类型，用于处理ts复杂类型推断与计算 */
@@ -13,7 +13,7 @@ export class RealSymbolOrOther {
   }
 
   #getActualSymbolOrOther(symbolOrOther: SymbolOrOtherType): SymbolOrOtherType {
-    const handlers: ((symbol: SymbolOrOtherType) => SymbolOrOtherType)[] = [this.#handleHerit];
+    const handlers: ((symbol: SymbolOrOtherType) => SymbolOrOtherType)[] = [this.#handleAlias, this.#handleHerit];
     for (let handler of handlers) {
       const handled = handler.call(this, symbolOrOther);
       if (handled !== symbolOrOther) return this.#getActualSymbolOrOther(handled); // 递归推导
@@ -34,5 +34,11 @@ export class RealSymbolOrOther {
     return moduleSymbol!;
   }
 
-//   #handlePick(symbolOrOther: SymbolOrOtherType): SymbolOrOtherType {}
+  #handleAlias(symbolOrOther: SymbolOrOtherType): SymbolOrOtherType {
+    const { node } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
+    if(!Node.isTypeReference(node))return symbolOrOther;
+    return symbolOrOther;
+  }
+
+  //   #handlePick(symbolOrOther: SymbolOrOtherType): SymbolOrOtherType {}
 }

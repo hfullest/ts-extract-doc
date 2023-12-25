@@ -15,7 +15,9 @@ export class DocumentReturn extends BaseDocField {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType): void {
+    const { node } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
     this.type = DocumentParser(symbolOrOther, { ...this.$options, $parent: this.parent });
+    this.displayType ??= node?.getText();
     const returnCommentNode = this.tags?.find((t) => Node.isJSDocReturnTag(t.node))?.node as JSDocReturnTag;
     this.description = returnCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
   }

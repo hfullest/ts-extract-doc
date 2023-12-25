@@ -9,6 +9,8 @@ import {
   DocumentIntersection,
   DocumentObject,
 } from '../../../models';
+import OutputManager from '../../../utils/OutputManager';
+import { escapeHTMLTags } from '../../../utils/escapeHTMLTag';
 import { getFileUpdateTime } from '../../../utils/getFileUpdateTime';
 import { beautyMarkdownOptions } from './defaultOptions';
 import { TableConfig, TableConfigFunction, TemplateBeauty } from './interface';
@@ -27,6 +29,24 @@ const getTableConfig = (doc: Document, options: TemplateBeauty): TableConfig => 
   }
   return tableConfig.current;
 };
+
+/** 为类型文本设置引用 */
+const setReferenceToType = (content: string, options?: { doc?: Document, config?: TableConfig }) => {
+  const refType = { current: null } as { current: string | null };
+  if (options?.doc?.href) {
+    refType.current = options?.config?.referenceHandler?.(options?.doc?.href, content) ?? content;
+  } else {
+    const references = OutputManager.getDocReference(options?.doc?.filePath!);
+    refType.current = references?.reduce((str, [id, docRef]) => {
+      if (!docRef?.toNameString()) return str;
+      return str?.replace(
+        new RegExp(`\\b(${escapeHTMLTags(docRef.toNameString()!)})\\b`, 'g'),
+        (_, $1) => options?.config?.referenceHandler?.(`#${id}`, $1) ?? $1,
+      );
+    }, content);
+  }
+  return refType.current;
+}
 
 function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty): string[] {
   const tableConfig = getTableConfig(doc, options);
@@ -63,7 +83,8 @@ function handleFunction(doc: Document, options: TemplateBeauty): string[] {
     header: tableConfig?.propHeadName,
   });
   const returnHead = tableConfig?.returnHeadName!;
-  const returns = funDoc?.returns?.type?.toTypeString()!;
+  const returnsType = funDoc?.returns?.toTypeString() ?? funDoc?.returns?.type?.toTypeString()!;
+  const returns = setReferenceToType(returnsType, { doc: funDoc!, config: tableConfig })
   const returnContent = returns ? `<code>${returns}</code>\n` : '';
   const returnFooter = funDoc?.returns?.type?.description ?? funDoc?.returns?.description;
   return [paramsTable, returnHead, returnContent, returnFooter!].filter(Boolean);
@@ -115,7 +136,7 @@ export const templateRender = (doc: Document, options: TemplateBeauty): string =
   const desc = description ? `<div>${description}</div>\n` : '';
   const targetHandler = CONTENT_RECORDS?.find((it) => it.types.some((Constor) => doc instanceof Constor))?.handler;
   const content = targetHandler?.(doc, options) ?? [];
-  const extra = extraDescription ? `<div>${extraDescription}</div>` : '';
+  const extra = extraDescription ?? ''; // 描述内容透传，支持markdown语法
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
   const fileInfo = genFileInfo(doc, options);
   const result = [header, desc, ...content, exampleCode, extra, fileInfo].filter(Boolean).join('\n');
