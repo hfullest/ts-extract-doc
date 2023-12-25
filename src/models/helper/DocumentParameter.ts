@@ -31,7 +31,7 @@ export class DocumentParameter extends BaseDocField {
     const paramCommentNode = this.tags?.find((t) => Node.isJSDocParameterTag(t.node) && t.name === parameter?.getName())
       ?.node as JSDocParameterTag;
 
-    this.defaultValue = parameter?.getInitializer();
+    this.defaultValue = parameter?.getInitializer()?.getText();
     this.isOptional = !!(parameter?.getInitializer() ?? parameter?.hasQuestionToken());
     // 参数前注释
     const leadingComment = parameter?.getLeadingCommentRanges()?.[0]?.getText();
@@ -40,7 +40,7 @@ export class DocumentParameter extends BaseDocField {
     this.description =
       (leadingComment ?? trailingComment)?.replace(/(^\/{2,}\s?)|(^\/\*{1,2}\s?)|(\s?\*\/$)/g, '') ??
       paramCommentNode?.getCommentText()?.replace(/(^\n)|(\n$)/g, '');
-    this.type = DocumentParser(paramTypeNode!, { ...this.getComputedOptions(), $parent: this.parent });
+    this.type = DocumentParser(parameter!, { ...this.getComputedOptions(), $parent: this.parent });
 
     this.readonly = !!this.tags.find(it => it.name === JSDocTagEnum.readonly);
   }
