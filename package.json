@@ -35,7 +35,7 @@
     "pre-pub": "npm run build && npm run prerelease && git push --follow-tags origin HEAD && npm publish --tag prerelease",
     "pub": "npm run build && npm run release && git push --follow-tags origin HEAD  && npm publish --tag latest",
     "test": "jest",
-    "postinstall": "cd ./example  && pnpm install"
+    "install:example": "cd ./example  && pnpm install"
   },
   "dependencies": {
     "ts-morph": "^20.0.0",
