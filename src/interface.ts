@@ -51,4 +51,8 @@ export interface ConfigOptions {
   tsConfigPath?: string;
   /** 文档生成相关配置 */
   document?: DocumentParseOptions;
+  /** 日志记录等级
+   * @default 'info'
+   */
+  logger?: 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
 }

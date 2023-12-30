@@ -4,6 +4,8 @@ import { JSDocCustomTagEnum } from './utils/jsDocTagDefinition';
 import { resolve } from 'path';
 import { Document, DocumentCarryInfo, DocumentParser, defaultDocumentOptions } from './models';
 import outputManager from './utils/OutputManager';
+import { existsSync } from 'fs';
+import logger from './utils/Logger';
 
 const singletonProject = new Project();
 
@@ -17,7 +19,14 @@ export const parse = (
   const defaultProject = singleton ? singletonProject : new Project();
   const project = typeof customProject === 'function' ? customProject(singleton) : defaultProject;
 
-  project.addSourceFilesFromTsConfig(parserOpts?.tsConfigPath ?? resolve(process.cwd(), 'tsconfig.json'));
+  const tsConfigPath = parserOpts?.tsConfigPath ?? resolve(process.cwd(), 'tsconfig.json');
+  
+  if (existsSync(tsConfigPath)) {
+    project.addSourceFilesFromTsConfig(tsConfigPath);
+    logger.info(`tsConfig 成功加载配置`);
+  } else {
+    logger.error(`tsConfig 配置文件未找到`);
+  }
 
   project.addSourceFilesAtPaths(filePaths);
 
