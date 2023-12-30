@@ -47,7 +47,7 @@ export class DocumentObject extends BaseDocField {
         this.props[propName] = new DocumentProp(currentSymbol!, { ...options, $parent: this });
       }
     });
-    this.displayType = type?.getText() ?? node?.getText();
+   if(properties?.length)  this.displayType =  type?.getText() ?? node?.getText();
   }
 
   static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;

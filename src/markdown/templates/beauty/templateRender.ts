@@ -31,7 +31,7 @@ const getTableConfig = (doc: Document, options: TemplateBeauty): TableConfig => 
 };
 
 /** 为类型文本设置引用 */
-const setReferenceToType = (content: string, options?: { doc?: Document, config?: TableConfig }) => {
+const setReferenceToType = (content: string, options?: { doc?: Document; config?: TableConfig }) => {
   const refType = { current: null } as { current: string | null };
   if (options?.doc?.href) {
     refType.current = options?.config?.referenceHandler?.(options?.doc?.href, content) ?? content;
@@ -46,7 +46,7 @@ const setReferenceToType = (content: string, options?: { doc?: Document, config?
     }, content);
   }
   return refType.current;
-}
+};
 
 function handleClassInterfaceEtc(doc: Document, options: TemplateBeauty): string[] {
   const tableConfig = getTableConfig(doc, options);
@@ -84,8 +84,8 @@ function handleFunction(doc: Document, options: TemplateBeauty): string[] {
   });
   const returnHead = tableConfig?.returnHeadName!;
   const returnsType = funDoc?.returns?.toTypeString() ?? funDoc?.returns?.type?.toTypeString()!;
-  const returns = setReferenceToType(returnsType, { doc: funDoc!, config: tableConfig })
-  const returnContent = returns ? `<code>${returns}</code>\n` : '';
+  const returns = setReferenceToType(returnsType, { doc: funDoc!, config: tableConfig });
+  const returnContent = returns ? `<code>${escapeHTMLTags(returns)}</code>\n` : '';
   const returnFooter = funDoc?.returns?.type?.description ?? funDoc?.returns?.description;
   return [paramsTable, returnHead, returnContent, returnFooter!].filter(Boolean);
 }
@@ -108,8 +108,7 @@ function genFileInfo(doc: Document, options: TemplateBeauty): string {
   const justifyContent = position === 'left' ? 'flex-start' : position === 'center' ? 'center' : 'flex-end';
   const locationHtml = `<span onclick="navigator.clipboard.writeText(\'${location}\')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>${location}</span>`;
   return `<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:${justifyContent};align-items:center;'>
-  文件位置：${locationHtml}&ensp;&ensp;
-  上次更新时间：<span>${lastUpdateTime}</span>
+  文件位置：${locationHtml} ${lastUpdateTime ? `&ensp;&ensp;上次更新时间：<span>${lastUpdateTime}</span>` : ''}
   </div>`;
 }
 
@@ -133,9 +132,15 @@ export const templateRender = (doc: Document, options: TemplateBeauty): string =
   const { headLevel = 3, headerRender } = options ?? {};
   const { name, description, extraDescription, example } = doc;
   const header = headerRender?.(doc, headLevel) ?? `${getHeadLevel(headLevel)} ${name}\n`;
-  const desc = description ? `<div>${description}</div>\n` : '';
+  const desc = description ? `<div>${escapeHTMLTags(description)}</div>\n` : '';
   const targetHandler = CONTENT_RECORDS?.find((it) => it.types.some((Constor) => doc instanceof Constor))?.handler;
-  const content = targetHandler?.(doc, options) ?? [];
+  const parsedContent = targetHandler?.(doc, options) ?? [];
+  const content = parsedContent.length
+    ? parsedContent
+    : [
+        `<div style='font-weight:500;'>类型：</div>
+        <code style='display:inline-block;margin-left:2em;margin-bottom:1em;'>${escapeHTMLTags(doc?.toTypeString()!)}</code>`,
+      ];
   const extra = extraDescription ?? ''; // 描述内容透传，支持markdown语法
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
   const fileInfo = genFileInfo(doc, options);

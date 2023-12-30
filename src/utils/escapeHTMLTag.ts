@@ -1,5 +1,5 @@
 /** 转译 html */
-export function escapeHTMLTags(str: string) {
+export function escapeHTMLTags(str?: string) {
   if (!str) return '';
   return str
 
