@@ -6,7 +6,7 @@ export const getFileUpdateTime = (doc: Document) => {
   if (!filePath) return;
   const { start: [startLine] = [0], end: [endLine] = [0] } = doc?.pos ?? {};
   try {
-    const result = execSync(`git blame -L ${startLine},${endLine} -- ${filePath}`).toString('utf-8');
+    const result = execSync(`git blame -w -L ${startLine},${endLine} -- ${filePath}`).toString('utf-8');
     const dates = [];
     const reg = /(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})/g;
     const match = { current: null } as any;
