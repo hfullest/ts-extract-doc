@@ -1,4 +1,4 @@
-import { Symbol as TsSymbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
+import { Node, Symbol as TsSymbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
 import { DocumentProp, BaseDocField, DocumentMethod, DocumentOptions, SymbolOrOtherType } from '../helper';
 
 // @ts-ignore
@@ -18,11 +18,9 @@ export class DocumentObject extends BaseDocField {
   }
 
   #assign(symbolOrOther: SymbolOrOtherType) {
-    const {
-      node: objectDeclaration,
-      symbol,
-      type,
-    } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(symbolOrOther);
+    const { node: objectDeclaration, symbol } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(
+      symbolOrOther,
+    );
     // 兼容类型别名类型
     const { node: targetNode } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(
       objectDeclaration?.asKind(ts.SyntaxKind.TypeAliasDeclaration)?.getType()?.getTargetType(),
@@ -50,7 +48,7 @@ export class DocumentObject extends BaseDocField {
         this.props[propName] = new DocumentProp(currentSymbol!, { ...options, $parent: this });
       }
     });
-    this.displayType = type?.getText() ?? node?.getText();
+    if (Node.isTypeAliasDeclaration(objectDeclaration)) this.displayType = this.toFullNameString(); // 对象字面量别名声明不展开类型
   }
 
   static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;

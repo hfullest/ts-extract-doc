@@ -114,7 +114,8 @@ export class BaseDocField {
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
-    this.displayType = (node as PropertyDeclaration)?.getTypeNode?.()?.getText?.() ?? node?.getType?.()?.getText?.();
+    const displayType = (node as PropertyDeclaration)?.getTypeNode?.()?.getText?.() ?? node?.getType?.()?.getText?.();
+    this.displayType = displayType?.replace(/^import\(.*?\)\./, ''); // 将类似`import('xxx/path/to/module').Props` 替换成`Props`
     this.description = jsDoc?.getDescription();
     const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);
@@ -309,7 +310,8 @@ export class BaseDocField {
     if (!symbolOrNodeOrType) return {};
     const originType = symbolOrNodeOrType instanceof Type ? symbolOrNodeOrType : null;
     const typeSymbol = originType?.getAliasSymbol?.() ?? originType?.getSymbol?.();
-    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : typeSymbol)!;
+    const nodeSymbol = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType?.getSymbol?.() : null;
+    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : nodeSymbol ?? typeSymbol)!;
     const originNode = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType : null;
     const calNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
     const node = originNode ?? calNode;
