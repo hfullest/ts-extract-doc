@@ -36,12 +36,12 @@ export class DocumentProp extends BaseDocField {
     const jsDocTags = jsDoc?.getTags();
     const typeOrTypeNode = (propNode as PropNodeType)?.getTypeNode() ?? propAssignNode?.getType();
     const defaultTagNode = jsDocTags?.find((t) => /^default(Value)?/.test(t.getTagName()));
-    this.defaultValue = prop?.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
+    this.defaultValue = defaultTagNode?.getCommentText()?.split('\n\n')?.[0] ?? prop?.getInitializer()?.getText(); // JSDOC 优先
     this.isOptional = prop?.hasQuestionToken();
     this.modifiers = (prop?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
     this.type = DocumentParser(typeOrTypeNode!, { ...this.getComputedOptions(), $parent: this.parent });
 
-    this.readonly = !!this.tags.find(it => it.name === JSDocTagEnum.readonly);
+    this.readonly = !!this.tags.find((it) => it.name === JSDocTagEnum.readonly);
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration | PropertyAssignment {

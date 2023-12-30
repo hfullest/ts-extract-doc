@@ -27,7 +27,6 @@ export class DocumentParameter extends BaseDocField {
 
   #assign(symbol: Symbol): void {
     const parameter = symbol?.getDeclarations()[0] as ParameterDeclaration;
-    const paramTypeNode = parameter?.getTypeNode();
     const paramCommentNode = this.tags?.find((t) => Node.isJSDocParameterTag(t.node) && t.name === parameter?.getName())
       ?.node as JSDocParameterTag;
 

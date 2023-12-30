@@ -37,9 +37,9 @@ export class DocumentMethod extends DocumentFunction {
     this.isOptional = node?.hasQuestionToken();
     this.modifiers = (node?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
     const defaultTagNode = this.tags?.find((t) => /^default(Value)?/.test(t.name))?.node;
-    this.defaultValue = node.getInitializer()?.getText() ?? defaultTagNode?.getCommentText()?.split('\n\n')?.[0];
+    this.defaultValue = defaultTagNode?.getCommentText()?.split('\n\n')?.[0] ?? node.getInitializer()?.getText();
 
-    this.readonly = !!this.tags.find(it => it.name === JSDocTagEnum.readonly);
+    this.readonly = !!this.tags.find((it) => it.name === JSDocTagEnum.readonly);
   }
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration {
