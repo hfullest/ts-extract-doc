@@ -55,6 +55,9 @@ export class DocumentFunction extends BaseDocField {
       node?.asKind?.(ts.SyntaxKind.FunctionDeclaration) ??
       node?.asKind?.(ts.SyntaxKind.FunctionExpression) ??
       node?.asKind?.(ts.SyntaxKind.ArrowFunction) ??
+      node?.asKind?.(ts.SyntaxKind.FunctionType) ??
+      node?.asKind?.(ts.SyntaxKind.JSDocFunctionType) ??
+      node?.asKind?.(ts.SyntaxKind.MethodSignature) ??
       node?.getFirstDescendantByKind?.(ts.SyntaxKind.FunctionType) ??
       node?.getFirstDescendantByKind?.(ts.SyntaxKind.JSDocFunctionType) ??
       node?.getFirstDescendantByKind?.(ts.SyntaxKind.MethodSignature) ??
@@ -76,7 +79,13 @@ export class DocumentFunction extends BaseDocField {
     nodeOrOther: SymbolOrOtherType,
   ): nodeOrOther is FunctionDeclaration | FunctionExpression | ArrowFunction {
     const { node } = BaseDocField.splitSymbolNodeOrType(nodeOrOther);
-    if (Node.isFunctionDeclaration(node) || Node.isFunctionExpression(node) || Node.isArrowFunction(node)) return true;
+    if (
+      Node.isFunctionDeclaration(node) ||
+      Node.isFunctionExpression(node) ||
+      Node.isArrowFunction(node) ||
+      Node.isFunctionTypeNode(node)
+    )
+      return true;
     const variableDeclaration = node?.asKind(ts.SyntaxKind.VariableDeclaration);
     const functionInitializer = (variableDeclaration as VariableDeclaration)?.getInitializerIfKind(
       ts.SyntaxKind.FunctionExpression,

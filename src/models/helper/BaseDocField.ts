@@ -37,7 +37,7 @@ export class DocumentCarryInfo {
 
 export type SymbolOrOtherType = Symbol | Node | Type;
 
-export interface DocumentOptions extends Partial<DocumentCarryInfo>, DocumentParseOptions { }
+export interface DocumentOptions extends Partial<DocumentCarryInfo>, DocumentParseOptions {}
 
 export class BaseDocField {
   /** 当前 symbol */
@@ -114,7 +114,7 @@ export class BaseDocField {
     const jsDoc = ancestorNode?.getJsDocs?.()?.at(-1);
     this.name = symbol?.getName?.();
     this.fullText = jsDoc?.getFullText?.();
-    this.displayType = (node as PropertyDeclaration)?.getTypeNode?.()?.getText?.();
+    this.displayType = (node as PropertyDeclaration)?.getTypeNode?.()?.getText?.() ?? node?.getType?.()?.getText?.();
     this.description = jsDoc?.getDescription();
     const jsDocTags = jsDoc?.getTags() ?? [];
     this.#parseAndAssginTags(jsDocTags);
@@ -163,9 +163,10 @@ export class BaseDocField {
     // 别名
     this.alias = tagsMap.get(JSDocTagEnum.alias)?.text ?? this.alias;
 
-    this.href = tagsMap.get(JSDocCustomTagEnum.href)?.text?.trim()?.match(/^\{#?(.*)\}$/)?.[1];
-
-
+    this.href = tagsMap
+      .get(JSDocCustomTagEnum.href)
+      ?.text?.trim()
+      ?.match(/^\{#?(.*)\}$/)?.[1];
   }
 
   /** 解析 JSDoc 相关标签并赋值 */
@@ -253,13 +254,13 @@ export class BaseDocField {
    */
   protected getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
     symbol ??= this.parentSymbol;
-    const parentNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations()[0];
+    const { node: parentNode } = BaseDocField.splitSymbolNodeOrType(symbol);
     try {
       const ancestorNode = Node.isVariableDeclaration(parentNode)
         ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
         : parentNode;
       return ancestorNode as T | VariableStatement;
-    } catch (e) { }
+    } catch (e) {}
     return parentNode as T;
   }
 
@@ -289,13 +290,13 @@ export class BaseDocField {
    * 可以指定父级symbol参数，也可以默认使用当前节点的父级symbol
    */
   static getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
-    const parentNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
+    const { node: parentNode } = BaseDocField.splitSymbolNodeOrType(symbol);
     try {
       const ancestorNode = Node.isVariableDeclaration(parentNode)
         ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
         : parentNode;
       return ancestorNode as T | VariableStatement;
-    } catch (e) { }
+    } catch (e) {}
     return parentNode as T;
   }
 

@@ -18,7 +18,14 @@ export class DocumentUnion extends BaseDocField {
     const { node, type } = BaseDocField.splitSymbolNodeOrType<any, TypeAliasDeclaration>(symbolOrOther);
     const tupleTypes = type?.getUnionTypes();
     const docs = tupleTypes
-      ?.map((tuple) => DocumentParser(tuple, { ...this.getComputedOptions(), $parent: this }))
+      ?.map((tuple) => {
+        const symbol = tuple?.getAliasSymbol?.()??tuple?.getSymbol?.();
+        const node = symbol?.getDeclarations?.()?.[0];// 不使用getValueDeclaration，因为有的重载名称不一致，比如Function=>FunctionConstructor
+        return DocumentParser(node ?? tuple, {
+          ...this.getComputedOptions(),
+          $parent: this,
+        });
+      })
       .filter(Boolean);
     this.unions = (docs as Document[]) ?? [];
     this.displayType = node?.getTypeNode?.()?.getText?.();

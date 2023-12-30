@@ -42,7 +42,7 @@ export class DocumentFunctionComponent extends DocumentFunction {
     if (!DocumentFunction.isTarget(functionTypeNode!)) return false;
     {
       // 如果手动指定了标签注释，则直接跳过检查，当作组件进行处理
-      const jsDocTags = parentNode?.getJsDocs()?.at(-1)?.getTags();
+      const jsDocTags = parentNode?.getJsDocs?.()?.at(-1)?.getTags();
       const isJsxElement = !!jsDocTags?.find((tag) => tag.getTagName() === JSDocCustomTagEnum.reactComponent);
       if (isJsxElement) return true;
     }

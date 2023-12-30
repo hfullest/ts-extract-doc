@@ -23,7 +23,7 @@ export class DocumentObject extends BaseDocField {
       symbol,
       type,
     } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(symbolOrOther);
-    // 兼容泛型类型
+    // 兼容类型别名类型
     const { node: targetNode } = BaseDocField.splitSymbolNodeOrType<TsSymbol, TypeAliasDeclaration>(
       objectDeclaration?.asKind(ts.SyntaxKind.TypeAliasDeclaration)?.getType()?.getTargetType(),
     );
@@ -32,6 +32,9 @@ export class DocumentObject extends BaseDocField {
       objectDeclaration?.asKind(ts.SyntaxKind.ObjectLiteralExpression) ??
       objectDeclaration?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral) ??
       targetNode?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeLiteral);
+
+    if (!node) return; // 没有命中节点，表示其他兜底情况，直接返回
+
     const properties = (node as TypeLiteralNode)?.getProperties();
     properties?.forEach((prop, index) => {
       const propName = prop?.getName();
@@ -47,7 +50,7 @@ export class DocumentObject extends BaseDocField {
         this.props[propName] = new DocumentProp(currentSymbol!, { ...options, $parent: this });
       }
     });
-   if(properties?.length)  this.displayType =  type?.getText() ?? node?.getText();
+    this.displayType = type?.getText() ?? node?.getText();
   }
 
   static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
