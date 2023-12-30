@@ -1,8 +1,8 @@
 import { resolve } from 'path';
 import { extractTsToMarkdown, genrateDocument } from '../..';
 
-describe('DocumentUnion', () => {
-  const sourcePath = resolve(__dirname, '../fixtures/union.ts');
+describe('DocumentObject', () => {
+  const sourcePath = resolve(__dirname, '../fixtures/object.ts');
 
   it('文档模型解析[toTypeString]:', () => {
     const documents = genrateDocument(sourcePath);

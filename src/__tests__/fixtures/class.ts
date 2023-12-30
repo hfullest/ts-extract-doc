@@ -33,7 +33,7 @@ export class ExampleClass {
    *
    *
    */
-  a: string = '124';
+  classAprop: string ='124';
   /**
    * `button`描述
    *

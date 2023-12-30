@@ -1,7 +1,201 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DocumentIntersection 【beauty】模版快照 1`] = `
+"<h3 id='uibuttonprops' style='position:relative'>UiButtonProps&lt;N = false&gt;<span style='
+    position:absolute;
+    font-size:0.6em;
+    color:#888;
+    top:0;
+    margin-left:0.2em;
+    background-color:#eee;
+    padding:0.05em 0.3em;
+    border-radius:0.3em;'>1.2.3</span></h3>
+
+<div>UiButton 属性
+</div>
+
+<h4 id='uibuttonprops__props'>属性</h4>
+
+<table data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>classAprop </td>
+<td data-field='description' style='text-align:center'>  a属性</td>
+<td data-field='referenceType' style='text-align:center'>string</td>
+<td data-field='defaultValue' style='text-align:center'>'hahah'</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>button (可选) </td>
+<td data-field='description' style='text-align:center'>   \`button\`描述  button的==内容==区 </td>
+<td data-field='referenceType' style='text-align:center'>UiButtonProps</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>3.2.15</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>dddPublic </td>
+<td data-field='description' style='text-align:center'>  测试公共方法</td>
+<td data-field='referenceType' style='text-align:center'>number</td>
+<td data-field='defaultValue' style='text-align:center'>12</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>a </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>string</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>b (可选) </td>
+<td data-field='description' style='text-align:center'>  属性b</td>
+<td data-field='referenceType' style='text-align:center'>number</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>c </td>
+<td data-field='description' style='text-align:center'>  </td>
+<td data-field='referenceType' style='text-align:center'>{ c1: string; c2: () =&gt; string }</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>native (可选) </td>
+<td data-field='description' style='text-align:center'>  是否使用原生按钮</td>
+<td data-field='referenceType' style='text-align:center'>N</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>children (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>ant (可选) (已废弃)</td>
+<td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='referenceType' style='text-align:center'>never</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>compat </td>
+<td data-field='description' style='text-align:center'>  测试嵌套</td>
+<td data-field='referenceType' style='text-align:center'>boolean</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id='uibuttonprops__methods'>方法</h4>
+
+<table data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>bb </td>
+<td data-field='description' style='text-align:center'>  接口函数定义</td>
+<td data-field='referenceType' style='text-align:center'>(p1: string ,      p2?: number,   ) =&gt; string</td>
+<td data-field='defaultValue' style='text-align:center'>() => ''</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/intersection.ts:8')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/intersection.ts:8</span> &ensp;&ensp;上次更新时间：<span>2023-12-30 20:14:03</span>
+  </div>
+
+<h3 id='compatbuttonprops' style='position:relative'>CompatButtonProps&lt;N&gt;</h3>
+
+<h4 id='compatbuttonprops__props'>属性</h4>
+
+<table data-id='Yy1vLW0tcC1hLXQtYi11LXQtdC1vLW4tcC1yLW8tcC1zLTxoNCBpZD0nY29tcGF0YnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='Yy1vLW0tcC1hLXQtYi11LXQtdC1vLW4tcC1yLW8tcC1zLTxoNCBpZD0nY29tcGF0YnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='Yy1vLW0tcC1hLXQtYi11LXQtdC1vLW4tcC1yLW8tcC1zLTxoNCBpZD0nY29tcGF0YnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='Yy1vLW0tcC1hLXQtYi11LXQtdC1vLW4tcC1yLW8tcC1zLTxoNCBpZD0nY29tcGF0YnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>native (可选) </td>
+<td data-field='description' style='text-align:center'>  是否使用原生按钮</td>
+<td data-field='referenceType' style='text-align:center'>N</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>children (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>ant (可选) (已废弃)</td>
+<td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='referenceType' style='text-align:center'>never</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>compat </td>
+<td data-field='description' style='text-align:center'>  测试嵌套</td>
+<td data-field='referenceType' style='text-align:center'>boolean</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/intersection.ts:17')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/intersection.ts:17</span> &ensp;&ensp;上次更新时间：<span>2023-12-02 18:43:52</span>
+  </div>
+"
+`;
+
 exports[`DocumentIntersection 快照 1`] = `
-"### UiButtonProps
+"### UiButtonProps ~(1.2.3)~
 
 UiButton 属性
 
@@ -10,6 +204,9 @@ UiButton 属性
 
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
+|classAprop |a属性|string|'hahah'|-|
+|button ~(可选)~ |\`button\`描述  button的==内容==区|UiButtonProps|-|3.2.15|
+|dddPublic |测试公共方法|number|12|-|
 |a |-|string|-|-|
 |b ~(可选)~ |属性b|number|-|-|
 |c ||{ c1: string; c2: () => string }|-|-|
@@ -17,6 +214,12 @@ UiButton 属性
 |children ~(可选)~ |-|React.ReactNode|-|-|
 |ant ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|never|-|-|
 |compat |测试嵌套|boolean|-|-|
+
+#### 方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|bb |接口函数定义|(p1: string ,      p2?: number,   ) => string|() => ''|-|
 
 
 ### CompatButtonProps
@@ -34,7 +237,7 @@ UiButton 属性
 `;
 
 exports[`DocumentIntersection 文档模型解析[toTypeString]: 1`] = `
-"{ a: string; b?: number; c: { c1: string; c2: () => string; }; }&CompatButtonProps<N>
+"ExampleClass&{ a: string; b?: number; c: { c1: string; c2: () => string; }; }&CompatButtonProps<N>
 
 CompatButtonProps<N>"
 `;

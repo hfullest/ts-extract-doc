@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { genrateDocument } from '../..';
+import { extractTsToMarkdown, genrateDocument } from '../..';
 
 describe('DocumentTuple', () => {
   const sourcePath = resolve(__dirname, '../fixtures/tuple.ts');
@@ -11,8 +11,15 @@ describe('DocumentTuple', () => {
   });
 
   it('快照', () => {
-    const documents = genrateDocument(sourcePath);
-    const result = documents.map((doc) => doc.map((it) => it.toTypeString())?.join('\n\n')).join('\n\n\n');
+    const result = extractTsToMarkdown(sourcePath);
+    expect(result).toMatchSnapshot();
+  });
+
+  it(`【beauty】模版快照`, () => {
+    const result = extractTsToMarkdown(sourcePath, {
+      markdown: { template: 'beauty' },
+      document: { singleton: false },
+    });
     expect(result).toMatchSnapshot();
   });
 });

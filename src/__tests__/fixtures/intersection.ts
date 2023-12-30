@@ -1,10 +1,11 @@
 import React from 'react';
+import { ExampleClass } from './class';
 
 /** UiButton 属性
- * 
- * @calculate
+ *
+ * @version 1.2.3
  */
-export type UiButtonProps<N = false> = {
+export type UiButtonProps<N = false> = ExampleClass & {
   a: string;
   /** 属性b */
   b?: number;

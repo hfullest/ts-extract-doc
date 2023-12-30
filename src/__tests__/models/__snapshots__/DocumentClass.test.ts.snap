@@ -1,5 +1,142 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DocumentClass 【beauty】模版快照 1`] = `
+"<h3 id='exampleclass' style='position:relative'>ExampleClass</h3>
+
+<div>这个是对ExampleClass类的描述</div>
+
+<h4 id='exampleclass__props'>属性</h4>
+
+<table data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>classAprop </td>
+<td data-field='description' style='text-align:center'>  a属性</td>
+<td data-field='referenceType' style='text-align:center'>string</td>
+<td data-field='defaultValue' style='text-align:center'>'hahah'</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>button (可选) </td>
+<td data-field='description' style='text-align:center'>   \`button\`描述  button的==内容==区 </td>
+<td data-field='referenceType' style='text-align:center'>UiButtonProps</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>3.2.15</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>dddPublic </td>
+<td data-field='description' style='text-align:center'>  测试公共方法</td>
+<td data-field='referenceType' style='text-align:center'>number</td>
+<td data-field='defaultValue' style='text-align:center'>12</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id='exampleclass__methods'>方法</h4>
+
+<table data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>bb </td>
+<td data-field='description' style='text-align:center'>  接口函数定义</td>
+<td data-field='referenceType' style='text-align:center'>(p1: string ,      p2?: number,   ) =&gt; string</td>
+<td data-field='defaultValue' style='text-align:center'>() => ''</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id='exampleclass__staticProps'>静态属性</h4>
+
+<table data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY1Byb3BzJz7pnZnmgIHlsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY1Byb3BzJz7pnZnmgIHlsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY1Byb3BzJz7pnZnmgIHlsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY1Byb3BzJz7pnZnmgIHlsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>fffStaticProp </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>boolean</td>
+<td data-field='defaultValue' style='text-align:center'>true</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id='exampleclass__staticMethods'>静态方法</h4>
+
+<table data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY01ldGhvZHMnPumdmeaAgeaWueazlTwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY01ldGhvZHMnPumdmeaAgeaWueazlTwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY01ldGhvZHMnPumdmeaAgeaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='ZS14LWEtbS1wLWwtZS1jLWwtYS1zLXMtPGg0IGlkPSdleGFtcGxlY2xhc3NfX3N0YXRpY01ldGhvZHMnPumdmeaAgeaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>eeeStaticMethod </td>
+<td data-field='description' style='text-align:center'>  这个是静态方法</td>
+<td data-field='referenceType' style='text-align:center'>(a: number, b?: string) =&gt; number</td>
+<td data-field='defaultValue' style='text-align:center'>(a: number, b?: string) => {     return 456;   }</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/class.ts:28')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/class.ts:28</span> &ensp;&ensp;上次更新时间：<span>2023-12-30 20:14:03</span>
+  </div>
+"
+`;
+
 exports[`DocumentClass 快照 1`] = `
 "### ExampleClass
 
@@ -9,7 +146,7 @@ exports[`DocumentClass 快照 1`] = `
 
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
-|a |a属性|string|'124'|-|
+|classAprop |a属性|string|'hahah'|-|
 |button ~(可选)~ |\`button\`描述  button的==内容==区|UiButtonProps|-|3.2.15|
 |dddPublic |测试公共方法|number|12|-|
 
@@ -29,9 +166,9 @@ exports[`DocumentClass 快照 1`] = `
 
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
-|eeeStaticMethod |这个是静态方法|-|(a: number, b?: string) => {     return 456;   }|-|
+|eeeStaticMethod |这个是静态方法|(a: number, b?: string) => number|(a: number, b?: string) => {     return 456;   }|-|
 
 "
 `;
 
-exports[`DocumentClass 文档模型解析[toTypeString]: 1`] = `""`;
+exports[`DocumentClass 文档模型解析[toTypeString]: 1`] = `"ExampleClass"`;

@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentObject 【beauty】模版快照 1`] = `
+"<h3 id='uibuttonprops' style='position:relative'>UiButtonProps&lt;T&gt;</h3>
+
+<h4 id='uibuttonprops__props'>属性</h4>
+
+<table data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='dS1pLWItdS10LXQtby1uLXAtci1vLXAtcy08aDQgaWQ9J3VpYnV0dG9ucHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>native (可选) </td>
+<td data-field='description' style='text-align:center'>  是否使用原生按钮</td>
+<td data-field='referenceType' style='text-align:center'>T</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>children (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>ant (可选) (已废弃)</td>
+<td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
+<td data-field='referenceType' style='text-align:center'>never</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>compat </td>
+<td data-field='description' style='text-align:center'>  测试嵌套</td>
+<td data-field='referenceType' style='text-align:center'>[       {         a: string;         readonly b?: number;       },       string,     ]</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>arr </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>{ p1: number, p2: string }[]</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>arr2 </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>Array&lt;string&gt;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/object.ts:2')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/object.ts:2</span> &ensp;&ensp;上次更新时间：<span>2023-12-17 21:25:38</span>
+  </div>
+"
+`;
+
+exports[`DocumentObject 快照 1`] = `
+"### UiButtonProps
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|native ~(可选)~ |是否使用原生按钮|T|-|-|
+|children ~(可选)~ |-|React.ReactNode|-|-|
+|ant ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|never|-|-|
+|compat |测试嵌套|[       {         a: string;         readonly b?: number;       },       string,     ]|-|-|
+|arr |-|{ p1: number, p2: string }[]|-|-|
+|arr2 |-|Array<string>|-|-|
+
+"
+`;
+
+exports[`DocumentObject 文档模型解析[toTypeString]: 1`] = `"UiButtonProps<T>"`;

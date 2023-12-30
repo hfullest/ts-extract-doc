@@ -1,5 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocumentTuple 快照 1`] = `"[{ a: string; readonly b?: number; },string,UiButtonProps<false>,(p1: number, p2?: string) => void,Function]"`;
+exports[`DocumentTuple 【beauty】模版快照 1`] = `
+"<h3 id='typeobjectliteral' style='position:relative'>TypeObjectLiteral</h3>
 
-exports[`DocumentTuple 文档模型解析[toTypeString]: 1`] = `"[{ a: string; readonly b?: number; },string,UiButtonProps<false>,(p1: number, p2?: string) => void,Function]"`;
+<div>测试 TypeObjectLiteral 描述
+</div>
+
+<div style='font-weight:500;'>类型：</div>
+        <code style='display:inline-block;margin-left:2em;margin-bottom:1em;'>[{ a: string; readonly b?: number; },string,UiButtonProps&lt;N = false&gt;,(p1: number, p2?: string) =&gt; void,Function]</code>
+
+\`\`\`tsx
+const abc:TypeObjectLiteral = {};
+\`\`\`
+这里是TypeObjectLiteral 额外描述
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/tuple.ts:11')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/tuple.ts:11</span> &ensp;&ensp;上次更新时间：<span>2023-12-03 08:40:25</span>
+  </div>
+"
+`;
+
+exports[`DocumentTuple 快照 1`] = `
+"### TypeObjectLiteral
+
+测试 TypeObjectLiteral 描述
+
+
+这里是TypeObjectLiteral 额外描述
+
+\`\`\`tsx
+const abc:TypeObjectLiteral = {};
+\`\`\`
+"
+`;
+
+exports[`DocumentTuple 文档模型解析[toTypeString]: 1`] = `"[{ a: string; readonly b?: number; },string,UiButtonProps<N = false>,(p1: number, p2?: string) => void,Function]"`;

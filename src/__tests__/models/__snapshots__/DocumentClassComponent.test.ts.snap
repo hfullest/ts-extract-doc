@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
+exports[`DocumentClassComponent 【beauty】模版快照 1`] = `
 "<h3 id='uibuttonprops' style='position:relative'>UiButtonProps&lt;T&gt;</h3>
 
 <h4 id='uibuttonprops__props'>属性</h4>
@@ -36,7 +36,7 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>ant (可选) ~~(已废弃)~~</td>
+<td data-field='name' style='text-align:center'>ant (可选) (已废弃)</td>
 <td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
 <td data-field='referenceType' style='text-align:center'>never</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
@@ -66,9 +66,8 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
-<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:5')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:5</span>&ensp;&ensp;
-  上次更新时间：<span>2023-12-10 22:30:17</span>
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:5')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:5</span> &ensp;&ensp;上次更新时间：<span>2023-12-10 22:30:17</span>
   </div>
 
 <h3 id='antdbuttonprops' style='position:relative'>AntdButtonProps</h3>
@@ -143,9 +142,8 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
-<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:105')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:105</span>&ensp;&ensp;
-  上次更新时间：<span>2023-12-09 09:40:48</span>
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:105')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:105</span> &ensp;&ensp;上次更新时间：<span>2023-12-09 09:40:48</span>
   </div>
 
 <h3 id='uibutton' style='position:relative'>UiButton&lt;N extends boolean = false&gt;</h3>
@@ -185,7 +183,7 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>ant (可选) ~~(已废弃)~~</td>
+<td data-field='name' style='text-align:center'>ant (可选) (已废弃)</td>
 <td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
 <td data-field='referenceType' style='text-align:center'><a href="#uibuttonprops">UiButtonProps</a>&lt;N&gt;</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
@@ -220,7 +218,7 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>ant2 (可选) ~~(已废弃)~~</td>
+<td data-field='name' style='text-align:center'>ant2 (可选) (已废弃)</td>
 <td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
 <td data-field='referenceType' style='text-align:center'>never</td>
 <td data-field='defaultValue' style='text-align:center'>-</td>
@@ -242,14 +240,13 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 export class UiButton extends React.Component{
 }
 \`\`\`
-<div style='font-size:0.8em;margin-top:10px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:186')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:186</span>&ensp;&ensp;
-  上次更新时间：<span>2023-12-10 15:50:01</span>
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/classComponent.tsx:186')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/classComponent.tsx:186</span> &ensp;&ensp;上次更新时间：<span>2023-12-10 15:50:01</span>
   </div>
 "
 `;
 
-exports[`DocumentFuctionComponent 快照 1`] = `
+exports[`DocumentClassComponent 快照 1`] = `
 "### UiButtonProps
 
 #### 属性
@@ -306,10 +303,10 @@ export class UiButton extends React.Component{
 "
 `;
 
-exports[`DocumentFuctionComponent 文档模型解析[toTypeString]: 1`] = `
-"import("/Users/danker/Documents/KSWorkspace/react-ts-extract-doc/src/__tests__/fixtures/classComponent").UiButtonProps<T>
+exports[`DocumentClassComponent 文档模型解析[toTypeString]: 1`] = `
+"UiButtonProps<T>
 
+AntdButtonProps
 
-
-"
+UiButton<N>"
 `;

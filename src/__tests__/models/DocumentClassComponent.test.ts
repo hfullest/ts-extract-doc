@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { extractTsToMarkdown, genrateDocument } from '../..';
 
-describe('DocumentFuctionComponent', () => {
+describe('DocumentClassComponent', () => {
   const sourcePath = resolve(__dirname, '../fixtures/classComponent.tsx');
   it('文档模型解析[toTypeString]:', () => {
     const documents = genrateDocument(sourcePath);
