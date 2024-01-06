@@ -28,7 +28,7 @@ export class DocumentCarryInfo {
   /** 是否自动计算合并推导类型 */
   $typeCalculate?: boolean;
   /** 类型参数，用于泛型计算 */
-  $TypeParameters?: TypeParameterDeclaration[];
+  $TypeParameters?: DocumentTypeParameters;
   /** 索引顺序 */
   $index?: number;
   /** 父级文档 */
@@ -37,7 +37,7 @@ export class DocumentCarryInfo {
 
 export type SymbolOrOtherType = Symbol | Node | Type;
 
-export interface DocumentOptions extends Partial<DocumentCarryInfo>, DocumentParseOptions {}
+export interface DocumentOptions extends Partial<DocumentCarryInfo>, DocumentParseOptions { }
 
 export class BaseDocField {
   /** 当前 symbol */
@@ -101,6 +101,7 @@ export class BaseDocField {
     this.parentSymbol = options?.$parentSymbol ?? symbol!;
     this.rootSymbol = options?.$rootSymbol ?? symbol!;
     this.parent = options?.$parent ?? null;
+    options.$TypeParameters = new DocumentTypeParameters(symbolOrOther, options);
     this.$options = options;
     this.#assign(symbolOrOther);
   }
@@ -261,7 +262,7 @@ export class BaseDocField {
         ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
         : parentNode;
       return ancestorNode as T | VariableStatement;
-    } catch (e) {}
+    } catch (e) { }
     return parentNode as T;
   }
 
@@ -297,7 +298,7 @@ export class BaseDocField {
         ? parentNode.getFirstAncestorByKind(ts.SyntaxKind.VariableStatement)
         : parentNode;
       return ancestorNode as T | VariableStatement;
-    } catch (e) {}
+    } catch (e) { }
     return parentNode as T;
   }
 
@@ -306,12 +307,18 @@ export class BaseDocField {
     S extends Symbol = Symbol,
     N extends Node = Node<ts.Node>,
     T extends Type = Type<ts.Type>,
-  >(symbolOrNodeOrType: SymbolOrOtherType | undefined | null): { symbol?: S; node?: N; type?: T } {
+  >(symbolOrNodeOrType: SymbolOrOtherType | undefined | null,
+    options: {
+      /** 每次获取最新本地symbol */
+      useLocal?: boolean;
+    } = {}): { symbol?: S; node?: N; type?: T } {
     if (!symbolOrNodeOrType) return {};
+    const { useLocal = true } = options ?? {};
     const originType = symbolOrNodeOrType instanceof Type ? symbolOrNodeOrType : null;
     const typeSymbol = originType?.getAliasSymbol?.() ?? originType?.getSymbol?.();
     const nodeSymbol = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType?.getSymbol?.() : null;
-    const symbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : nodeSymbol ?? typeSymbol)!;
+    const calSymbol = (symbolOrNodeOrType instanceof Symbol ? symbolOrNodeOrType : nodeSymbol ?? typeSymbol)!;
+    const symbol = useLocal ? calSymbol?.getDeclarations?.()[0]?.getSourceFile?.()?.getLocal(calSymbol?.getName()!) ?? calSymbol : calSymbol;
     const originNode = symbolOrNodeOrType instanceof Node ? symbolOrNodeOrType : null;
     const calNode = symbol?.getValueDeclaration?.() ?? symbol?.getDeclarations?.()[0];
     const node = originNode ?? calNode;

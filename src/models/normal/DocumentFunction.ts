@@ -58,11 +58,11 @@ export class DocumentFunction extends BaseDocField {
       node?.asKind?.(ts.SyntaxKind.FunctionType) ??
       node?.asKind?.(ts.SyntaxKind.JSDocFunctionType) ??
       node?.asKind?.(ts.SyntaxKind.MethodSignature) ??
-      node?.getFirstDescendantByKind?.(ts.SyntaxKind.FunctionType) ??
-      node?.getFirstDescendantByKind?.(ts.SyntaxKind.JSDocFunctionType) ??
-      node?.getFirstDescendantByKind?.(ts.SyntaxKind.MethodSignature) ??
-      node?.getFirstDescendantByKind?.(ts.SyntaxKind.FunctionExpression) ??
-      node?.getFirstDescendantByKind?.(ts.SyntaxKind.ArrowFunction);
+      node?.getLastChildByKind?.(ts.SyntaxKind.FunctionType) ??
+      node?.getLastChildByKind?.(ts.SyntaxKind.JSDocFunctionType) ??
+      node?.getLastChildByKind?.(ts.SyntaxKind.MethodSignature) ??
+      node?.getLastChildByKind?.(ts.SyntaxKind.FunctionExpression) ??
+      node?.getLastChildByKind?.(ts.SyntaxKind.ArrowFunction);
     return functionTypeNode;
   }
 
