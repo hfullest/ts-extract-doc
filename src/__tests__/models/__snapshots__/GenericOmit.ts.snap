@@ -1,0 +1,339 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GenericOmit 【beauty】模版快照 1`] = `
+"<h3 id='pageprops' style='position:relative'>PageProps&lt;T extends boolean = true&gt;</h3>
+
+<h4 id='pageprops__props'>属性</h4>
+
+<table data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>titleProps (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>&quot;TitleBarProps&quot;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>scrollTitleProps (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>&quot;TitleBarProps&quot;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>scrollValue (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>&quot;Animated.Value&quot;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>underStatusBar (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>boolean</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>backgroundImage (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>string</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>imageProps (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>&quot;BackgroundImageProps[&#39;imageProps&#39;]&quot;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>WrapperComponent (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>React.FC&lt;any&gt; | React.ComponentClass&lt;any&gt;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>p4 (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>{         p41: string;         p42: number[];         p43: [number, symbol, string]     }</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id='pageprops__methods'>方法</h4>
+
+<table data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='cC1hLWctZS1wLXItby1wLXMtPGg0IGlkPSdwYWdlcHJvcHNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>getData (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>() =&gt; Promise&lt;T&gt;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>p2 (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>(name: string) =&gt; Promise&lt;any&gt;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/omit.ts:4')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/omit.ts:4</span> &ensp;&ensp;上次更新时间：<span>2024-01-06 23:12:41</span>
+  </div>
+
+<h3 id='abc' style='position:relative'>ABC</h3>
+
+<h4 id='abc__props'>属性</h4>
+
+<table data-id='YS1iLWMtPGg0IGlkPSdhYmNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='YS1iLWMtPGg0IGlkPSdhYmNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='YS1iLWMtPGg0IGlkPSdhYmNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='YS1iLWMtPGg0IGlkPSdhYmNfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>p4 (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>{         p41: string;         p42: number[];         p43: [number, symbol, string]     }</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id='abc__methods'>方法</h4>
+
+<table data-id='YS1iLWMtPGg0IGlkPSdhYmNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='YS1iLWMtPGg0IGlkPSdhYmNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='YS1iLWMtPGg0IGlkPSdhYmNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='YS1iLWMtPGg0IGlkPSdhYmNfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>p2 (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>(name: string) =&gt; Promise&lt;any&gt;</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/omit.ts:23')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/omit.ts:23</span> &ensp;&ensp;上次更新时间：<span>2024-01-07 10:57:26</span>
+  </div>
+
+<h3 id='examplea' style='position:relative'>ExampleA</h3>
+
+<h4 id='examplea__props'>属性</h4>
+
+<table data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='>
+<style>
+    table[data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] p { margin:0;}
+    table[data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='type'],
+    table[data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX3Byb3BzJz7lsZ7mgKc8L2g0PgotdGFibGU='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>p3 (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>symbol</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>p4 </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'><a href="#pageprops">PageProps</a></td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id='examplea__methods'>方法</h4>
+
+<table data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='ZS14LWEtbS1wLWwtZS1hLTxoNCBpZD0nZXhhbXBsZWFfX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>p2 </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>() =&gt; void</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
+<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/omit.ts:33')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/omit.ts:33</span> &ensp;&ensp;上次更新时间：<span>2024-01-06 23:12:41</span>
+  </div>
+"
+`;
+
+exports[`GenericOmit 快照 1`] = `
+"### PageProps
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|titleProps ~(可选)~ |-|"TitleBarProps"|-|-|
+|scrollTitleProps ~(可选)~ |-|"TitleBarProps"|-|-|
+|scrollValue ~(可选)~ |-|"Animated.Value"|-|-|
+|underStatusBar ~(可选)~ |-|boolean|-|-|
+|supportVersion ~(可选)~ |-|string|-|-|
+|updateMessage ~(可选)~ |-|string|-|-|
+|titleBarFixed ~(可选)~ |-|boolean|-|-|
+|autoTn ~(可选)~ |-|boolean|-|-|
+|needUpdateStatusBarOnShow ~(可选)~ |-|boolean|-|-|
+|theme ~(可选)~ |-|"CustomThemeType"|-|-|
+|style ~(可选)~ |-|"StyleProp<ViewStyle>"|-|-|
+|statusBarBgColor ~(可选)~ |-|string|-|-|
+|statusBarStyle ~(可选)~ |-|"StatusBarStyle"|-|-|
+|bounces ~(可选)~ |-|boolean|-|-|
+|backgroundImage ~(可选)~ |-|string|-|-|
+|imageProps ~(可选)~ |-|"BackgroundImageProps['imageProps']"|-|-|
+|WrapperComponent ~(可选)~ |-|React.FC<any> \\| React.ComponentClass<any>|-|-|
+|p2 ~(可选)~ |-|number|-|-|
+
+#### 方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|renderUpdate ~(可选)~ |-|() => React.ReactNode|-|-|
+|getData ~(可选)~ |-|() => Promise<T>|-|-|
+
+
+### PageProps
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|titleProps ~(可选)~ |-|"TitleBarProps"|-|-|
+|scrollTitleProps ~(可选)~ |-|"TitleBarProps"|-|-|
+|scrollValue ~(可选)~ |-|"Animated.Value"|-|-|
+|underStatusBar ~(可选)~ |-|boolean|-|-|
+|supportVersion ~(可选)~ |-|string|-|-|
+|updateMessage ~(可选)~ |-|string|-|-|
+|titleBarFixed ~(可选)~ |-|boolean|-|-|
+|autoTn ~(可选)~ |-|boolean|-|-|
+|needUpdateStatusBarOnShow ~(可选)~ |-|boolean|-|-|
+|theme ~(可选)~ |-|"CustomThemeType"|-|-|
+|style ~(可选)~ |-|"StyleProp<ViewStyle>"|-|-|
+|statusBarBgColor ~(可选)~ |-|string|-|-|
+|statusBarStyle ~(可选)~ |-|"StatusBarStyle"|-|-|
+|bounces ~(可选)~ |-|boolean|-|-|
+|backgroundImage ~(可选)~ |-|string|-|-|
+|imageProps ~(可选)~ |-|"BackgroundImageProps['imageProps']"|-|-|
+|WrapperComponent ~(可选)~ |-|React.FC<any> \\| React.ComponentClass<any>|-|-|
+|p2 ~(可选)~ |-|number|-|-|
+
+#### 方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|renderUpdate ~(可选)~ |-|() => React.ReactNode|-|-|
+|getData ~(可选)~ |-|() => Promise<T>|-|-|
+
+
+### ABC
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|p2 ~(可选)~ |-|number|-|-|
+
+"
+`;
+
+exports[`GenericOmit 文档模型解析[toTypeString]: 1`] = `
+"{ titleProps?: "TitleBarProps"; scrollTitleProps?: "TitleBarProps"; scrollValue?: "Animated.Value"; underStatusBar?: boolean; backgroundImage?: string; imageProps?: "BackgroundImageProps['imageProps']"; WrapperComponent?: any; getData?: () => Promise<T>; children(data: T, paddingTop: number, retry: () => Promise<void>, refresh: () => Promise<void>): React.ReactNode; }&ABC
+
+ABC
+
+ExampleA"
+`;

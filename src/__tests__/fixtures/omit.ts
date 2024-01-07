@@ -6,17 +6,6 @@ export type PageProps<T extends boolean = true> = {
     scrollTitleProps?: "TitleBarProps";
     scrollValue?: "Animated.Value";
     underStatusBar?: boolean;
-    supportVersion?: string;
-    updateMessage?: string;
-    titleBarFixed?: boolean;
-    autoTn?: boolean;
-    needUpdateStatusBarOnShow?: boolean;
-    theme?: "CustomThemeType";
-    renderUpdate?: () => React.ReactNode;
-    style?: "StyleProp<ViewStyle>";
-    statusBarBgColor?: string;
-    statusBarStyle?: "StatusBarStyle";
-    bounces?: boolean;
     backgroundImage?: string;
     imageProps?: "BackgroundImageProps['imageProps']";
     WrapperComponent?: React.FC<any> | React.ComponentClass<any>;
@@ -33,9 +22,14 @@ export type PageProps<T extends boolean = true> = {
 
 export interface ABC {
     p1: string;
-    p2?: number;
+    p2?: (name: string) => Promise<any>;
     p3: string;
+    p4?: {
+        p41: string;
+        p42: number[];
+        p43: [number, symbol, string]
+    }
 }
 
 /** @output */
-type ExampleA = Omit<{ p1: string; p2: () => void; p3?: symbol; p4: number }, 'p4'>
+type ExampleA = Omit<{ p1: string; p2: () => void; p3?: symbol; p4: PageProps }, 'p1'>
