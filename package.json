@@ -21,7 +21,8 @@
   "scripts": {
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --project .",
-    "build:cjs": "tsc -project ./tsconfig.cjs.json",
+    "build:cjs": "npm run babel && tsc -project ./tsconfig.cjs.json",
+    "babel": "babel src --out-dir dist/lib  --extensions .ts,.js,.tsx,.jsx,.cjs,.mjs --ignore src/**/*.test.ts,src/**/*.test.tsx,src/__tests__/**",
     "tsc": "tsc",
     "clean": "rimraf dist",
     "try:example": "cd ./example && pnpm start",
@@ -42,6 +43,11 @@
     "typescript": "^5.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.23.4",
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-transform-typescript": "^7.23.6",
+    "@babel/preset-env": "^7.23.7",
+    "@babel/preset-typescript": "^7.23.3",
     "@types/jest": "^29.5.10",
     "@types/loader-utils": "^2.0.6",
     "@types/node": "^20.8.8",
