@@ -1,4 +1,4 @@
-import { Node, PropertyAssignment, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
+import { Node, PropertyAssignment, PropertyDeclaration, PropertySignature, Symbol as TsSymbol, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { DocumentParser } from '../index';
 import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
@@ -17,7 +17,7 @@ export class DocumentProp extends BaseDocField {
   /** 是否只读 */
   readonly?: boolean;
 
-  constructor(symbol: Symbol, options: DocumentOptions) {
+  constructor(symbol: TsSymbol, options: DocumentOptions) {
     options.$parentSymbol ??= symbol;
     options.$rootSymbol ??= options?.$parentSymbol;
     super(symbol, options);
@@ -26,7 +26,7 @@ export class DocumentProp extends BaseDocField {
     this.#assign(symbol);
   }
 
-  #assign(symbol: Symbol): void {
+  #assign(symbol: TsSymbol): void {
     const prop = symbol?.getDeclarations()[0];
     if (!DocumentProp.isTarget(prop)) return;
     const propNode = prop?.asKind(ts.SyntaxKind.PropertySignature) ?? prop.asKind(ts.SyntaxKind.PropertyDeclaration);
@@ -43,6 +43,8 @@ export class DocumentProp extends BaseDocField {
 
     this.readonly = !!this.tags.find((it) => it.name === JSDocTagEnum.readonly);
   }
+
+  static [Symbol.hasInstance] = (instance: any) => instance && Object.getPrototypeOf(instance).constructor === this;
 
   static isTarget(node: Node): node is PropertySignature | PropertyDeclaration | PropertyAssignment {
     return Node.isPropertySignature(node) || Node.isPropertyDeclaration(node) || Node.isPropertyAssignment(node);

@@ -3,10 +3,28 @@ import { BaseDocField, DocumentProp, DocumentMethod, DocumentOptions, SymbolOrOt
 import { DocumentParser } from '../index';
 
 export class DocumentInterface extends BaseDocField {
+  #membersMap = new Map<string, DocumentProp | DocumentMethod>();
+
+  set props(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 属性 */
-  props: Record<string, DocumentProp> = {};
+  get props(): Record<string, DocumentProp> {
+    const properties = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentProp) as [string, DocumentProp][];
+    return Object.fromEntries(properties);
+  }
+  set methods(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 方法 */
-  methods: Record<string, DocumentMethod> = {};
+  get methods(): Record<string, DocumentMethod> {
+    const methods = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentMethod) as [string, DocumentMethod][];
+    return Object.fromEntries(methods);
+  }
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -38,11 +56,9 @@ export class DocumentInterface extends BaseDocField {
         $parent: this,
       };
       if (DocumentMethod.isTarget(prop)) {
-        delete this.props[propName]; // 方法和属性名不能相同
-        this.methods[propName] = new DocumentMethod(currentSymbol!, options);
+        this.methods = { [propName]: new DocumentMethod(currentSymbol!, options) };
       } else if (DocumentProp.isTarget(prop)) {
-        delete this.methods[propName]; // 方法和属性名不能相同
-        this.props[propName] = new DocumentProp(currentSymbol!, options);
+        this.props = { [propName]: new DocumentProp(currentSymbol!, options) };
       }
     });
   }
@@ -70,7 +86,7 @@ export class DocumentInterface extends BaseDocField {
     return docs!;
   }
 
-  static [Symbol.hasInstance] = (instance: any) => Object.getPrototypeOf(instance).constructor === this;
+  static [Symbol.hasInstance] = (instance: any) => instance && Object.getPrototypeOf(instance).constructor === this;
 
   /** 判断是否命中当前目标 */
   static isTarget(nodeOrOther: SymbolOrOtherType): nodeOrOther is InterfaceDeclaration {

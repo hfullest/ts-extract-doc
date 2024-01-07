@@ -1,14 +1,33 @@
 import { Type, TypeAliasDeclaration, ts } from 'ts-morph';
 import { BaseDocField, DocumentOptions, SymbolOrOtherType } from '../helper';
-import { Document, DocumentObject, DocumentParser } from '../index';
+import { Document, DocumentMethod, DocumentObject, DocumentParser, DocumentProp } from '../index';
 
 export class DocumentIntersection extends BaseDocField {
   /** 保存相交类型原解析文档模型 */
   intersections: Document[] = [];
+
+  #membersMap = new Map<string, DocumentProp | DocumentMethod>();
+
+  set props(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 属性 */
-  props: DocumentObject['props'] = {};
+  get props(): Record<string, DocumentProp> {
+    const properties = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentProp) as [string, DocumentProp][];
+    return Object.fromEntries(properties);
+  }
+  set methods(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 方法 */
-  methods: DocumentObject['methods'] = {};
+  get methods(): Record<string, DocumentMethod> {
+    const methods = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentMethod) as [string, DocumentMethod][];
+    return Object.fromEntries(methods);
+  }
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);

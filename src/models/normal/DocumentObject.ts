@@ -1,12 +1,31 @@
-import { Node, Symbol as TsSymbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
+import { MethodSignature, Node, PropertySignature, Symbol as TsSymbol, TypeAliasDeclaration, TypeLiteralNode, ts } from 'ts-morph';
 import { DocumentProp, BaseDocField, DocumentMethod, DocumentOptions, SymbolOrOtherType } from '../helper';
 
-// @ts-ignore
+
+
 export class DocumentObject extends BaseDocField {
+  #membersMap = new Map<string, DocumentProp | DocumentMethod>();
+
+  set props(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 属性 */
-  props: Record<string, DocumentProp> = {};
+  get props(): Record<string, DocumentProp> {
+    const properties = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentProp) as [string, DocumentProp][];
+    return Object.fromEntries(properties);
+  }
+  set methods(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 方法 */
-  methods: Record<string, DocumentMethod> = {};
+  get methods(): Record<string, DocumentMethod> {
+    const methods = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentMethod) as [string, DocumentMethod][];
+    return Object.fromEntries(methods);
+  }
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -45,11 +64,9 @@ export class DocumentObject extends BaseDocField {
         index,
       };
       if (DocumentMethod.isTarget(prop)) {
-        delete this.props[propName]; // 方法和属性名不能相同
-        this.methods[propName] = new DocumentMethod(currentSymbol!, { ...options, $parent: this });
+        this.methods = { [propName]: new DocumentMethod(currentSymbol!, { ...options, $parent: this }) };
       } else if (DocumentProp.isTarget(prop)) {
-        delete this.methods[propName];
-        this.props[propName] = new DocumentProp(currentSymbol!, { ...options, $parent: this });
+        this.props = { [propName]: new DocumentProp(currentSymbol!, { ...options, $parent: this }) };
       }
     });
     if (Node.isTypeAliasDeclaration(objectDeclaration)) this.displayType = this.toFullNameString(); // 对象字面量别名声明不展开类型
@@ -62,3 +79,4 @@ export class DocumentObject extends BaseDocField {
     return type?.isObject() && !type?.isArray() && !type?.isTuple() && !type?.isNullable();
   }
 }
+

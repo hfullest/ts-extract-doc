@@ -6,14 +6,52 @@ import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 export class DocumentClass extends BaseDocField {
   /** 构造函数文档 */
   constructors?: DocumentMethod;
+
+  #membersMap = new Map<string, DocumentProp | DocumentMethod>();
+
+  set props(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 属性 */
-  props: Record<string, DocumentProp> = {};
+  get props(): Record<string, DocumentProp> {
+    const properties = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentProp) as [string, DocumentProp][];
+    return Object.fromEntries(properties);
+  }
+  set methods(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#membersMap.set(key, value);
+    })
+  }
   /** 方法 */
-  methods: Record<string, DocumentMethod> = {};
+  get methods(): Record<string, DocumentMethod> {
+    const methods = Array.from(this.#membersMap.entries()).filter(([, doc]) => doc instanceof DocumentMethod) as [string, DocumentMethod][];
+    return Object.fromEntries(methods);
+  }
+
+  #staticMembersMap = new Map<string, DocumentProp | DocumentMethod>();
+
+  set staticProps(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#staticMembersMap.set(key, value);
+    })
+  }
   /** 静态属性 */
-  staticProps: Record<string, DocumentProp> = {};
+  get staticProps(): Record<string, DocumentProp> {
+    const properties = Array.from(this.#staticMembersMap.entries()).filter(([, doc]) => doc instanceof DocumentProp) as [string, DocumentProp][];
+    return Object.fromEntries(properties);
+  }
+  set staticMethods(record) {
+    Object.entries(record ?? {}).forEach(([key, value]) => {
+      this.#staticMembersMap.set(key, value);
+    })
+  }
   /** 静态方法 */
-  staticMethods: Record<string, DocumentMethod> = {};
+  get staticMethods(): Record<string, DocumentMethod> {
+    const methods = Array.from(this.#staticMembersMap.entries()).filter(([, doc]) => doc instanceof DocumentMethod) as [string, DocumentMethod][];
+    return Object.fromEntries(methods);
+  }
 
   constructor(symbolOrOther: SymbolOrOtherType, options: DocumentOptions) {
     const { symbol } = BaseDocField.splitSymbolNodeOrType(symbolOrOther);
@@ -47,21 +85,17 @@ export class DocumentClass extends BaseDocField {
         const methodDoc = new DocumentMethod(currentSymbol, { ...options, $index: index, $parent: this });
         if (this.#isIgnoreField(methodDoc)) return;
         if ((methodDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
-          delete this.staticProps[propName]; // 方法和属性名不能相同
-          this.staticMethods[propName] = methodDoc;
+          this.staticMethods = { [propName]: methodDoc };
         } else {
-          delete this.props[propName]; // 方法和属性名不能相同
-          this.methods[propName] = methodDoc;
+          this.methods = { [propName]: methodDoc };
         }
       } else if (DocumentProp.isTarget(prop)) {
         const propDoc = new DocumentProp(currentSymbol, { ...options, $index: index, $parent: this });
         if (this.#isIgnoreField(propDoc)) return;
         if ((propDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
-          delete this.staticMethods[propName]; // 方法和属性名不能相同
-          this.staticProps[propName] = propDoc;
+          this.staticProps = { [propName]: propDoc };
         } else {
-          delete this.methods[propName]; // 方法和属性名不能相同
-          this.props[propName] = propDoc;
+          this.props = { [propName]: propDoc };
         }
       }
     });
