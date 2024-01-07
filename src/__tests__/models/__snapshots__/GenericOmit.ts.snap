@@ -106,6 +106,13 @@ exports[`GenericOmit 【beauty】模版快照 1`] = `
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
+<td data-field='name' style='text-align:center'>children </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>(data: T, paddingTop: number, retry: () =&gt; Promise&lt;void&gt;, refresh: () =&gt; Promise&lt;void&gt;) =&gt; React.ReactNode</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
 <td data-field='name' style='text-align:center'>p2 (可选) </td>
 <td data-field='description' style='text-align:center'>-</td>
 <td data-field='referenceType' style='text-align:center'>(name: string) =&gt; Promise&lt;any&gt;</td>
@@ -273,6 +280,7 @@ exports[`GenericOmit 快照 1`] = `
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
 |getData ~(可选)~ |-|() => Promise<T>|-|-|
+|children |-|(data: T, paddingTop: number, retry: () => Promise<void>, refresh: () => Promise<void>) => React.ReactNode|-|-|
 |p2 ~(可选)~ |-|(name: string) => Promise<any>|-|-|
 
 

@@ -28,7 +28,7 @@ type UiButtonProps = {
 type CompatButtonProps<N> = {
   /**是否使用原生按钮 */
   native2?: N;
-  children2?: React.ReactNode;
+  children?: () => React.ReactNode;
   /** 已默认启用`Antd Button`，该属性已遗弃，未来版本将移除该属性
    *  @deprecated
    *
@@ -84,7 +84,7 @@ interface ButtonProps {
   ghost?: boolean;
   danger?: boolean;
   block?: boolean;
-  children?: React.ReactNode;
+  children?: () => React.ReactNode;
   [key: `data-${string}`]: string;
   classNames?: {
     icon: string;
@@ -177,6 +177,8 @@ export interface AntdButtonProps
  *  */
 export const UiButton = <N extends boolean = false>(
   props1: {
+    /** 测试函数 */
+    fn(): void;
     /**是否使用原生按钮 */
     native?: N;
     children?: React.ReactNode;

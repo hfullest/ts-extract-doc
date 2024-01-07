@@ -107,13 +107,6 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>children (可选) </td>
-<td data-field='description' style='text-align:center'>-</td>
-<td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
-<td data-field='defaultValue' style='text-align:center'>-</td>
-<td data-field='version' style='text-align:center'>-</td>
-</tr>
-<tr>
 <td data-field='name' style='text-align:center'>ant (可选) (已废弃)</td>
 <td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
 <td data-field='referenceType' style='text-align:center'>UiButtonProps</td>
@@ -142,13 +135,6 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 <td data-field='version' style='text-align:center'>-</td>
 </tr>
 <tr>
-<td data-field='name' style='text-align:center'>children2 (可选) </td>
-<td data-field='description' style='text-align:center'>-</td>
-<td data-field='referenceType' style='text-align:center'>React.ReactNode</td>
-<td data-field='defaultValue' style='text-align:center'>-</td>
-<td data-field='version' style='text-align:center'>-</td>
-</tr>
-<tr>
 <td data-field='name' style='text-align:center'>ant2 (可选) (已废弃)</td>
 <td data-field='description' style='text-align:center'>  已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性</td>
 <td data-field='referenceType' style='text-align:center'>never</td>
@@ -165,8 +151,43 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </tbody>
 </table>
 
+<h4 id='uibutton__methods'>方法</h4>
+
+<table data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='>
+<style>
+    table[data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] p { margin:0;}
+    table[data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='type'],
+    table[data-id='dS1pLWItdS10LXQtby1uLTxoNCBpZD0ndWlidXR0b25fX21ldGhvZHMnPuaWueazlTwvaDQ+Ci10YWJsZQ=='] [data-field='referenceType']{color:#c41d7f}
+    </style>
+<thead>
+<tr>
+<th style='text-align:center'>名称</th>
+<th style='text-align:center'>说明</th>
+<th style='text-align:center'>类型</th>
+<th style='text-align:center'>默认值</th>
+<th style='text-align:center'>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-field='name' style='text-align:center'>children (可选) </td>
+<td data-field='description' style='text-align:center'>-</td>
+<td data-field='referenceType' style='text-align:center'>() =&gt; React.ReactNode</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+<tr>
+<td data-field='name' style='text-align:center'>fn </td>
+<td data-field='description' style='text-align:center'>  测试函数</td>
+<td data-field='referenceType' style='text-align:center'>() =&gt; void</td>
+<td data-field='defaultValue' style='text-align:center'>-</td>
+<td data-field='version' style='text-align:center'>-</td>
+</tr>
+</tbody>
+</table>
+
 <div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:178')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:178</span> &ensp;&ensp;上次更新时间：<span>2023-12-09 09:40:48</span>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:178')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:178</span> &ensp;&ensp;上次更新时间：<span>2024-01-07 17:14:33</span>
   </div>
 
 <h3 id='testrefuibutton' style='position:relative'>TestRefUiButton</h3>
@@ -176,7 +197,7 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 <div style='font-weight:500;'>类型：</div>
         <code style='display:inline-block;margin-left:2em;margin-bottom:1em;'>any</code>
 <div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:204')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:204</span> &ensp;&ensp;上次更新时间：<span>2023-12-10 15:50:01</span>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:206')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:206</span> &ensp;&ensp;上次更新时间：<span>2023-12-10 15:50:01</span>
   </div>
 "
 `;
@@ -206,14 +227,19 @@ exports[`DocumentFuctionComponent 快照 1`] = `
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
 |native ~(可选)~ |是否使用原生按钮|N|-|-|
-|children ~(可选)~ |-|React.ReactNode|-|-|
 |ant ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|UiButtonProps|-|-|
 |a |a属性测试|string|-|-|
 |b |-|number|-|-|
 |native2 ~(可选)~ |是否使用原生按钮|N|-|-|
-|children2 ~(可选)~ |-|React.ReactNode|-|-|
 |ant2 ~(可选)~ *~(已废弃)~*|已默认启用\`Antd Button\`，该属性已遗弃，未来版本将移除该属性|never|-|-|
 |compa2 |测试嵌套|boolean|-|-|
+
+#### 方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|children ~(可选)~ |-|() => React.ReactNode|-|-|
+|fn |测试函数|() => void|-|-|
 
 
 ### TestRefUiButton
@@ -226,7 +252,7 @@ exports[`DocumentFuctionComponent 快照 1`] = `
 exports[`DocumentFuctionComponent 文档模型解析[toTypeString]: 1`] = `
 "AntdButtonProps
 
-<N extends boolean = false>(props1: { native?: N; children?: React.ReactNode; ant?: UiButtonProps; } & { a: string; b: number; } & CompatButtonProps<any>) => JSX.Element
+<N extends boolean = false>(props1: { fn(): void; native?: N; children?: React.ReactNode; ant?: UiButtonProps; } & { a: string; b: number; } & CompatButtonProps<any>) => JSX.Element
 
 any"
 `;
