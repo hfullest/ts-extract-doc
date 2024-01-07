@@ -178,7 +178,7 @@ exports[`GenericOmit 【beauty】模版快照 1`] = `
 </table>
 
 <div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/omit.ts:23')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/omit.ts:23</span> &ensp;&ensp;上次更新时间：<span>2024-01-07 10:57:26</span>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/omit.ts:23')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/omit.ts:23</span> &ensp;&ensp;上次更新时间：<span>2024-01-07 10:59:26</span>
   </div>
 
 <h3 id='examplea' style='position:relative'>ExampleA</h3>
@@ -263,60 +263,17 @@ exports[`GenericOmit 快照 1`] = `
 |scrollTitleProps ~(可选)~ |-|"TitleBarProps"|-|-|
 |scrollValue ~(可选)~ |-|"Animated.Value"|-|-|
 |underStatusBar ~(可选)~ |-|boolean|-|-|
-|supportVersion ~(可选)~ |-|string|-|-|
-|updateMessage ~(可选)~ |-|string|-|-|
-|titleBarFixed ~(可选)~ |-|boolean|-|-|
-|autoTn ~(可选)~ |-|boolean|-|-|
-|needUpdateStatusBarOnShow ~(可选)~ |-|boolean|-|-|
-|theme ~(可选)~ |-|"CustomThemeType"|-|-|
-|style ~(可选)~ |-|"StyleProp<ViewStyle>"|-|-|
-|statusBarBgColor ~(可选)~ |-|string|-|-|
-|statusBarStyle ~(可选)~ |-|"StatusBarStyle"|-|-|
-|bounces ~(可选)~ |-|boolean|-|-|
 |backgroundImage ~(可选)~ |-|string|-|-|
 |imageProps ~(可选)~ |-|"BackgroundImageProps['imageProps']"|-|-|
 |WrapperComponent ~(可选)~ |-|React.FC<any> \\| React.ComponentClass<any>|-|-|
-|p2 ~(可选)~ |-|number|-|-|
+|p4 ~(可选)~ |-|{         p41: string;         p42: number[];         p43: [number, symbol, string]     }|-|-|
 
 #### 方法
 
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
-|renderUpdate ~(可选)~ |-|() => React.ReactNode|-|-|
 |getData ~(可选)~ |-|() => Promise<T>|-|-|
-
-
-### PageProps
-
-#### 属性
-
-|名称|说明|类型|默认值|版本|
-|:--:|:--:|:--:|:---:|:--:|
-|titleProps ~(可选)~ |-|"TitleBarProps"|-|-|
-|scrollTitleProps ~(可选)~ |-|"TitleBarProps"|-|-|
-|scrollValue ~(可选)~ |-|"Animated.Value"|-|-|
-|underStatusBar ~(可选)~ |-|boolean|-|-|
-|supportVersion ~(可选)~ |-|string|-|-|
-|updateMessage ~(可选)~ |-|string|-|-|
-|titleBarFixed ~(可选)~ |-|boolean|-|-|
-|autoTn ~(可选)~ |-|boolean|-|-|
-|needUpdateStatusBarOnShow ~(可选)~ |-|boolean|-|-|
-|theme ~(可选)~ |-|"CustomThemeType"|-|-|
-|style ~(可选)~ |-|"StyleProp<ViewStyle>"|-|-|
-|statusBarBgColor ~(可选)~ |-|string|-|-|
-|statusBarStyle ~(可选)~ |-|"StatusBarStyle"|-|-|
-|bounces ~(可选)~ |-|boolean|-|-|
-|backgroundImage ~(可选)~ |-|string|-|-|
-|imageProps ~(可选)~ |-|"BackgroundImageProps['imageProps']"|-|-|
-|WrapperComponent ~(可选)~ |-|React.FC<any> \\| React.ComponentClass<any>|-|-|
-|p2 ~(可选)~ |-|number|-|-|
-
-#### 方法
-
-|名称|说明|类型|默认值|版本|
-|:--:|:--:|:--:|:---:|:--:|
-|renderUpdate ~(可选)~ |-|() => React.ReactNode|-|-|
-|getData ~(可选)~ |-|() => Promise<T>|-|-|
+|p2 ~(可选)~ |-|(name: string) => Promise<any>|-|-|
 
 
 ### ABC
@@ -325,7 +282,29 @@ exports[`GenericOmit 快照 1`] = `
 
 |名称|说明|类型|默认值|版本|
 |:--:|:--:|:--:|:---:|:--:|
-|p2 ~(可选)~ |-|number|-|-|
+|p4 ~(可选)~ |-|{         p41: string;         p42: number[];         p43: [number, symbol, string]     }|-|-|
+
+#### 方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|p2 ~(可选)~ |-|(name: string) => Promise<any>|-|-|
+
+
+### ExampleA
+
+#### 属性
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|p3 ~(可选)~ |-|symbol|-|-|
+|p4 |-|PageProps|-|-|
+
+#### 方法
+
+|名称|说明|类型|默认值|版本|
+|:--:|:--:|:--:|:---:|:--:|
+|p2 |-|() => void|-|-|
 
 "
 `;

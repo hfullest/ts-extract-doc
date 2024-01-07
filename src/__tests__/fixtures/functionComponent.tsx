@@ -172,7 +172,8 @@ export interface AntdButtonProps
 }
 
 /** 测试UiButton 描述
- * @title
+ * @output
+ * 
  *  */
 export const UiButton = <N extends boolean = false>(
   props1: {

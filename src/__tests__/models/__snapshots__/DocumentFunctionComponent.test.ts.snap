@@ -166,7 +166,7 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 </table>
 
 <div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:177')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:177</span> &ensp;&ensp;上次更新时间：<span>2023-12-09 09:40:48</span>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:178')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:178</span> &ensp;&ensp;上次更新时间：<span>2023-12-09 09:40:48</span>
   </div>
 
 <h3 id='testrefuibutton' style='position:relative'>TestRefUiButton</h3>
@@ -176,7 +176,7 @@ exports[`DocumentFuctionComponent 【beauty】模版快照 1`] = `
 <div style='font-weight:500;'>类型：</div>
         <code style='display:inline-block;margin-left:2em;margin-bottom:1em;'>any</code>
 <div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:flex-start;align-items:center;'>
-  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:203')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:203</span> &ensp;&ensp;上次更新时间：<span>2023-12-10 15:50:01</span>
+  文件位置：<span onclick="navigator.clipboard.writeText('src/__tests__/fixtures/functionComponent.tsx:204')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>src/__tests__/fixtures/functionComponent.tsx:204</span> &ensp;&ensp;上次更新时间：<span>2023-12-10 15:50:01</span>
   </div>
 "
 `;
