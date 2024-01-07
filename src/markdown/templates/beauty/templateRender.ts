@@ -105,10 +105,11 @@ function genFileInfo(doc: Document, options: TemplateBeauty): string {
   const location = fileInfo?.showLocation ? doc?.location : '';
   const position = fileInfo?.position;
   const lastUpdateTime = getFileUpdateTime(doc);
+  const showUpdateTime = fileInfo?.showUpdateTime && lastUpdateTime;
   const justifyContent = position === 'left' ? 'flex-start' : position === 'center' ? 'center' : 'flex-end';
   const locationHtml = `<span onclick="navigator.clipboard.writeText(\'${location}\')" style='display:flex;align-items:center;cursor:pointer;text-decoration: underline;'>${location}</span>`;
   return `<div style='font-size:0.8em;margin-top:20px;display:flex;justify-content:${justifyContent};align-items:center;'>
-  文件位置：${locationHtml} ${lastUpdateTime ? `&ensp;&ensp;上次更新时间：<span>${lastUpdateTime}</span>` : ''}
+  文件位置：${locationHtml} ${showUpdateTime ? `&ensp;&ensp;上次更新时间：<span>${lastUpdateTime}</span>` : ''}
   </div>`;
 }
 
@@ -138,9 +139,9 @@ export const templateRender = (doc: Document, options: TemplateBeauty): string =
   const content = parsedContent.length
     ? parsedContent
     : [
-        `<div style='font-weight:500;'>类型：</div>
+      `<div style='font-weight:500;'>类型：</div>
         <code style='display:inline-block;margin-left:2em;margin-bottom:1em;'>${escapeHTMLTags(doc?.toTypeString()!)}</code>`,
-      ];
+    ];
   const extra = extraDescription ?? ''; // 描述内容透传，支持markdown语法
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';
   const fileInfo = genFileInfo(doc, options);

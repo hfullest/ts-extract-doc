@@ -1,5 +1,6 @@
 import { MarkdownOptions, TemplateCustom } from '../../interface';
 import { Document } from '../../models';
+import { deepMerge } from '../../utils/clone';
 import { beautyRender, beautyMarkdownOptions } from './beauty';
 import { defaultRender, defaultMarkdownOptions } from './default';
 
@@ -22,7 +23,7 @@ export const mergeMarkdownOptions = (
   if (!(options as any)?.template) return options;
   const templateOptions = options as TemplateOptions;
   const originOptions = TEMPLATE_RENDERS[templateOptions?.template]?.options;
-  return Object.assign({}, originOptions, templateOptions);
+  return deepMerge({}, originOptions, templateOptions) as MarkdownOptions;
 };
 
 export const render = (document: Document, options?: MarkdownOptions) => {
