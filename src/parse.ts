@@ -43,6 +43,8 @@ export const parse = (
 };
 
 export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOptions): Document[] => {
+  file.refreshFromFileSystemSync(); // 更新最新的文件
+
   const getLocalSymbol = (name?: string) => {
     const localSymbols = file.getLocals();
 
