@@ -289,7 +289,6 @@ export class BaseDocField {
    * 由于 VariableDeclaration 节点获取不到文档，需要获取到其祖先级 VariableStatement 才可以获取到
    * 这里对此获取父节点进行了兼容
    *
-   * 可以指定父级symbol参数，也可以默认使用当前节点的父级symbol
    */
   static getCompatAncestorNode<T extends Node = Node<ts.Node>>(symbol?: Symbol) {
     const { node: parentNode } = BaseDocField.splitSymbolNodeOrType(symbol);

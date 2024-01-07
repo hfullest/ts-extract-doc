@@ -50,8 +50,11 @@ export class DocumentFunction extends BaseDocField {
   }
 
   /** 根据节点获取子级函数类型节点的通用方法 */
-  static getFunctionTypeNode(node: Node) {
+  static getFunctionTypeNode(node: Node): Node {
+    if (!node) return node;
+    const variableFunctionNode = this.getFunctionTypeNode(node?.asKind?.(ts.SyntaxKind.VariableStatement)?.getDeclarations()?.[0]?.asKind(ts.SyntaxKind.VariableDeclaration)!);
     const functionTypeNode =
+      variableFunctionNode ??
       node?.asKind?.(ts.SyntaxKind.FunctionDeclaration) ??
       node?.asKind?.(ts.SyntaxKind.FunctionExpression) ??
       node?.asKind?.(ts.SyntaxKind.ArrowFunction) ??
