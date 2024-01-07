@@ -21,7 +21,7 @@
   "scripts": {
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --project .",
-    "build:cjs": "npm run babel && tsc -project ./tsconfig.cjs.json",
+    "build:cjs": "tsc -project ./tsconfig.cjs.json",
     "babel": "babel src --out-dir dist/lib  --extensions .ts,.js,.tsx,.jsx,.cjs,.mjs --ignore src/**/*.test.ts,src/**/*.test.tsx,src/__tests__/**",
     "tsc": "tsc",
     "clean": "rimraf dist",

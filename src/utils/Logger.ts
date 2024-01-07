@@ -1,11 +1,11 @@
 import winston from 'winston';
 
-const { colorize, simple, combine } = winston.format;
+// const { colorize, simple, combine } = winston.format;
 
-export const logger = winston.createLogger({
-  level: 'error',
-  format: combine(colorize(), simple()),
-  transports: [new winston.transports.Console()],
-});
+// export const logger = winston.createLogger({
+//   level: 'error',
+//   format: combine(colorize(), simple()),
+//   transports: [new winston.transports.Console()],
+// });
 
-export default logger;
+export default { level: '', ...console };
