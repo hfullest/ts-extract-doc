@@ -38,7 +38,7 @@
     "install:example": "cd ./example  && pnpm install"
   },
   "dependencies": {
-    "ts-morph": "^20.0.0",
+    "ts-morph": "^21.0.1",
     "typescript": "^5.0.2"
   },
   "devDependencies": {
