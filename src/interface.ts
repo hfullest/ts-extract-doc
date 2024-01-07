@@ -33,6 +33,8 @@ export interface DocumentParseOptions {
   idGenerator?: (name: string) => string;
   /** 是否自动计算合并推导类型，默认为`true`，优先级低于`@calculate` */
   autoCalculate?: boolean;
+  /** 日志记录 */
+  logger?: ConfigOptions['logger'];
 }
 
 export interface TemplateCustom {
@@ -41,7 +43,12 @@ export interface TemplateCustom {
 }
 
 /** @expand */
-export type MarkdownOptions = TemplateCustom | TemplateDefault | TemplateBeauty;
+export type MarkdownOptions = (
+  TemplateCustom
+  | TemplateDefault
+  | TemplateBeauty)
+  &
+{ logger?: ConfigOptions['logger'] };
 
 /** @expand */
 export interface ConfigOptions {
@@ -54,5 +61,7 @@ export interface ConfigOptions {
   /** 日志记录等级
    * @default 'info'
    */
-  logger?: 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
+  logger?: {
+    level: 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly'
+  };
 }

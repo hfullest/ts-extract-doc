@@ -16,6 +16,8 @@ export const parse = (
   filePathOrPaths: string | string[],
   parserOpts: DocumentParseOptions = defaultDocumentOptions,
 ): Document[][] => {
+  if (parserOpts?.logger?.level) { logger.level = parserOpts.logger.level; }
+
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
   const singleton = parserOpts?.singleton ?? true;
   const customProject = parserOpts?.project;
