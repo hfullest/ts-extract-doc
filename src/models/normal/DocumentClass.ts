@@ -31,8 +31,9 @@ export class DocumentClass extends BaseDocField {
     if (Node.isConstructorDeclaration(constructorDeclaration)) {
       this.constructors = new DocumentMethod(constructorDeclaration?.getSymbol()!, this.$options);
     }
-    const properties = node?.getProperties();
-    properties?.forEach((prop, index) => {
+    const properties = node?.getProperties?.() ?? [];
+    const methods = node?.getMethods?.() ?? [];
+    [...properties, ...methods].filter(Boolean)?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       const options: DocumentOptions = {
@@ -46,16 +47,20 @@ export class DocumentClass extends BaseDocField {
         const methodDoc = new DocumentMethod(currentSymbol, { ...options, $index: index, $parent: this });
         if (this.#isIgnoreField(methodDoc)) return;
         if ((methodDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
+          delete this.staticProps[propName]; // 方法和属性名不能相同
           this.staticMethods[propName] = methodDoc;
         } else {
+          delete this.props[propName]; // 方法和属性名不能相同
           this.methods[propName] = methodDoc;
         }
       } else if (DocumentProp.isTarget(prop)) {
         const propDoc = new DocumentProp(currentSymbol, { ...options, $index: index, $parent: this });
         if (this.#isIgnoreField(propDoc)) return;
         if ((propDoc.modifiers ?? 0) & ts.ModifierFlags.Static) {
+          delete this.staticMethods[propName]; // 方法和属性名不能相同
           this.staticProps[propName] = propDoc;
         } else {
+          delete this.methods[propName]; // 方法和属性名不能相同
           this.props[propName] = propDoc;
         }
       }

@@ -25,8 +25,9 @@ export class DocumentInterface extends BaseDocField {
       if (heritDocs?.props) this.props = Object.assign(this.props, heritDocs.props);
       if (heritDocs?.methods) this.methods = Object.assign(this.methods, heritDocs.methods);
     }
-    const properties = node?.getProperties();
-    properties?.forEach((prop, index) => {
+    const properties = node?.getProperties?.() ?? [];
+    const methods = node?.getMethods?.() ?? [];
+    [...properties, ...methods].filter(Boolean)?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       if (!currentSymbol) return;
@@ -37,8 +38,10 @@ export class DocumentInterface extends BaseDocField {
         $parent: this,
       };
       if (DocumentMethod.isTarget(prop)) {
+        delete this.props[propName]; // 方法和属性名不能相同
         this.methods[propName] = new DocumentMethod(currentSymbol!, options);
       } else if (DocumentProp.isTarget(prop)) {
+        delete this.methods[propName]; // 方法和属性名不能相同
         this.props[propName] = new DocumentProp(currentSymbol!, options);
       }
     });

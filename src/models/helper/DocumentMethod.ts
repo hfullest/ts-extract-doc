@@ -1,7 +1,7 @@
 import { Node, PropertyDeclaration, PropertySignature, Symbol, ts } from 'ts-morph';
 import { DocumentFunction } from '../normal/DocumentFunction';
 import { DocumentDecorator } from './DocumentDecorator';
-import { DocumentOptions } from './BaseDocField';
+import { BaseDocField, DocumentOptions } from './BaseDocField';
 import { JSDocTagEnum } from '../../utils/jsDocTagDefinition';
 
 // @ts-ignore 忽略继承导致的静态类型不兼容 https://segmentfault.com/q/1010000023736777
@@ -31,13 +31,13 @@ export class DocumentMethod extends DocumentFunction {
   }
 
   #assign(symbol: Symbol): void {
-    const node = symbol?.getDeclarations()[0];
-    if (!DocumentMethod.isTarget(node)) return;
+    const { node } = BaseDocField.splitSymbolNodeOrType(symbol);
+    if (!DocumentMethod.isTarget(node!)) return;
     const jsDoc = node?.getJsDocs()[0];
     this.isOptional = node?.hasQuestionToken();
     this.modifiers = (node?.getCombinedModifierFlags() ?? 0) | (jsDoc?.getCombinedModifierFlags() ?? 0);
     const defaultTagNode = this.tags?.find((t) => /^default(Value)?/.test(t.name))?.node;
-    this.defaultValue = defaultTagNode?.getCommentText()?.split('\n\n')?.[0] ?? node.getInitializer()?.getText();
+    this.defaultValue = defaultTagNode?.getCommentText()?.split('\n\n')?.[0] ?? node?.getInitializer?.()?.getText?.();
 
     this.readonly = !!this.tags.find((it) => it.name === JSDocTagEnum.readonly);
   }

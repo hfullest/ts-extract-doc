@@ -34,8 +34,9 @@ export class DocumentObject extends BaseDocField {
 
     if (!node) return; // 没有命中节点，表示其他兜底情况，直接返回
 
-    const properties = (node as TypeLiteralNode)?.getProperties?.();
-    properties?.forEach((prop, index) => {
+    const properties = (node as TypeLiteralNode)?.getProperties?.() ?? [];
+    const methods = (node as TypeLiteralNode).getMethods?.() ?? [];
+    [...properties, ...methods].filter(Boolean)?.forEach((prop, index) => {
       const propName = prop?.getName();
       const currentSymbol = prop?.getSymbol();
       const options: DocumentOptions & { index: number } = {
@@ -44,8 +45,10 @@ export class DocumentObject extends BaseDocField {
         index,
       };
       if (DocumentMethod.isTarget(prop)) {
+        delete this.props[propName]; // 方法和属性名不能相同
         this.methods[propName] = new DocumentMethod(currentSymbol!, { ...options, $parent: this });
       } else if (DocumentProp.isTarget(prop)) {
+        delete this.methods[propName];
         this.props[propName] = new DocumentProp(currentSymbol!, { ...options, $parent: this });
       }
     });
