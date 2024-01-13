@@ -7,8 +7,7 @@ import outputManager from './utils/OutputManager';
 import { existsSync } from 'fs';
 import logger from './utils/Logger';
 
-const defaultProjectOptions: ProjectOptions = {
-};
+const defaultProjectOptions: ProjectOptions = {};
 
 const singletonProject = new Project(defaultProjectOptions);
 
@@ -16,7 +15,9 @@ export const parse = (
   filePathOrPaths: string | string[],
   parserOpts: DocumentParseOptions = defaultDocumentOptions,
 ): Document[][] => {
-  if (parserOpts?.logger?.level) { logger.level = parserOpts.logger.level; }
+  if (parserOpts?.logger?.level) {
+    logger.level = parserOpts.logger.level;
+  }
 
   const filePaths = Array.isArray(filePathOrPaths) ? filePathOrPaths : [filePathOrPaths];
   const singleton = parserOpts?.singleton ?? true;
@@ -55,29 +56,31 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
       export: parseOptions?.strategy === 'export',
       manual: parseOptions?.strategy === 'manual',
     };
-    const outputSymbols = (localSymbols
-      ?.map((symbol) => {
-        const tags = symbol?.getJsDocTags();
-        const tagsModel = tags.reduce(
-          (res, tag) => {
-            if (tag.getName() === JSDocCustomTagEnum['ignoreOutput']) res.ignoreOutput = true;
-            else if (tag.getName() === JSDocCustomTagEnum['output']) res.output = true;
-            return res;
-          },
-          { ignoreOutput: false, output: false },
-        );
-        if (strategy.manual || strategy.default) {
-          if (tagsModel.ignoreOutput) return;
-          if (tagsModel.output) return symbol;
-        }
-        if (strategy.export || strategy.default) {
-          const node = (symbol.getValueDeclaration() ?? symbol.getDeclarations()[0]) as InterfaceDeclaration;
-          if (node?.isExported?.()) return symbol;
-        }
-        return;
-      })
-      .filter(Boolean) as Symbol[])
-      ?.sort((aSym, bSym) => {
+    const outputSymbols =
+      (
+        localSymbols
+          ?.map((symbol) => {
+            const tags = symbol?.getJsDocTags();
+            const tagsModel = tags.reduce(
+              (res, tag) => {
+                if (tag.getName() === JSDocCustomTagEnum['ignoreOutput']) res.ignoreOutput = true;
+                else if (tag.getName() === JSDocCustomTagEnum['output']) res.output = true;
+                return res;
+              },
+              { ignoreOutput: false, output: false },
+            );
+            if (strategy.manual || strategy.default) {
+              if (tagsModel.ignoreOutput) return;
+              if (tagsModel.output) return symbol;
+            }
+            if (strategy.export || strategy.default) {
+              const node = (symbol.getValueDeclaration() ?? symbol.getDeclarations()[0]) as InterfaceDeclaration;
+              if (node?.isExported?.()) return symbol;
+            }
+            return;
+          })
+          .filter(Boolean) as Symbol[]
+      )?.sort((aSym, bSym) => {
         const aStartLine = aSym?.getDeclarations()?.[0]?.getStartLineNumber() ?? 0;
         const bStartLine = bSym?.getDeclarations()?.[0]?.getStartLineNumber() ?? 0;
         if (aStartLine !== bStartLine) return aStartLine - bStartLine;
@@ -85,14 +88,15 @@ export const genDocuments = (file: SourceFile, parseOptions: DocumentParseOption
         const bEndLine = bSym?.getDeclarations()?.[0]?.getEndLineNumber() ?? 0;
         return aEndLine - bEndLine;
       }) ?? [];
-    if (name) return outputSymbols?.find(it => it?.getName() === name);
+    if (name) return outputSymbols?.find((it) => it?.getName() === name);
     return outputSymbols;
-  }
+  };
 
   const outputSymbols = getLocalSymbol() as Symbol[];
 
   for (let symbol of outputSymbols) {
-    const doc = DocumentParser(symbol as Symbol, Object.assign({}, parseOptions, new DocumentCarryInfo()));
+    const carryInfo = new DocumentCarryInfo(symbol, parseOptions);
+    const doc = DocumentParser(symbol as Symbol, Object.assign(carryInfo, parseOptions, carryInfo));
     outputManager.append(doc!);
   }
   const docs = outputManager.getDocs();
