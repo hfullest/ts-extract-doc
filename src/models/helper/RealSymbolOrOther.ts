@@ -141,17 +141,9 @@ export class RealSymbolOrOther {
     });
     const originStructure = (tempNode.current as InterfaceDeclaration)?.getStructure();
     (tempNode.current as InterfaceDeclaration)?.set?.(structure);
-    const targetText = tempNode.current?.getFullText() ?? node?.getFullText()!;
+    const roughText = tempNode.current?.getFullText() ?? node?.getFullText()!;
     (tempNode.current as InterfaceDeclaration)?.set?.(originStructure);
-    const pos = node?.getPos();
-    const sourceFile = node?.getSourceFile();
-    node.replaceWithText(targetText);
-    const newNode = sourceFile.getDescendantAtPos(pos)?.getParentWhileKind(ts.SyntaxKind.TypeLiteral);
-    const { symbol: newSymbol, type: newType } = BaseDocField.splitSymbolNodeOrType(newNode);
-    if (symbolOrOther instanceof Node) return newNode!;
-    if (symbolOrOther instanceof Symbol) return newSymbol!;
-    if (symbolOrOther instanceof Type) return newType!;
-    return symbolOrOther;
+    return this.#$getLastestSymbolOrOther(node, roughText, symbolOrOther, ts.SyntaxKind.TypeLiteral);
   }
 
   #handlePick(symbolOrOther: SymbolOrOtherType, options: DocumentOptions): SymbolOrOtherType {
@@ -195,75 +187,114 @@ export class RealSymbolOrOther {
     return symbolOrOther;
   }
   #handleOmit(symbolOrOther: SymbolOrOtherType, options: DocumentOptions): SymbolOrOtherType {
+    return this.#$commonEntity(symbolOrOther, 'Omit', {
+      getTargetType: (typeArgumentsTypes) => typeArgumentsTypes[0],
+      handleTargetNode: (targetNode, typeArgumentsTypes) => {
+        const unionTypes = typeArgumentsTypes?.[1];
+        const omitKeys = unionTypes?.isLiteral?.()
+          ? [unionTypes?.getLiteralValue?.()]
+          : unionTypes.getUnionTypes?.()?.map((it) => it?.getLiteralValue?.());
+        const node = targetNode as InterfaceDeclaration;
+        [...(node?.getProperties?.() ?? []), ...(node?.getMethods?.() ?? [])].forEach((it) => {
+          const name = it?.getName?.();
+          if (omitKeys.includes(name)) {
+            it.remove();
+          }
+        });
+      },
+    });
+  }
+
+  #$getLastestSymbolOrOther(
+    node: Node,
+    replaceText: string | null,
+    symbolOrOther: SymbolOrOtherType,
+    newNodeKind: ts.SyntaxKind = node?.getKind(),
+  ) {
+    const pos = node?.getPos();
+    const sourceFile = node?.getSourceFile();
+    const range = [node?.getStartLineNumber?.(), node?.getEndLineNumber?.()];
+    if (typeof replaceText === 'string') {
+      const placeholderText = Array(range[1] - range[0])
+        .fill('\n')
+        .join('');
+      const withoutSpaceText = replaceText.replace(/\n+/g, '\t');
+      const targetText = withoutSpaceText.replace(/\t/, placeholderText); // 只替换第一个
+      node.replaceWithText(targetText); // 替换文本但保持起始结束占行相同，便于后续解析
+    }
+    const newNode = sourceFile.getDescendantAtPos(pos)?.getParentWhileKind(newNodeKind);
+    const { symbol: newSymbol, type: newType } = BaseDocField.splitSymbolNodeOrType(newNode);
+    if (symbolOrOther instanceof Node) return newNode!;
+    if (symbolOrOther instanceof Symbol) return newSymbol!;
+    if (symbolOrOther instanceof Type) return newType!;
+    return symbolOrOther;
+  }
+  /** 处理公共类型工具逻辑，如Pick、Omit等 */
+  #$commonEntity(
+    symbolOrOther: SymbolOrOtherType,
+    name: string,
+    config: {
+      getTargetType: (typeArgumentsTypes: Type[]) => Type;
+      handleTargetNode: (targetNode: Node, typeArgumentsTypes: Type[]) => void;
+    },
+  ) {
     const { symbol, node, type } = BaseDocField.splitSymbolNodeOrType(symbolOrOther, { useLocal: true });
-    const omitIf = { isTarget: false, isTypeAlias: false, isType: false, isReference: false };
+    const ifs = { isTarget: false, isTypeAlias: false, isType: false, isReference: false };
     const typeNode =
       node?.asKind(ts.SyntaxKind.TypeReference) ??
       node?.asKind(ts.SyntaxKind.TypeAliasDeclaration)?.getTypeNode?.()?.asKind(ts.SyntaxKind.TypeReference);
     // symbolOrOther 类型别名
-    if (symbolOrOther instanceof Symbol && typeNode?.getTypeName()?.getText?.() === 'Omit') {
-      omitIf.isTarget = true;
-      omitIf.isTypeAlias = true;
+    if (symbolOrOther instanceof Symbol && typeNode?.getTypeName()?.getText?.() === name) {
+      ifs.isTarget = true;
+      ifs.isTypeAlias = true;
     }
     // symbolOrOther 为其他类型引用
     if (
       symbolOrOther instanceof Node &&
       Node.isTypeReference(symbolOrOther) &&
-      typeNode?.getTypeName()?.getText?.() === 'Omit'
+      typeNode?.getTypeName()?.getText?.() === name
     ) {
-      omitIf.isTarget = true;
-      omitIf.isReference = true;
+      ifs.isTarget = true;
+      ifs.isReference = true;
     }
     // symbolOrOther 类型
-    if (symbolOrOther instanceof Type && symbol?.getName?.() === 'Omit') {
-      omitIf.isTarget = true;
-      omitIf.isType = true;
+    if (symbolOrOther instanceof Type && symbol?.getName?.() === name) {
+      ifs.isTarget = true;
+      ifs.isType = true;
     }
 
-    if (omitIf.isTarget) {
+    if (ifs.isTarget) {
       debugger;
       const typeArgumentsTypes =
-        (omitIf.isTypeAlias || omitIf.isReference
+        (ifs.isTypeAlias || ifs.isReference
           ? typeNode
               ?.getTypeArguments()
               ?.map((it) => this.#getActualSymbolOrOther(it))
               ?.map((it) => it.getType())
           : type?.getAliasTypeArguments?.()) ?? [];
-      const [targetType, propsUnionType] = typeArgumentsTypes;
-      const unionTypes = propsUnionType.isLiteral()
-        ? [propsUnionType?.getLiteralValue?.()]
-        : propsUnionType.getUnionTypes?.()?.map((it) => it?.getLiteralValue?.());
-      const omitKeys = new Set(unionTypes);
+      const targetType = config?.getTargetType?.(typeArgumentsTypes);
       const { node: plainNode } = BaseDocField.splitSymbolNodeOrType<Symbol, InterfaceDeclaration>(
         this.#getActualSymbolOrOther(targetType?.getAliasSymbol?.() ?? targetType?.getSymbol?.()!),
         { useLocal: true },
       );
       const targetNode = { current: plainNode } as { current: InterfaceDeclaration | TypeLiteralNode };
-      if (omitIf.isTypeAlias && Node.isTypeAliasDeclaration(targetNode.current)) {
+      if (ifs.isTypeAlias && Node.isTypeAliasDeclaration(targetNode.current)) {
         targetNode.current = targetNode.current.getLastChildByKind(ts.SyntaxKind.TypeLiteral) ?? targetNode.current;
       }
-      [...(targetNode.current?.getProperties?.() ?? []), ...(targetNode.current?.getMethods?.() ?? [])].forEach(
-        (it) => {
-          const name = it?.getName?.();
-          if (omitKeys.has(name)) {
-            it.remove();
-          }
-        },
-      );
-
-      if (omitIf.isTypeAlias) {
+      config?.handleTargetNode?.(targetNode.current, typeArgumentsTypes);
+      const resultNode = { current: node };
+      if (ifs.isTypeAlias) {
         const typeAliaNode = node?.asKind(ts.SyntaxKind.TypeAliasDeclaration);
         const parentNodeStructure = typeAliaNode?.getStructure();
         if (parentNodeStructure) {
           parentNodeStructure.type = targetNode.current?.getText()!;
           typeAliaNode?.set(parentNodeStructure);
         }
-        return symbolOrOther;
-      } else if (omitIf.isType) {
-        return targetNode.current!;
-      } else if (omitIf.isReference) {
-        return targetNode.current!;
+        resultNode.current = node;
+      } else if (ifs.isType || ifs.isReference) {
+        resultNode.current = targetNode.current;
       }
+      return this.#$getLastestSymbolOrOther(resultNode.current!, null, symbolOrOther);
     }
     return symbolOrOther;
   }
