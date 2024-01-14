@@ -77,64 +77,9 @@ export class RealSymbolOrOther {
       const { node: sourceNode } = BaseDocField.splitSymbolNodeOrType<Symbol, InterfaceDeclaration>(insecSymbol, {
         useLocal: true,
       });
-      if (Node.isTypeAliasDeclaration(sourceNode)) {
-        const typeLiteralNode = sourceNode.getFirstChildByKind(ts.SyntaxKind.TypeLiteral);
-        const properties = typeLiteralNode?.getProperties();
-        const methods = typeLiteralNode?.getMethods();
-
-        properties?.forEach((it) => {
-          const struct: PropertySignatureStructure = {
-            kind: StructureKind.PropertySignature,
-            name: it?.getName(),
-            type: it?.getType()?.getText(),
-            hasQuestionToken: it?.hasQuestionToken(),
-            initializer: it.getInitializer()?.getText(),
-            isReadonly: it.isReadonly(),
-            docs: it?.getJsDocs()?.map((doc) => ({
-              kind: StructureKind.JSDoc,
-              description: doc.getDescription(),
-              tags: doc.getTags()?.map(
-                (tag) =>
-                  ({
-                    kind: StructureKind.JSDocTag,
-                    tagName: tag.getTagName(),
-                    text: tag.getText(),
-                  }) as JSDocTagStructure,
-              ),
-            })),
-          };
-          propertiesMap.set(struct.name, struct);
-        });
-        methods?.forEach((it) => {
-          const struct: MethodSignatureStructure = {
-            kind: StructureKind.MethodSignature,
-            name: it?.getName(),
-            hasQuestionToken: it?.hasQuestionToken(),
-            typeParameters: it?.getTypeParameters()?.map((p) => ({
-              kind: StructureKind.TypeParameter,
-              name: p.getName(),
-              constraint: p.getConstraint()?.getText(),
-              default: p.getDefault()?.getText(),
-            })),
-            parameters: it?.getParameters().map((p) => ({
-              kind: StructureKind.Parameter,
-              name: p.getName(),
-              hasQuestionToken: p.hasQuestionToken(),
-              initializer: p.getInitializer()?.getText(),
-              isReadonly: p.isReadonly(),
-              isRestParameter: p.isRestParameter(),
-              scope: p.getScope(),
-              type: p.getType().getText(),
-            })),
-            returnType: it?.getReturnType()?.getText(),
-          };
-          methodsMap.set(struct.name, struct);
-        });
-      } else {
-        const struct = sourceNode?.getStructure?.();
-        struct?.properties?.forEach((it) => propertiesMap.set(it.name, it));
-        struct?.methods?.forEach((it) => methodsMap.set(it.name, it));
-      }
+      const struct = this.#$extractStructure(sourceNode!);
+      struct?.properties?.forEach((it) => propertiesMap.set(it.name, it));
+      struct?.methods?.forEach((it) => methodsMap.set(it.name, it));
       if (sourceNode?.getStructure?.()) tempNode.current = sourceNode;
       structure.properties = Array.from(propertiesMap.values());
       structure.methods = Array.from(methodsMap.values());
@@ -228,6 +173,93 @@ export class RealSymbolOrOther {
     if (symbolOrOther instanceof Symbol) return newSymbol!;
     if (symbolOrOther instanceof Type) return newType!;
     return symbolOrOther;
+  }
+  #$extractStructure(node: Node) {
+    if (Node.isTypeAliasDeclaration(node)) {
+      const typeLiteralNode = node.getFirstChildByKind(ts.SyntaxKind.TypeLiteral);
+      const properties = typeLiteralNode?.getProperties();
+      const methods = typeLiteralNode?.getMethods();
+
+      const structProperties = properties?.map((it) => {
+        const struct: PropertySignatureStructure = {
+          kind: StructureKind.PropertySignature,
+          name: it?.getName(),
+          type: it?.getType()?.getText(),
+          hasQuestionToken: it?.hasQuestionToken(),
+          initializer: it.getInitializer()?.getText(),
+          isReadonly: it.isReadonly(),
+          docs: it?.getJsDocs()?.map((doc) => ({
+            kind: StructureKind.JSDoc,
+            description: doc.getDescription(),
+            tags: doc.getTags()?.map(
+              (tag) =>
+                ({
+                  kind: StructureKind.JSDocTag,
+                  tagName: tag.getTagName(),
+                  text: tag.getText(),
+                }) as JSDocTagStructure,
+            ),
+          })),
+        };
+        return struct;
+      });
+      const structMethods = methods?.map((it) => {
+        const struct: MethodSignatureStructure = {
+          kind: StructureKind.MethodSignature,
+          name: it?.getName(),
+          hasQuestionToken: it?.hasQuestionToken(),
+          docs: it?.getJsDocs()?.map((doc) => ({
+            kind: StructureKind.JSDoc,
+            description: doc.getDescription(),
+            tags: doc.getTags()?.map(
+              (tag) =>
+                ({
+                  kind: StructureKind.JSDocTag,
+                  tagName: tag.getTagName(),
+                  text: tag.getText(),
+                }) as JSDocTagStructure,
+            ),
+          })),
+          typeParameters: it?.getTypeParameters()?.map((p) => ({
+            kind: StructureKind.TypeParameter,
+            name: p.getName(),
+            constraint: p.getConstraint()?.getText(),
+            default: p.getDefault()?.getText(),
+          })),
+          parameters: it?.getParameters().map((p) => ({
+            kind: StructureKind.Parameter,
+            name: p.getName(),
+            hasQuestionToken: p.hasQuestionToken(),
+            initializer: p.getInitializer()?.getText(),
+            isReadonly: p.isReadonly(),
+            isRestParameter: p.isRestParameter(),
+            scope: p.getScope(),
+            type: p.getType().getText(),
+          })),
+          returnType: it?.getReturnType()?.getText(),
+        };
+        return struct;
+      });
+      return {
+        kind: StructureKind.Interface,
+        properties: structProperties,
+        methods: structMethods,
+        docs: node?.getJsDocs()?.map((doc) => ({
+          kind: StructureKind.JSDoc,
+          description: doc.getDescription(),
+          tags: doc.getTags()?.map(
+            (tag) =>
+              ({
+                kind: StructureKind.JSDocTag,
+                tagName: tag.getTagName(),
+                text: tag.getText(),
+              }) as JSDocTagStructure,
+          ),
+        })),
+      } as InterfaceDeclarationStructure;
+    } else {
+      return (node as InterfaceDeclaration)?.getStructure?.();
+    }
   }
   /** 处理公共类型工具逻辑，如Pick、Omit等 */
   #$commonEntity(
