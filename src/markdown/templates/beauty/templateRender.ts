@@ -140,7 +140,7 @@ export const templateRender = (doc: Document, options: TemplateBeauty): string =
     ? parsedContent
     : [
       `<div style='font-weight:500;'>类型：</div>
-        <code style='display:inline-block;margin-left:2em;margin-bottom:1em;'>${escapeHTMLTags(doc?.toTypeString()!)}</code>`,
+        <code style='width:100%;flex:1;display:inline-block;margin-left:2em;margin-bottom:1em;'>${escapeHTMLTags(doc?.toTypeString()!)}</code>`,
     ];
   const extra = extraDescription ?? ''; // 描述内容透传，支持markdown语法
   const exampleCode = example ? `\n\`\`\`tsx\n${example}\n\`\`\`` : '';

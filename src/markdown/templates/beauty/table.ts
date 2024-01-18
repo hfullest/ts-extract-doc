@@ -20,7 +20,7 @@ export const generateTable = (
   const headerRows = headerTh ? `<thead>\n<tr>\n${headerTh}\n</tr>\n</thead>` : '';
   const bodyTd = propDocs
     .map((doc, index) => {
-      const dataSource = new DataSource(doc, document,config);
+      const dataSource = new DataSource(doc, document, config);
       const fields = columns
         .map((col) => {
           const content = {
@@ -40,12 +40,13 @@ export const generateTable = (
   const presetCss = options?.css
     ? `<style>${options?.css}</style>`
     : `<style>
+    div[data-id='${fullId}-container'] { width: 100%; overflow: auto; }
     table[data-id='${fullId}'] p { margin:0;}
     table[data-id='${fullId}'] [data-field='type'],
     table[data-id='${fullId}'] [data-field='referenceType']{color:${config?.themeColor ?? 'unset'}}
     </style>`;
   const tableContent = [presetCss, headerRows, bodyRows].filter(Boolean).join('\n');
-  const table = columns?.length && propDocs?.length ? `<table data-id='${fullId}'>\n${tableContent}\n</table>\n` : '';
+  const table = columns?.length && propDocs?.length ? `<div data-id='${fullId}-container'><table data-id='${fullId}'>\n${tableContent}\n</table></div>\n` : '';
 
   return [header, table, options?.footer?.toString()].filter(Boolean).join('\n');
 };
